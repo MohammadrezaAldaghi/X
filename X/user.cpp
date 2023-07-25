@@ -7,6 +7,7 @@ User::User()
 
 bool User::SetUserAttribute()
 {
+    QDir().mkdir(Username);
     qDebug()<<"yes\n";
     QJsonObject jsonObj;
     jsonObj["Username"] = Username;
@@ -22,7 +23,7 @@ bool User::SetUserAttribute()
 
     QByteArray jsonData = jsonDoc.toJson();
 
-    QString fileName = Username + ".json";
+    QString fileName = Username + "/" + Username + ".json";
     QFile file(fileName);
 
     try{
@@ -78,6 +79,11 @@ void User::SetFollowings()
 void User::SetFollowers()
 {
     Followers = 0;
+}
+
+void User::SetProfileImage(QImage image)
+{
+    ProfileImage = image;
 }
 
 void User::SetName(QString name)

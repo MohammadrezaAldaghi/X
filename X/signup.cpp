@@ -26,11 +26,16 @@ void SignUp::on_RegisterButton_clicked()
     currnetUser->SetFollowers();
     currnetUser->SetFollowings();
 
-    if(currnetUser->SetUserAttribute())
+    if(bool localSetUserAttribute = currnetUser->SetUserAttribute())
+    {
         QMessageBox::information(this,"Registration successful","Registration was successful");
+        this->close();
+    }
     else
+    {
         QMessageBox::critical(this,"Registration failed","Registration failed. Please try again");
-
+        this->close();
+    }
 
 
 }

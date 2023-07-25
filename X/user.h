@@ -7,6 +7,7 @@
 #include<QDebug>
 #include<QFile>
 #include <QMessageBox>
+#include <QDir>
 
 class User
 {
@@ -20,6 +21,7 @@ public:
     void SetPassword(QString password);
     void SetFollowings();
     void SetFollowers();
+    void SetProfileImage(QImage image);
     void SetName(QString name);
 
 protected:
@@ -32,6 +34,7 @@ protected:
     int Followers;
     QString ColorHeader;
     QString Name;
+    QImage ProfileImage;
 
 };
 
