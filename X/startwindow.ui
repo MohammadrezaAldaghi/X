@@ -13,63 +13,6 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QLabel" name="AnonymousLabel">
-   <property name="geometry">
-    <rect>
-     <x>860</x>
-     <y>200</y>
-     <width>311</width>
-     <height>181</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>25</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Anonymous</string>
-   </property>
-   <property name="buddy">
-    <cstring></cstring>
-   </property>
-  </widget>
-  <widget class="QLabel" name="PersonalLabel">
-   <property name="geometry">
-    <rect>
-     <x>500</x>
-     <y>190</y>
-     <width>261</width>
-     <height>201</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>25</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Personal</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="OrganisationLabel">
-   <property name="geometry">
-    <rect>
-     <x>80</x>
-     <y>210</y>
-     <width>281</width>
-     <height>151</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>25</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Organisation</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
@@ -87,6 +30,60 @@
    </property>
    <property name="text">
     <string>Please select your account type</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="OrganisationButton">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>240</y>
+     <width>321</width>
+     <height>181</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>25</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Organisation</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PersonalButton">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>240</y>
+     <width>321</width>
+     <height>181</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>25</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Personal</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="AnonymousButton">
+   <property name="geometry">
+    <rect>
+     <x>890</x>
+     <y>240</y>
+     <width>321</width>
+     <height>181</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>25</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Anonymous</string>
    </property>
   </widget>
  </widget>
