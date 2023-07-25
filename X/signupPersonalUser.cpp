@@ -1,20 +1,20 @@
-#include "signup.h"
+#include"signupPersonalUser.h"
 #include "ui_signup.h"
 
 
-SignUp::SignUp(QWidget *parent) :
+signupPersonalUser::signupPersonalUser(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::SignUp)
+    ui(new Ui::signupPersonalUser)
 {
     ui->setupUi(this);
 }
 
-SignUp::~SignUp()
+signupPersonalUser::~signupPersonalUser()
 {
     delete ui;
 }
 
-void SignUp::on_RegisterButton_clicked()
+void signupPersonalUser::on_RegisterButton_clicked()
 {
     User* currnetUser = new User();
     currnetUser->SetUsername(ui->UsernameLineEdit->text());
@@ -26,22 +26,17 @@ void SignUp::on_RegisterButton_clicked()
     currnetUser->SetFollowers();
     currnetUser->SetFollowings();
 
-    if(bool localSetUserAttribute = currnetUser->SetUserAttribute())
-    {
-        QMessageBox::information(this,"Registration successful","Registration was successful");
-        this->close();
-    }
+    if(currnetUser->SetUserAttribute())
+        QMessageBox::information(this,"sdfdsdfdfsdfsd","Registration was successful");
     else
-    {
         QMessageBox::critical(this,"Registration failed","Registration failed. Please try again");
-        this->close();
-    }
+
 
 
 }
 
 
-void SignUp::on_ChoseProfile_clicked()
+void signupPersonalUser::on_ChoseProfile_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this, "Open Image", "", "Image Files (*.png *.jpg *.bmp)");
 

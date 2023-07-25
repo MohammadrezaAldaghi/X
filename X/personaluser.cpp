@@ -1,11 +1,35 @@
-#include "user.h"
+#include "personaluser.h"
 
-User::User()
+PersonalUser::PersonalUser()
 {
 
 }
 
-bool User::SetUserAttribute()
+void PersonalUser::SetContryPersonalUser(QString country)
+{
+    Country = country;
+}
+
+void PersonalUser::SetBirthdayPersonalUser(QString birthday)
+{
+    Birthday = birthday;
+}
+
+void PersonalUser::SetNamePersonalUser(QString name)
+{
+    Name = name;
+}
+
+void PersonalUser::SetColorHeaderPersonalUser()
+{
+
+}
+
+void PersonalUser::SetPhonNemberPersonalUser(QString number)
+{
+    PhoneNember = number;
+}
+bool PersonalUser::SetAttributePersonalUser()
 {
     QDir().mkdir(Username);
     qDebug()<<"yes\n";
@@ -45,55 +69,3 @@ bool User::SetUserAttribute()
     }
 
 }
-
-void User::SetContry(QString country)
-{
-    Country = country;
-}
-
-void User::SetUsername(QString username)
-{
-    Username = username;
-}
-
-void User::SetPhoneNember(QString phonenumber)
-{
-    PhoneNember = phonenumber;
-}
-
-void User::SetBirthday(QString birthday)
-{
-    Birthday = birthday;
-}
-
-void User::SetPassword(QString password)
-{
-    Password = password;
-}
-
-void User::SetFollowings()
-{
-    Followings = 0;
-}
-
-void User::SetFollowers()
-{
-    Followers = 0;
-}
-
-void User::SetProfileImage(QImage image)
-{
-    ProfileImage = image;
-}
-
-void User::SetName(QString name)
-{
-    Name = name;
-}
-
-void User::SetUsernmaeAndPasswordUser(QString username,QString password)
-{
-    Password = password;
-    Username = username;
-}
-

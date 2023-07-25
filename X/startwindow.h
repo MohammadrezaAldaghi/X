@@ -2,6 +2,9 @@
 #define STARTWINDOW_H
 
 #include <QWidget>
+#include "personaluser.h"
+#include "signupPersonalUser.h"
+
 
 namespace Ui {
 class Startwindow;
@@ -14,6 +17,11 @@ class Startwindow : public QWidget
 public:
     explicit Startwindow(QWidget *parent = nullptr);
     ~Startwindow();
+
+private slots:
+    void on_OrganisationButton_clicked();
+
+    void on_PersonalButton_clicked();
 
 private:
     Ui::Startwindow *ui;

@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "signup.h"
+#include "signupPersonalUser.h"
 #include <QApplication>
 #include "startwindow.h"
 

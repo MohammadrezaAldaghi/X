@@ -23,6 +23,7 @@ public:
     void SetFollowers();
     void SetProfileImage(QImage image);
     void SetName(QString name);
+    void SetUsernmaeAndPasswordUser(QString username,QString password);
 
 protected:
     QString Username;
