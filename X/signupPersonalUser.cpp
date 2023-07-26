@@ -27,6 +27,11 @@ SignUp::SignUp(QWidget *parent) :
       ui->PhonNumbeLabel->setStyleSheet("background-color : #FFFF66");
       ui->ChoseProfile->setStyleSheet("background-color: #D2B48C");
     }
+   //create folder
+    {
+        QDir().mkdir("Personal");
+    }
+
 }
 
 SignUp::~SignUp()
@@ -47,9 +52,15 @@ void SignUp::on_RegisterButton_clicked()
     currnetUser->SetFollowingsPersonalUser();
 
     if(currnetUser->SetAttributePersonalUser())
-        QMessageBox::information(this,"sdfdsdfdfsdfsd","Registration was successful");
+    {
+        QMessageBox::information(this,"Register message","Registration was successful");
+        QTimer::singleShot(1000, qApp, &QCoreApplication::quit);
+    }
     else
-        QMessageBox::critical(this,"Registration failed","Registration failed. Please try again");
+    {
+        QMessageBox::critical(this,"Register message","Registration failed. Please try again");
+        QTimer::singleShot(1000, qApp, &QCoreApplication::quit);
+    }
 
 
 

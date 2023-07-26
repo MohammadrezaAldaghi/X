@@ -19,6 +19,8 @@ public:
     void SetFollowingsOrganisationUser();
     void SetFollowersOrganisationUser();
     void SetProfileImageOrganisationUser(QImage img);
+    bool SetAttributeOrganisationUser();
+
 
 private:
     int Followings;

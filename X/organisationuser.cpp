@@ -24,3 +24,31 @@ void OrganisationUser::SetProfileImageOrganisationUser(QImage img)
 {
     ProfileImage = img;
 }
+
+bool OrganisationUser::SetAttributeOrganisationUser()
+{
+    QJsonObject jsonObj;
+    jsonObj["Username"] = Username;
+    jsonObj["Password"] = Password;
+    jsonObj["PhoneNumber"] = PhoneNaumber;
+    jsonObj["width"] = ProfileImage.width();
+    jsonObj["height"] = ProfileImage.height();
+
+    QJsonDocument jsonDoc(jsonObj);
+
+    QByteArray jsonData = jsonDoc.toJson();
+
+    QFile file("Organisation/" + Username + ".json");
+    if(file.open(QIODevice::Append))
+    {
+        file.write(jsonData);
+        file.close();
+        return true;
+    }
+    else
+    {
+        file.close();
+        return false;
+    }
+
+}
