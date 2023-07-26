@@ -32,7 +32,7 @@ void PersonalUser::SetPhonNemberPersonalUser(QString number)
 bool PersonalUser::SetAttributePersonalUser()
 {
     QDir().mkdir(Username);
-    qDebug()<<"yes\n";
+
     QJsonObject jsonObj;
     jsonObj["Username"] = Username;
     jsonObj["Password"] = Password;

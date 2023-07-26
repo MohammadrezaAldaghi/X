@@ -2,7 +2,7 @@
 #include "signupPersonalUser.h"
 #include <QApplication>
 #include "startwindow.h"
-
+#include "signuporganisationuser.h"
 
 int main(int argc, char *argv[])
 {
@@ -13,7 +13,10 @@ int main(int argc, char *argv[])
 //    SignUp S;
 //    S.show();
 
-    Startwindow S;
+//    Startwindow S;
+//    S.show();
+
+    SignUpOrganisationUser S;
     S.show();
 
     return a.exec();
