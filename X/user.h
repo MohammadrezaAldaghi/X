@@ -13,16 +13,8 @@ class User
 {
 public:
     User();
-    bool SetUserAttribute();
-    void SetContry(QString country);
     void SetUsername(QString username);
-    void SetPhoneNember(QString phonenumber);
-    void SetBirthday(QString birthday);
     void SetPassword(QString password);
-    void SetFollowings();
-    void SetFollowers();
-    void SetProfileImage(QImage image);
-    void SetName(QString name);
     void SetUsernmaeAndPasswordUser(QString username,QString password);
 
 protected:

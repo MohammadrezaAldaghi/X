@@ -1,6 +1,6 @@
-#include"signupPersonalUser.h"
+#include "signupPersonalUser.h"
 #include "ui_signup.h"
-
+#include "personaluser.h"
 
 signupPersonalUser::signupPersonalUser(QWidget *parent) :
     QWidget(parent),
@@ -16,17 +16,17 @@ signupPersonalUser::~signupPersonalUser()
 
 void signupPersonalUser::on_RegisterButton_clicked()
 {
-    User* currnetUser = new User();
+    PersonalUser* currnetUser = new PersonalUser();
     currnetUser->SetUsername(ui->UsernameLineEdit->text());
-    currnetUser->SetBirthday(ui->BirthdayLineEdit->text());
+    currnetUser->SetBirthdayPersonalUser(ui->BirthdayLineEdit->text());
     currnetUser->SetPassword(ui->PasswordLineEdit->text());
-    currnetUser->SetPhoneNember(ui->PhoneNemberLineEdit->text());
-    currnetUser->SetContry(ui->CountryLineEdit->text());
-    currnetUser->SetName(ui->NameLineEdit->text());
-    currnetUser->SetFollowers();
-    currnetUser->SetFollowings();
+    currnetUser->SetPhonNemberPersonalUser(ui->PhoneNemberLineEdit->text());
+    currnetUser->SetContryPersonalUser(ui->CountryLineEdit->text());
+    currnetUser->SetNamePersonalUser(ui->NameLineEdit->text());
+    currnetUser->SetFollowersPersonalUser();
+    currnetUser->SetFollowingsPersonalUser();
 
-    if(currnetUser->SetUserAttribute())
+    if(currnetUser->SetAttributePersonalUser())
         QMessageBox::information(this,"sdfdsdfdfsdfsd","Registration was successful");
     else
         QMessageBox::critical(this,"Registration failed","Registration failed. Please try again");
