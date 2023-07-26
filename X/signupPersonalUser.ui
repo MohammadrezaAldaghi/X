@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1257</width>
-    <height>649</height>
+    <width>1279</width>
+    <height>648</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,11 +31,11 @@
     <string>Sign Up</string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>140</y>
+     <x>40</x>
+     <y>130</y>
      <width>1131</width>
      <height>291</height>
     </rect>
@@ -72,7 +72,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Passsword</string>
+           <string>Passsword :</string>
           </property>
          </widget>
         </item>
@@ -91,31 +91,12 @@
            </font>
           </property>
           <property name="text">
-           <string>Birthday</string>
+           <string>Birthday :</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QLineEdit" name="BirthdayLineEdit"/>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_12">
-        <item>
-         <widget class="QLabel" name="PhoneNemberlabel">
-          <property name="font">
-           <font>
-            <pointsize>14</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>PhoneNember</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="PhoneNemberLineEdit"/>
         </item>
        </layout>
       </item>
@@ -133,7 +114,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Name</string>
+           <string>Name : </string>
           </property>
          </widget>
         </item>
@@ -152,7 +133,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Country</string>
+           <string>Country :</string>
           </property>
          </widget>
         </item>
@@ -164,19 +145,19 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_8">
         <item>
-         <widget class="QLabel" name="label_9">
+         <widget class="QLabel" name="PhonNumbeLabel">
           <property name="font">
            <font>
             <pointsize>14</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>Username :</string>
+           <string>Phone Number :</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_8"/>
+         <widget class="QLineEdit" name="PhoneNumberLineEdit"/>
         </item>
        </layout>
       </item>
@@ -197,7 +178,7 @@
     <string>Chose image</string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>510</x>

@@ -7,6 +7,17 @@ signupPersonalUser::signupPersonalUser(QWidget *parent) :
     ui(new Ui::signupPersonalUser)
 {
     ui->setupUi(this);
+   //setStyleSheet signupPersonalUser line Edit
+   {
+        setStyleSheet("background-color: #FFC0CB");//رنگ گلبهی
+        ui->BirthdayLineEdit->setStyleSheet("background-color : #87CEEB");
+        ui->CountryLineEdit->setStyleSheet("background-color : #87CEEB");
+        ui->NameLineEdit->setStyleSheet("background-color : #87CEEB");
+        ui->PasswordLineEdit->setStyleSheet("background-color : #87CEEB");
+        ui->UsernameLineEdit->setStyleSheet("background-color : #87CEEB");
+        ui->PhoneNemberLineEdit->setStyleSheet("background-color : #87CEEB");
+    }
+
 }
 
 signupPersonalUser::~signupPersonalUser()
