@@ -69,3 +69,8 @@ bool PersonalUser::SetAttributePersonalUser()
     }
 
 }
+
+void PersonalUser::SetProfileImagePersonalUser(QImage img)
+{
+    ProfileImage = img;
+}
