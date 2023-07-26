@@ -17,7 +17,16 @@ SignUp::SignUp(QWidget *parent) :
         ui->UsernameLineEdit->setStyleSheet("background-color : #87CEEB");
         ui->PhoneNumberLineEdit->setStyleSheet("background-color : #87CEEB");
     }
-
+   //setStyleSheet signupPersonalUser label
+    {
+      ui->UsernameLabel->setStyleSheet("background-color : #FFFF66");
+      ui->Birthdaylabel->setStyleSheet("background-color : #FFFF66");
+      ui->Countrylabel->setStyleSheet("background-color : #FFFF66");
+      ui->NameLabel->setStyleSheet("background-color : #FFFF66");
+      ui->Passwordlabel->setStyleSheet("background-color : #FFFF66");
+      ui->PhonNumbeLabel->setStyleSheet("background-color : #FFFF66");
+      ui->ChoseProfile->setStyleSheet("background-color: #D2B48C");
+    }
 }
 
 SignUp::~SignUp()

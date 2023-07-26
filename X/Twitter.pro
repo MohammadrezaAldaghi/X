@@ -11,21 +11,26 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    organisationuser.cpp \
     personaluser.cpp \
     signupPersonalUser.cpp \
+    signuporganisationuser.cpp \
     startwindow.cpp \
     user.cpp
 
 HEADERS += \
     mainwindow.h \
+    organisationuser.h \
     personaluser.h \
     signupPersonalUser.h \
+    signuporganisationuser.h \
     startwindow.h \
     user.h
 
 FORMS += \
     mainwindow.ui \
     signupPersonalUser.ui \
+    signuporganisationuser.ui \
     startwindow.ui
 
 # Default rules for deployment.
