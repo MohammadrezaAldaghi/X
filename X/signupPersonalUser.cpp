@@ -54,12 +54,12 @@ void SignUp::on_RegisterButton_clicked()
     if(currnetUser->SetAttributePersonalUser())
     {
         QMessageBox::information(this,"Register message","Registration was successful");
-        QTimer::singleShot(1000, qApp, &QCoreApplication::quit);
+        this->hide();
     }
     else
     {
         QMessageBox::critical(this,"Register message","Registration failed. Please try again");
-        QTimer::singleShot(1000, qApp, &QCoreApplication::quit);
+        this->hide();
     }
 
 

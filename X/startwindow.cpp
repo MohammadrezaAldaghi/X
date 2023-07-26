@@ -25,13 +25,21 @@ Startwindow::~Startwindow()
 
 void Startwindow::on_OrganisationButton_clicked()
 {
-
+    SignUpOrganisationUser* currentUser = new SignUpOrganisationUser();
+    currentUser->show();
 }
 
 
 void Startwindow::on_PersonalButton_clicked()
 {
-    SignUp* currentUSer = new SignUp();
-    currentUSer->show();
+    SignUp* currentUser = new SignUp();
+    currentUser->show();
+}
+
+
+void Startwindow::on_AnonymousButton_clicked()
+{
+    SignUpAnonymousUser* currentUser = new SignUpAnonymousUser();
+    currentUser->show();
 }
 

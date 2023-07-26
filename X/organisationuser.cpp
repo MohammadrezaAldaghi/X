@@ -31,8 +31,6 @@ bool OrganisationUser::SetAttributeOrganisationUser()
     jsonObj["Username"] = Username;
     jsonObj["Password"] = Password;
     jsonObj["PhoneNumber"] = PhoneNaumber;
-    jsonObj["width"] = ProfileImage.width();
-    jsonObj["height"] = ProfileImage.height();
 
     QJsonDocument jsonDoc(jsonObj);
 

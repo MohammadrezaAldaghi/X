@@ -59,12 +59,12 @@ void SignUpOrganisationUser::on_RegisterButton_clicked()
     if(currentUser.SetAttributeOrganisationUser())
     {
         QMessageBox::information(this,"Register message","Registration was successful");
-        QTimer::singleShot(1000, qApp, &QCoreApplication::quit);
+        this->hide();
     }
     else
     {
         QMessageBox::critical(this,"Register message","Registration failed. Please try again");
-        QTimer::singleShot(1000, qApp, &QCoreApplication::quit);
+        this->hide();
     }
 
 

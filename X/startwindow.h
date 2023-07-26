@@ -4,6 +4,8 @@
 #include <QWidget>
 #include "personaluser.h"
 #include "signupPersonalUser.h"
+#include "signuporganisationuser.h"
+#include "signupanonymoususer.h"
 
 
 namespace Ui {
@@ -22,6 +24,8 @@ private slots:
     void on_OrganisationButton_clicked();
 
     void on_PersonalButton_clicked();
+
+    void on_AnonymousButton_clicked();
 
 private:
     Ui::Startwindow *ui;
