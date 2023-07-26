@@ -74,3 +74,13 @@ void PersonalUser::SetProfileImagePersonalUser(QImage img)
 {
     ProfileImage = img;
 }
+
+void PersonalUser::SetFollowingsPersonalUser()
+{
+    Followings = 0;
+}
+
+void PersonalUser::SetFollowersPersonalUser()
+{
+    Followers = 0;
+}

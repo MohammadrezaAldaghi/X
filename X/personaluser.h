@@ -21,6 +21,9 @@ public:
     void SetColorHeaderPersonalUser();
     void SetBirthdayPersonalUser(QString birthday);
     bool SetAttributePersonalUser();
+    void SetProfileImagePersonalUser(QImage img);
+    void SetFollowingsPersonalUser();
+    void SetFollowersPersonalUser();
 
 
 private:
