@@ -8,16 +8,16 @@
 
 
 namespace Ui {
-class signupPersonalUser;
+class SignUp;
 }
 
-class signupPersonalUser : public QWidget
+class SignUp : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit signupPersonalUser(QWidget *parent = nullptr);
-    ~signupPersonalUser();
+    explicit SignUp(QWidget *parent = nullptr);
+    ~SignUp();
 
 private slots:
     void on_RegisterButton_clicked();
@@ -25,7 +25,7 @@ private slots:
     void on_ChoseProfile_clicked();
 
 private:
-    Ui::signupPersonalUser *ui;
+    Ui::SignUp *ui;
 };
 
 #endif // SIGNUP_H

@@ -31,7 +31,7 @@ void Startwindow::on_OrganisationButton_clicked()
 
 void Startwindow::on_PersonalButton_clicked()
 {
-    signupPersonalUser* currentUSer = new signupPersonalUser();
+    SignUp* currentUSer = new SignUp();
     currentUSer->show();
 }
 

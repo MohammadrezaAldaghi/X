@@ -1,10 +1,10 @@
 #include "signupPersonalUser.h"
-#include "ui_signup.h"
 #include "personaluser.h"
+#include "ui_signupPersonalUser.h"
 
-signupPersonalUser::signupPersonalUser(QWidget *parent) :
+SignUp::SignUp(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::signupPersonalUser)
+    ui(new Ui::SignUp)
 {
     ui->setupUi(this);
    //setStyleSheet signupPersonalUser line Edit
@@ -15,23 +15,23 @@ signupPersonalUser::signupPersonalUser(QWidget *parent) :
         ui->NameLineEdit->setStyleSheet("background-color : #87CEEB");
         ui->PasswordLineEdit->setStyleSheet("background-color : #87CEEB");
         ui->UsernameLineEdit->setStyleSheet("background-color : #87CEEB");
-        ui->PhoneNemberLineEdit->setStyleSheet("background-color : #87CEEB");
+        ui->PhoneNumberLineEdit->setStyleSheet("background-color : #87CEEB");
     }
 
 }
 
-signupPersonalUser::~signupPersonalUser()
+SignUp::~SignUp()
 {
     delete ui;
 }
 
-void signupPersonalUser::on_RegisterButton_clicked()
+void SignUp::on_RegisterButton_clicked()
 {
     PersonalUser* currnetUser = new PersonalUser();
     currnetUser->SetUsername(ui->UsernameLineEdit->text());
     currnetUser->SetBirthdayPersonalUser(ui->BirthdayLineEdit->text());
     currnetUser->SetPassword(ui->PasswordLineEdit->text());
-    currnetUser->SetPhonNemberPersonalUser(ui->PhoneNemberLineEdit->text());
+    currnetUser->SetPhonNemberPersonalUser(ui->PhoneNumberLineEdit->text());
     currnetUser->SetContryPersonalUser(ui->CountryLineEdit->text());
     currnetUser->SetNamePersonalUser(ui->NameLineEdit->text());
     currnetUser->SetFollowersPersonalUser();
@@ -47,7 +47,7 @@ void signupPersonalUser::on_RegisterButton_clicked()
 }
 
 
-void signupPersonalUser::on_ChoseProfile_clicked()
+void SignUp::on_ChoseProfile_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this, "Open Image", "", "Image Files (*.png *.jpg *.bmp)");
 
