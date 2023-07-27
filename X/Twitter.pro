@@ -14,6 +14,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     organisationuser.cpp \
+    personalaccount.cpp \
     personaluser.cpp \
     signupPersonalUser.cpp \
     signupanonymoususer.cpp \
@@ -26,6 +27,7 @@ HEADERS += \
     loginform.h \
     mainwindow.h \
     organisationuser.h \
+    personalaccount.h \
     personaluser.h \
     signupPersonalUser.h \
     signupanonymoususer.h \
@@ -36,6 +38,7 @@ HEADERS += \
 FORMS += \
     loginform.ui \
     mainwindow.ui \
+    personalaccount.ui \
     signupPersonalUser.ui \
     signupanonymoususer.ui \
     signuporganisationuser.ui \
