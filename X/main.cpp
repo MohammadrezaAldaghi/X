@@ -4,6 +4,7 @@
 #include "startwindow.h"
 #include "signuporganisationuser.h"
 #include "signupanonymoususer.h"
+#include "loginform.h"
 
 
 int main(int argc, char *argv[])
@@ -15,14 +16,18 @@ int main(int argc, char *argv[])
 //    SignUp S;
 //    S.show();
 
-    Startwindow S;
-    S.show();
+//    Startwindow S;
+//    S.show();
 
 //    SignUpOrganisationUser S;
 //    S.show();
 
 //    SignUpAnonymousUser S;
 //    S.show();
+
+    LoginForm L;
+    L.show();
+
 
 
     return a.exec();

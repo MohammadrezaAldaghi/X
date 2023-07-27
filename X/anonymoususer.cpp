@@ -13,7 +13,7 @@ void AnonymousUser::SetFollowersAnonymousUser()
 bool AnonymousUser::SetAttributeAnonymousUser()
 {
     QJsonObject jsonObj;
-    jsonObj["UserName"] = Username;
+    jsonObj["Username"] = Username;
     jsonObj["Password"] = Password;
 
     QJsonDocument jsonDoc(jsonObj);

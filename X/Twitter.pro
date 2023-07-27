@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     anonymoususer.cpp \
+    loginform.cpp \
     main.cpp \
     mainwindow.cpp \
     organisationuser.cpp \
@@ -22,6 +23,7 @@ SOURCES += \
 
 HEADERS += \
     anonymoususer.h \
+    loginform.h \
     mainwindow.h \
     organisationuser.h \
     personaluser.h \
@@ -32,6 +34,7 @@ HEADERS += \
     user.h
 
 FORMS += \
+    loginform.ui \
     mainwindow.ui \
     signupPersonalUser.ui \
     signupanonymoususer.ui \
