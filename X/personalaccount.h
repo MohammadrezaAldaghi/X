@@ -22,13 +22,18 @@ public:
     explicit PersonalAccount(QWidget *parent = nullptr);
     ~PersonalAccount();
     void ReadFromFolderAllAccount();
+    void ReadFromFolderAllAccountWithQString(QString str);
 
 
 private slots:
     void on_SettingButton_clicked();
 
+    void on_SearchLineEdit_textChanged(const QString &arg1);
+
 private:
     Ui::PersonalAccount *ui;
+
+
 };
 
 #endif // PERSONALACCOUNT_H

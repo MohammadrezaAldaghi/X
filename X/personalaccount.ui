@@ -16,8 +16,8 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>600</x>
-     <y>10</y>
+     <x>590</x>
+     <y>0</y>
      <width>41</width>
      <height>81</height>
     </rect>
@@ -35,8 +35,8 @@
   <widget class="QListWidget" name="listWidget">
    <property name="geometry">
     <rect>
-     <x>970</x>
-     <y>10</y>
+     <x>1070</x>
+     <y>30</y>
      <width>181</width>
      <height>591</height>
     </rect>
@@ -45,8 +45,8 @@
   <widget class="QPushButton" name="SettingButton">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>0</y>
+     <x>10</x>
+     <y>100</y>
      <width>181</width>
      <height>51</height>
     </rect>
@@ -59,11 +59,51 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>80</y>
+     <y>170</y>
      <width>181</width>
      <height>371</height>
     </rect>
    </property>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>80</y>
+     <width>461</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>15</pointsize>
+    </font>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QLabel" name="SearchLabel">
+      <property name="font">
+       <font>
+        <family>Segoe UI Semibold</family>
+        <pointsize>15</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Search :</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="SearchLineEdit">
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>
