@@ -6,6 +6,8 @@
 #include <QListWidgetItem>
 #include <QListWidget>
 #include <QDir>
+#include <QColor>
+
 
 
 namespace Ui {
@@ -21,6 +23,9 @@ public:
     ~PersonalAccount();
     void ReadFromFolderAllAccount();
 
+
+private slots:
+    void on_SettingButton_clicked();
 
 private:
     Ui::PersonalAccount *ui;

@@ -60,3 +60,27 @@ void PersonalAccount::ReadFromFolderAllAccount()
         }
     }
 }
+
+void PersonalAccount::on_SettingButton_clicked()
+{
+    ui->SettingListWidget->clear();
+    QListWidgetItem* item1 = new QListWidgetItem("Lagout");
+    QListWidgetItem* item2 = new QListWidgetItem("Adjust profile");
+    QListWidgetItem* item3 = new QListWidgetItem("Adjust Biography");
+    QListWidgetItem* item4 = new QListWidgetItem("Change usernam or password");
+    QListWidgetItem* item5 = new QListWidgetItem("Change Phone number");
+
+    QColor skyColor(135, 100, 235);
+    item1->setBackground(QBrush(skyColor));
+    item2->setBackground(QBrush(skyColor));
+    item3->setBackground(QBrush(skyColor));
+    item4->setBackground(QBrush(skyColor));
+    item5->setBackground(QBrush(skyColor));
+
+    ui->SettingListWidget->addItem(item1);
+    ui->SettingListWidget->addItem(item2);
+    ui->SettingListWidget->addItem(item3);
+    ui->SettingListWidget->addItem(item4);
+    ui->SettingListWidget->addItem(item5);
+}
+
