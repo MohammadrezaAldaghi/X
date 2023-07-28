@@ -20,6 +20,7 @@ SOURCES += \
     signupanonymoususer.cpp \
     signuporganisationuser.cpp \
     startwindow.cpp \
+    tweetform.cpp \
     user.cpp
 
 HEADERS += \
@@ -33,6 +34,7 @@ HEADERS += \
     signupanonymoususer.h \
     signuporganisationuser.h \
     startwindow.h \
+    tweetform.h \
     user.h
 
 FORMS += \
@@ -42,7 +44,8 @@ FORMS += \
     signupPersonalUser.ui \
     signupanonymoususer.ui \
     signuporganisationuser.ui \
-    startwindow.ui
+    startwindow.ui \
+    tweetform.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

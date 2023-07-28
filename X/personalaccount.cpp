@@ -7,13 +7,22 @@ PersonalAccount::PersonalAccount(QWidget *parent) :
 {
     ui->setupUi(this);
     ReadFromFolderAllAccount();
-
+    ui->SearchLabel->setStyleSheet("background-color : lightblue");
+    connect(ui->listWidget,&QListWidget::itemClicked,this,&PersonalAccount::ShowItemClickedInformationWithQString);
 
 }
 
 PersonalAccount::~PersonalAccount()
 {
     delete ui;
+}
+
+void PersonalAccount::ShowItemClickedInformationWithQString()
+{
+
+    QListWidgetItem* item = new QListWidgetItem("Salam");
+    ui->listWidget->addItem(item);
+
 }
 
 void PersonalAccount::ReadFromFolderAllAccount()
@@ -29,6 +38,8 @@ void PersonalAccount::ReadFromFolderAllAccount()
             QListWidgetItem* item = new QListWidgetItem(temp);
             item->setBackground(Qt::red);
             ui->listWidget->addItem(item);
+//            connect(ui->listWidget,&QListWidget::itemClicked,this,&ShowItemClickedInformationWithQString);
+
         }
     }
     //*******************************************
@@ -43,6 +54,7 @@ void PersonalAccount::ReadFromFolderAllAccount()
             QListWidgetItem* item = new QListWidgetItem(temp);
             item->setBackground(Qt::blue);
             ui->listWidget->addItem(item);
+//            connect(ui->listWidget,&QListWidget::itemClicked,this,&PersonalAccount::ShowItemClickedInformationWithQString);
         }
     }
     //*******************************************
@@ -141,5 +153,18 @@ void PersonalAccount::on_SettingButton_clicked()
 void PersonalAccount::on_SearchLineEdit_textChanged(const QString &arg1)
 {
     ReadFromFolderAllAccountWithQString(arg1);
+}
+
+
+
+
+
+void PersonalAccount::on_TweetButton_clicked()
+{
+    //hide ui
+    {
+
+    }
+
 }
 

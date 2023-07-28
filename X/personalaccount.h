@@ -7,7 +7,9 @@
 #include <QListWidget>
 #include <QDir>
 #include <QColor>
-
+#include <QMessageBox>
+#include <QObject>
+#include <qobject.h>
 
 
 namespace Ui {
@@ -29,6 +31,10 @@ private slots:
     void on_SettingButton_clicked();
 
     void on_SearchLineEdit_textChanged(const QString &arg1);
+
+    void ShowItemClickedInformationWithQString();
+
+    void on_TweetButton_clicked();
 
 private:
     Ui::PersonalAccount *ui;
