@@ -20,6 +20,7 @@ SOURCES += \
     signupanonymoususer.cpp \
     signuporganisationuser.cpp \
     startwindow.cpp \
+    tweet.cpp \
     tweetform.cpp \
     user.cpp
 
@@ -34,6 +35,7 @@ HEADERS += \
     signupanonymoususer.h \
     signuporganisationuser.h \
     startwindow.h \
+    tweet.h \
     tweetform.h \
     user.h
 

@@ -21,6 +21,8 @@ TweetForm::TweetForm(QWidget *parent) :
 
     // Ensure that the pixmap is displayed instead of text
     ui->TweetButton->setIconSize(ui->TweetButton->size());
+
+
 }
 
 TweetForm::~TweetForm()
@@ -28,5 +30,13 @@ TweetForm::~TweetForm()
     delete ui;
 }
 
-
+void TweetForm::on_TweetButton_clicked()
+{
+//    qDebug()<<ui->TweetTextEdit->toPlainText()<<"\n"; //get textEdit text
+    Tweet* t = new Tweet();
+    t->AddTweet("ali",ui->TweetTextEdit->toPlainText(),"#Mahsa_Amini");
+    ui->TweetTextEdit->setText("");
+    ui->TweetSentLabel->setText("Tweet sent successfully");
+    ui->TweetSentLabel->setStyleSheet("color : red");
+}
 

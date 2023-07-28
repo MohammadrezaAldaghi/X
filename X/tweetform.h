@@ -8,6 +8,8 @@
 #include <QHBoxLayout>
 #include <QLayout>
 #include <QPixmap>
+#include "tweet.h"
+
 
 namespace Ui {
 class TweetForm;
@@ -23,6 +25,8 @@ public:
 
 private slots:
 
+
+    void on_TweetButton_clicked();
 
 private:
     Ui::TweetForm *ui;

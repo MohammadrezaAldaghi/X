@@ -35,9 +35,9 @@
    <property name="geometry">
     <rect>
      <x>1030</x>
-     <y>430</y>
-     <width>221</width>
-     <height>191</height>
+     <y>420</y>
+     <width>241</width>
+     <height>201</height>
     </rect>
    </property>
    <property name="maximumSize">
@@ -55,14 +55,33 @@
     <string/>
    </property>
   </widget>
-  <widget class="QLineEdit" name="TweetLineEdit">
+  <widget class="QTextEdit" name="TweetTextEdit">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>160</y>
-     <width>1141</width>
-     <height>231</height>
+     <x>60</x>
+     <y>150</y>
+     <width>1221</width>
+     <height>251</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="TweetSentLabel">
+   <property name="geometry">
+    <rect>
+     <x>730</x>
+     <y>40</y>
+     <width>531</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Segoe UI Variable Display Light</family>
+     <pointsize>18</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>
