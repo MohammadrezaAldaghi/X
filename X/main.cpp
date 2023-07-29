@@ -30,11 +30,11 @@ int main(int argc, char *argv[])
 //    LoginForm L;
 //    L.show();
 
-//    PersonalAccount P;
-//    P.show();
+    PersonalAccount P;
+    P.show();
 
-    TweetForm T;
-    T.show();
+//    TweetForm T;
+//    T.show();
 
 
 

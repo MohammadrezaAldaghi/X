@@ -10,6 +10,7 @@
 #include <QDir>
 #include <QMap>
 #include <QByteArray>
+#include <QJsonArray>
 
 
 class Tweet

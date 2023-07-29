@@ -10,6 +10,9 @@
 #include <QMessageBox>
 #include <QObject>
 #include <qobject.h>
+#include <QJsonParseError>
+#include <QJsonArray>
+#include <QJsonObject>
 
 
 namespace Ui {
@@ -25,7 +28,9 @@ public:
     ~PersonalAccount();
     void ReadFromFolderAllAccount();
     void ReadFromFolderAllAccountWithQString(QString str);
-
+    void ReadFromFolderAllTweetWithHashtag(QString str);
+    void ReadFromFolderAllTweetWithUsername(QString str);
+    void ReadFromFolderAllTweet(QString str);
 
 private slots:
     void on_SettingButton_clicked();

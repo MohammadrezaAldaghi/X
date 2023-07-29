@@ -122,6 +122,80 @@ void PersonalAccount::ReadFromFolderAllAccountWithQString(QString str)
     }
 }
 
+void PersonalAccount::ReadFromFolderAllTweet(QString str)
+{
+//    QFile file("Tweet/Tweet.json");
+//    try
+//    {
+//        if(file.open(QIODevice::ReadOnly))
+//        {
+//            QByteArray fileData = file.readAll();
+
+//            QJsonDocument jsonDoc = QJsonDocument::fromJson(fileData);
+//            QJsonObject jsonObj = jsonDoc.object();
+
+//            QString username = jsonObj.value("Username").toString();
+//            QString message = jsonObj.value("Message").toString();
+//            QString hashtag = jsonObj.value("Hashtag").toString();
+//            qDebug()<<username;
+//            file.close();
+//        }
+//        else
+//        {
+//            file.close();
+//            throw std::invalid_argument("invalid file path");
+//        }
+//    }
+//    catch(std::exception &e)
+//    {
+//        QMessageBox::critical(nullptr,e.what(),"There was a problem, please try again");
+//    }
+
+    QFile file("Tweet/Tweet.json");
+    try
+    {
+        if(file.open(QIODevice::ReadOnly))
+        {
+            QByteArray fileData = file.readAll();
+
+            QJsonDocument jsonDoc = QJsonDocument::fromJson(fileData);
+
+            if (jsonDoc.isArray())
+            {
+                QJsonArray jsonArray = jsonDoc.array();
+
+                foreach (const QJsonValue &value, jsonArray)
+                {
+                    QJsonObject obj = value.toObject();
+
+                    QString username = obj.value("Username").toString();
+                    QString message = obj.value("Message").toString();
+                    QString hashtag = obj.value("#").toString();
+
+                    qDebug() << "Username: " << username;
+                    qDebug() << "Message: " << message;
+                    qDebug() << "Hashtag: " << hashtag;
+                    qDebug() << "-------------------";
+                }
+            }
+
+            file.close();
+        }
+        else
+        {
+            file.close();
+            throw std::invalid_argument("invalid file path");
+        }
+    }
+    catch(std::exception &e)
+    {
+        QMessageBox::critical(nullptr,e.what(),"There was a problem, please try again");
+    }
+
+
+}
+
+
 void PersonalAccount::on_SettingButton_clicked()
 {
     ui->SettingListWidget->clear();
@@ -152,7 +226,8 @@ void PersonalAccount::on_SettingButton_clicked()
 
 void PersonalAccount::on_SearchLineEdit_textChanged(const QString &arg1)
 {
-    ReadFromFolderAllAccountWithQString(arg1);
+//    ReadFromFolderAllAccountWithQString(arg1);
+    ReadFromFolderAllTweet(arg1);
 }
 
 
