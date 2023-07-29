@@ -22,6 +22,8 @@ class TweetForm : public QWidget
 public:
     explicit TweetForm(QWidget *parent = nullptr);
     ~TweetForm();
+    void SetUsernameAndNameTweetForm(QString username,QString name);
+
 
 private slots:
 
@@ -30,6 +32,9 @@ private slots:
 
 private:
     Ui::TweetForm *ui;
+    QString Name;
+    QString Username;
+
 };
 
 #endif // TWEETFORM_H

@@ -33,6 +33,7 @@ public:
     void ReadFromFolderAllTweetWithHashtag(QString str);
     void ReadFromFolderAllTweetWithUsername(QString str);
     void ReadFromFolderAllTweet(QString str);
+    void SetUsernameAndNamePersonalAcoount(QString username, QString Name);
 
 private slots:
     void on_SettingButton_clicked();
@@ -45,8 +46,8 @@ private slots:
 
 private:
     Ui::PersonalAccount *ui;
-
-
+    QString Username;
+    QString Name;
 };
 
 #endif // PERSONALACCOUNT_H

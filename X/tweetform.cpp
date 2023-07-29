@@ -30,11 +30,17 @@ TweetForm::~TweetForm()
     delete ui;
 }
 
+void TweetForm::SetUsernameAndNameTweetForm(QString username, QString name)
+{
+    Username = username;
+    Name = name;
+}
+
 void TweetForm::on_TweetButton_clicked()
 {
 //    qDebug()<<ui->TweetTextEdit->toPlainText()<<"\n"; //get textEdit text
     Tweet* t = new Tweet();
-    t->AddTweet("ali",ui->TweetTextEdit->toPlainText(),"#Mahsa_Amini");
+    t->AddTweet(Username,ui->TweetTextEdit->toPlainText(),"#Mahsa_Amini",Name);
     ui->TweetTextEdit->setText("");
     ui->TweetSentLabel->setText("Tweet sent successfully");
     ui->TweetSentLabel->setStyleSheet("color : red");

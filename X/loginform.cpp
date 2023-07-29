@@ -1,4 +1,5 @@
 #include "loginform.h"
+#include "personalaccount.h"
 #include "ui_loginform.h"
 
 LoginForm::LoginForm(QWidget *parent) :
@@ -47,16 +48,16 @@ void LoginForm::on_LoginButton_clicked()
         QString password = jsonObj["Password"].toString();
         QString phoneNumber = jsonObj["PhoneNumber"].toString();
         QString username = jsonObj["Username"].toString();
-        qDebug()<<"username ="<< username<<" , passwordl = "<<password<<"\n";
+        qDebug()<<"username11 ="<< username<<" , passwordl11 = "<<password<<"\n";
+//        qDebug()<<"ui->UsernameLineEdit->text() = " <<ui->UsernameLineEdit->text()<<" , " << "ui->PasswordLineEdit->text() = "<<ui->PasswordLineEdit->text();
         if(ui->PasswordLineEdit->text()==password&&ui->UsernameLineEdit->text()==username)
         {
-
 
         }
         else
         {
             QMessageBox::critical(this,"Error","User not found");
-            this->hide();
+
         }
     }
     //read Personal User
@@ -84,16 +85,21 @@ void LoginForm::on_LoginButton_clicked()
         QString password = jsonObj["Password"].toString();
         QString phoneNumber = jsonObj["PhoneNumber"].toString();
         QString username = jsonObj["Username"].toString();
+        QString name = jsonObj["Name"].toString();
         qDebug()<<"username ="<< username<<" , passwordl = "<<password<<"\n";
         if(ui->PasswordLineEdit->text()==password&&ui->UsernameLineEdit->text()==username)
         {
+                PersonalAccount* P = new PersonalAccount();
+                this->hide();
+                P->show();
+            qDebug()<<"Yes";
 
 
         }
         else
         {
             QMessageBox::critical(this,"Error","User not found");
-            this->hide();
+
         }
 
     }
@@ -130,7 +136,7 @@ void LoginForm::on_LoginButton_clicked()
         else
         {
             QMessageBox::critical(this,"Error","User not found");
-            this->hide();
+
         }
 
     }

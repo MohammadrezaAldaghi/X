@@ -17,13 +17,13 @@ class Tweet
 {
 public:
     Tweet();
-    void AddTweet(QString username,QString message,QString hashtag);
+    void AddTweet(QString username,QString message,QString hashtag,QString name);
 
 private:
 //    QMap<QString UsernameTweet,QString Message> TweetMessage
     QMap<QString,QString> TweetMessage;
     QString Hashtag;
-
+    QString Name;
 };
 
 #endif // TWEET_H

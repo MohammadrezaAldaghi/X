@@ -47,7 +47,7 @@ bool PersonalUser::SetAttributePersonalUser()
 
     QByteArray jsonData = jsonDoc.toJson();
 
-    QString fileName = Username + "/" + Username + ".json";
+    QString fileName = "Personal/" + Username + ".json";
     QFile file(fileName);
 
     try{

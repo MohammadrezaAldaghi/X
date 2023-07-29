@@ -22,7 +22,7 @@ Tweet::Tweet()
     }
 }
 
-void Tweet::AddTweet(QString username, QString message, QString hashtag)
+void Tweet::AddTweet(QString username, QString message, QString hashtag,QString name)
 {
     {
         QFile file("Tweet/Tweet.json");
@@ -44,6 +44,7 @@ void Tweet::AddTweet(QString username, QString message, QString hashtag)
                 jsonObj["Username"] = username;
                 jsonObj["Message"] = message;
                 jsonObj["#"] = hashtag;
+                jsonObj["Name"] = name;
 
                 jsonArray.append(jsonObj);
 

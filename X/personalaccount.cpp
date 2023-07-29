@@ -1,4 +1,5 @@
 #include "personalaccount.h"
+#include "tweetform.h"
 #include "ui_personalaccount.h"
 
 PersonalAccount::PersonalAccount(QWidget *parent) :
@@ -11,9 +12,11 @@ PersonalAccount::PersonalAccount(QWidget *parent) :
     connect(ui->listWidget, &QListWidget::itemClicked, this,&PersonalAccount:: ShowItemClickedInformationWithQString);
 
     QTimer *timer = new QTimer(this);
-    timer->setInterval(1000); // fire every second
+    timer->setInterval(10000); // fire every second
     connect(timer, SIGNAL(timeout()), this, SLOT(ShowItemClickedInformationWithQString()));
     timer->start();
+
+
 
 }
 PersonalAccount::~PersonalAccount()
@@ -196,13 +199,14 @@ void PersonalAccount::ReadFromFolderAllTweet(QString str)
                     QString username = obj.value("Username").toString();
                     QString message = obj.value("Message").toString();
                     QString hashtag = obj.value("#").toString();
-
+                    QString name = obj.value("Name").toString();
                     qDebug() << "Username: " << username;
                     qDebug() << "Message: " << message;
                     qDebug() << "Hashtag: " << hashtag;
+                    qDebug() << "Name: " << name;
                     qDebug() << "-------------------";
 
-                    QListWidgetItem* item = new QListWidgetItem("Message : " + message + "\n Hashtag : " + hashtag);
+                    QListWidgetItem* item = new QListWidgetItem(name + "  " + username + "\nMessage : " + message + "\n Hashtag : " + hashtag);
                     ui->FindHashtagOrUsernameListWidget->addItem(item);
                     ui->FindHashtagOrUsernameListWidget->setStyleSheet("background-color : lightblue");
                 }
@@ -222,6 +226,12 @@ void PersonalAccount::ReadFromFolderAllTweet(QString str)
     }
 
 
+}
+
+void PersonalAccount::SetUsernameAndNamePersonalAcoount(QString username, QString Name)
+{
+    Username = username;
+    this->Name = Name;
 }
 
 
@@ -265,8 +275,11 @@ void PersonalAccount::on_SearchLineEdit_textChanged(const QString &arg1)
 
 void PersonalAccount::on_TweetButton_clicked()
 {
-    Tweet T;
-    T.AddTweet("mmd","Alavi","#Mahsa_Amini");
+    qDebug()<<"yes";
+    TweetForm* T = new TweetForm();
+    T->SetUsernameAndNameTweetForm(Username,Name);
+    T->show();
+
 
 }
 

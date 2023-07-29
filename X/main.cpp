@@ -27,11 +27,11 @@ int main(int argc, char *argv[])
 //    SignUpAnonymousUser S;
 //    S.show();
 
-//    LoginForm L;
-//    L.show();
+    LoginForm L;
+    L.show();
 
-    PersonalAccount P;
-    P.show();
+//    PersonalAccount P;
+//    P.show();
 
 //    TweetForm T;
 //    T.show();
