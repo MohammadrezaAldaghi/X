@@ -8,10 +8,14 @@ PersonalAccount::PersonalAccount(QWidget *parent) :
     ui->setupUi(this);
     ReadFromFolderAllAccount();
     ui->SearchLabel->setStyleSheet("background-color : lightblue");
-    connect(ui->listWidget,&QListWidget::itemClicked,this,&PersonalAccount::ShowItemClickedInformationWithQString);
+    connect(ui->listWidget, &QListWidget::itemClicked, this,&PersonalAccount:: ShowItemClickedInformationWithQString);
+
+    QTimer *timer = new QTimer(this);
+    timer->setInterval(1000); // fire every second
+    connect(timer, SIGNAL(timeout()), this, SLOT(ShowItemClickedInformationWithQString()));
+    timer->start();
 
 }
-
 PersonalAccount::~PersonalAccount()
 {
     delete ui;
@@ -20,8 +24,55 @@ PersonalAccount::~PersonalAccount()
 void PersonalAccount::ShowItemClickedInformationWithQString()
 {
 
-    QListWidgetItem* item = new QListWidgetItem("Salam");
-    ui->listWidget->addItem(item);
+//    QListWidgetItem* item = new QListWidgetItem("Salam");
+//    ui->listWidget->addItem(item);
+
+    ui->FindHashtagOrUsernameListWidget->clear();
+    QFile file("Tweet/Tweet.json");
+    try
+    {
+        if(file.open(QIODevice::ReadOnly))
+        {
+            QByteArray fileData = file.readAll();
+
+            QJsonDocument jsonDoc = QJsonDocument::fromJson(fileData);
+
+            if (jsonDoc.isArray())
+            {
+                QJsonArray jsonArray = jsonDoc.array();
+
+                foreach (const QJsonValue &value, jsonArray)
+                {
+                    QJsonObject obj = value.toObject();
+
+                    QString username = obj.value("Username").toString();
+                    QString message = obj.value("Message").toString();
+                    QString hashtag = obj.value("#").toString();
+
+                    qDebug() << "Username: " << username;
+                    qDebug() << "Message: " << message;
+                    qDebug() << "Hashtag: " << hashtag;
+                    qDebug() << "-------------------";
+
+                    QListWidgetItem* item = new QListWidgetItem("Message : " + message + "\n Hashtag : " + hashtag);
+                    ui->FindHashtagOrUsernameListWidget->addItem(item);
+                    ui->FindHashtagOrUsernameListWidget->setStyleSheet("background-color : lightblue");
+                }
+            }
+
+            file.close();
+        }
+        else
+        {
+            file.close();
+            throw std::invalid_argument("invalid file path");
+        }
+    }
+    catch(std::exception &e)
+    {
+        QMessageBox::critical(nullptr,e.what(),"There was a problem, please try again");
+    }
+
 
 }
 
@@ -124,33 +175,7 @@ void PersonalAccount::ReadFromFolderAllAccountWithQString(QString str)
 
 void PersonalAccount::ReadFromFolderAllTweet(QString str)
 {
-//    QFile file("Tweet/Tweet.json");
-//    try
-//    {
-//        if(file.open(QIODevice::ReadOnly))
-//        {
-//            QByteArray fileData = file.readAll();
-
-//            QJsonDocument jsonDoc = QJsonDocument::fromJson(fileData);
-//            QJsonObject jsonObj = jsonDoc.object();
-
-//            QString username = jsonObj.value("Username").toString();
-//            QString message = jsonObj.value("Message").toString();
-//            QString hashtag = jsonObj.value("Hashtag").toString();
-//            qDebug()<<username;
-//            file.close();
-//        }
-//        else
-//        {
-//            file.close();
-//            throw std::invalid_argument("invalid file path");
-//        }
-//    }
-//    catch(std::exception &e)
-//    {
-//        QMessageBox::critical(nullptr,e.what(),"There was a problem, please try again");
-//    }
-
+    ui->FindHashtagOrUsernameListWidget->clear();
     QFile file("Tweet/Tweet.json");
     try
     {
@@ -176,6 +201,10 @@ void PersonalAccount::ReadFromFolderAllTweet(QString str)
                     qDebug() << "Message: " << message;
                     qDebug() << "Hashtag: " << hashtag;
                     qDebug() << "-------------------";
+
+                    QListWidgetItem* item = new QListWidgetItem("Message : " + message + "\n Hashtag : " + hashtag);
+                    ui->FindHashtagOrUsernameListWidget->addItem(item);
+                    ui->FindHashtagOrUsernameListWidget->setStyleSheet("background-color : lightblue");
                 }
             }
 
@@ -236,10 +265,8 @@ void PersonalAccount::on_SearchLineEdit_textChanged(const QString &arg1)
 
 void PersonalAccount::on_TweetButton_clicked()
 {
-    //hide ui
-    {
-
-    }
+    Tweet T;
+    T.AddTweet("mmd","Alavi","#Mahsa_Amini");
 
 }
 

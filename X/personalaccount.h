@@ -13,6 +13,8 @@
 #include <QJsonParseError>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QTimer>
+#include <tweet.h>
 
 
 namespace Ui {
