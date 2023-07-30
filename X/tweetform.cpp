@@ -44,5 +44,6 @@ void TweetForm::on_TweetButton_clicked()
     ui->TweetTextEdit->setText("");
     ui->TweetSentLabel->setText("Tweet sent successfully");
     ui->TweetSentLabel->setStyleSheet("color : red");
+    this->hide();
 }
 

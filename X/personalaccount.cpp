@@ -7,15 +7,17 @@ PersonalAccount::PersonalAccount(QWidget *parent) :
     ui(new Ui::PersonalAccount)
 {
     ui->setupUi(this);
+//    {
+//        QTimer *timer = new QTimer(ui->FindHashtagOrUsernameListWidget);
+//        timer->setInterval(1000); // fire every second
+//        connect(timer, SIGNAL(timeout()), this, SLOT(ShowItemClickedInformationWithQString()));
+//        timer->start();
+//    }
+
     ReadFromFolderAllAccount();
-    ui->SearchLabel->setStyleSheet("background-color : lightblue");
+    ui->SearchLabel->setStyleSheet("color : red");
     connect(ui->listWidget, &QListWidget::itemClicked, this,&PersonalAccount:: ShowItemClickedInformationWithQString);
-
-    QTimer *timer = new QTimer(this);
-    timer->setInterval(10000); // fire every second
-    connect(timer, SIGNAL(timeout()), this, SLOT(ShowItemClickedInformationWithQString()));
-    timer->start();
-
+    connect(ui->SettingListWidget,&QListWidget::itemClicked,this,&PersonalAccount::ItemClickedSettingListWidget);
 
 
 }
@@ -26,10 +28,6 @@ PersonalAccount::~PersonalAccount()
 
 void PersonalAccount::ShowItemClickedInformationWithQString()
 {
-
-//    QListWidgetItem* item = new QListWidgetItem("Salam");
-//    ui->listWidget->addItem(item);
-
     ui->FindHashtagOrUsernameListWidget->clear();
     QFile file("Tweet/Tweet.json");
     try
@@ -59,7 +57,7 @@ void PersonalAccount::ShowItemClickedInformationWithQString()
 
                     QListWidgetItem* item = new QListWidgetItem("Message : " + message + "\n Hashtag : " + hashtag);
                     ui->FindHashtagOrUsernameListWidget->addItem(item);
-                    ui->FindHashtagOrUsernameListWidget->setStyleSheet("background-color : lightblue");
+                    ui->FindHashtagOrUsernameListWidget->setStyleSheet("color : yellow");
                 }
             }
 
@@ -208,7 +206,7 @@ void PersonalAccount::ReadFromFolderAllTweet(QString str)
 
                     QListWidgetItem* item = new QListWidgetItem(name + "  " + username + "\nMessage : " + message + "\n Hashtag : " + hashtag);
                     ui->FindHashtagOrUsernameListWidget->addItem(item);
-                    ui->FindHashtagOrUsernameListWidget->setStyleSheet("background-color : lightblue");
+                    ui->FindHashtagOrUsernameListWidget->setStyleSheet("color : darkblue");
                 }
             }
 
@@ -234,6 +232,125 @@ void PersonalAccount::SetUsernameAndNamePersonalAcoount(QString username, QStrin
     this->Name = Name;
 }
 
+void PersonalAccount::DisplayProfilePersonalAcoount(QString username)
+{
+    ui->FindHashtagOrUsernameListWidget->clear();
+    {
+        QString folderPath = "Personal/";
+        QDir directory(folderPath);
+        QStringList jsonFiles = directory.entryList(QStringList() << "*.json", QDir::Files);
+        foreach(QString fileName,jsonFiles)
+        {
+            QString temp = fileName;
+            temp = temp.remove(".json");
+            QListWidgetItem* item = new QListWidgetItem(temp);
+            item->setBackground(Qt::red);
+            if(temp==username)
+            {
+                ui->listWidget->addItem(item);
+                {
+                    QFile jsonFile("Personal/"+username+".json");
+                    if (!jsonFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                        // Error handling
+                    }
+
+                    QByteArray jsonData = jsonFile.readAll();
+                    jsonFile.close();
+
+                    QJsonParseError jsonError;
+                    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData, &jsonError);
+
+                    if (jsonError.error != QJsonParseError::NoError) {
+                        // Error handling
+                    }
+
+                    if (!jsonDoc.isObject()) {
+                        // Error handling
+                    }
+
+                    QJsonObject jsonObj = jsonDoc.object();
+                    QString password = jsonObj["Password"].toString();
+                    QString phoneNumber = jsonObj["PhoneNumber"].toString();
+                    QString username = jsonObj["Username"].toString();
+                    QString name = jsonObj["Name"].toString();
+                    QString country = jsonObj["Country"].toString();
+                    QString followers = jsonObj["Followers"].toString();
+                    QString followings = jsonObj["Followings"].toString();
+                    QString birthday = jsonObj["Birthday"].toString();
+
+                    QListWidgetItem* item1 = new QListWidgetItem();
+                    QListWidgetItem* item2 = new QListWidgetItem();
+                    QListWidgetItem* item3 = new QListWidgetItem();
+                    QListWidgetItem* item4 = new QListWidgetItem();
+                    QListWidgetItem* item5 = new QListWidgetItem();
+                    QListWidgetItem* item6 = new QListWidgetItem();
+                    QListWidgetItem* item7 = new QListWidgetItem();
+                    QListWidgetItem* item8 = new QListWidgetItem();
+
+                    item1->setText("Username : " + username);
+                    item2->setText("Password : " + password);
+                    item3->setText("PhoneNumber : " + phoneNumber);
+                    item4->setText("PhoneNumber : " + phoneNumber);
+                    item5->setText("Country : " + country);
+                    item6->setText("Followers : " + followers);
+                    item7->setText("Followings : " + followings);
+                    item8->setText("Birthday : " + birthday);
+                    ui->FindHashtagOrUsernameListWidget->addItem(item1);
+                    ui->FindHashtagOrUsernameListWidget->addItem(item2);
+                    ui->FindHashtagOrUsernameListWidget->addItem(item3);
+                    ui->FindHashtagOrUsernameListWidget->addItem(item4);
+                    ui->FindHashtagOrUsernameListWidget->addItem(item5);
+                    ui->FindHashtagOrUsernameListWidget->addItem(item6);
+                    ui->FindHashtagOrUsernameListWidget->addItem(item7);
+                    ui->FindHashtagOrUsernameListWidget->addItem(item8);
+
+                }
+
+                return;
+            }
+//            connect(ui->listWidget,&QListWidget::itemClicked,this,&ShowItemClickedInformationWithQString);
+
+        }
+    }
+    //*******************************************
+    {
+        QString folderPath = "Anonymous/";
+        QDir directory(folderPath);
+        QStringList jsonFiles = directory.entryList(QStringList() << "*.json", QDir::Files);
+        foreach(QString fileName,jsonFiles)
+        {
+            QString temp = fileName;
+            temp = temp.remove(".json");
+            QListWidgetItem* item = new QListWidgetItem(temp);
+            item->setBackground(Qt::blue);
+            if(temp==username)
+            {
+                ui->listWidget->addItem(item);
+                return;
+            }
+//            connect(ui->listWidget,&QListWidget::itemClicked,this,&PersonalAccount::ShowItemClickedInformationWithQString);
+        }
+    }
+    //*******************************************
+    {
+        QString folderPath = "Organisation/";
+        QDir directory(folderPath);
+        QStringList jsonFiles = directory.entryList(QStringList() << "*.json", QDir::Files);
+        foreach(QString fileName,jsonFiles)
+        {
+            QString temp = fileName;
+            temp = temp.remove(".json");
+            QListWidgetItem* item = new QListWidgetItem(temp);
+            item->setBackground(Qt::green);
+            if(temp==username)
+            {
+                ui->listWidget->addItem(item);
+                return;
+            }
+        }
+    }
+
+}
 
 void PersonalAccount::on_SettingButton_clicked()
 {
@@ -262,24 +379,33 @@ void PersonalAccount::on_SettingButton_clicked()
     ui->SettingListWidget->addItem(item6);
 }
 
-
 void PersonalAccount::on_SearchLineEdit_textChanged(const QString &arg1)
 {
 //    ReadFromFolderAllAccountWithQString(arg1);
     ReadFromFolderAllTweet(arg1);
 }
 
-
-
-
-
 void PersonalAccount::on_TweetButton_clicked()
 {
-    qDebug()<<"yes";
     TweetForm* T = new TweetForm();
     T->SetUsernameAndNameTweetForm(Username,Name);
     T->show();
 
+}
+
+void PersonalAccount::ItemClickedSettingListWidget(QListWidgetItem *itemArgument)
+{
+    qDebug()<<itemArgument->text()<<"\n";
+    try {
+       if(itemArgument->text()=="Show my profile")
+       {
+           DisplayProfilePersonalAcoount(Username);
+       }
+
+    } catch (std::exception& e)
+    {
+
+    }
 
 }
 

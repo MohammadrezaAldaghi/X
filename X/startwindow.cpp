@@ -1,4 +1,5 @@
 #include "startwindow.h"
+#include "personalaccount.h"
 #include "ui_startwindow.h"
 
 Startwindow::Startwindow(QWidget *parent) :
@@ -34,6 +35,8 @@ void Startwindow::on_PersonalButton_clicked()
 {
     SignUp* currentUser = new SignUp();
     currentUser->show();
+
+
 }
 
 

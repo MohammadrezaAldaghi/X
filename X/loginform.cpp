@@ -90,6 +90,7 @@ void LoginForm::on_LoginButton_clicked()
         if(ui->PasswordLineEdit->text()==password&&ui->UsernameLineEdit->text()==username)
         {
                 PersonalAccount* P = new PersonalAccount();
+                P->SetUsernameAndNamePersonalAcoount(username,name);
                 this->hide();
                 P->show();
             qDebug()<<"Yes";

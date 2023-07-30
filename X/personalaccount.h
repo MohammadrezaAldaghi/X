@@ -34,6 +34,8 @@ public:
     void ReadFromFolderAllTweetWithUsername(QString str);
     void ReadFromFolderAllTweet(QString str);
     void SetUsernameAndNamePersonalAcoount(QString username, QString Name);
+    void DisplayProfilePersonalAcoount(QString username);
+
 
 private slots:
     void on_SettingButton_clicked();
@@ -44,10 +46,15 @@ private slots:
 
     void on_TweetButton_clicked();
 
+    void ItemClickedSettingListWidget(QListWidgetItem *item);
+
+
 private:
     Ui::PersonalAccount *ui;
     QString Username;
     QString Name;
+    QTimer* timer = new QTimer(this);
+
 };
 
 #endif // PERSONALACCOUNT_H

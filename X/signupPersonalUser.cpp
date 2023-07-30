@@ -1,4 +1,5 @@
 #include "signupPersonalUser.h"
+#include "personalaccount.h"
 #include "personaluser.h"
 #include "ui_signupPersonalUser.h"
 
@@ -61,8 +62,10 @@ void SignUp::on_RegisterButton_clicked()
         QMessageBox::critical(this,"Register message","Registration failed. Please try again");
         this->hide();
     }
-
-
+    close();
+    PersonalAccount *PA = new PersonalAccount();
+    PA->SetUsernameAndNamePersonalAcoount(ui->UsernameLineEdit->text(),(ui->NameLineEdit->text()));
+    PA->show();
 
 }
 
