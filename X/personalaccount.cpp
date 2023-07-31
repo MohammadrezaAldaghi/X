@@ -7,6 +7,7 @@ PersonalAccount::PersonalAccount(QWidget *parent) :
     ui(new Ui::PersonalAccount)
 {
     ui->setupUi(this);
+    srand(time(nullptr));
 //    {
 //        QTimer *timer = new QTimer(ui->FindHashtagOrUsernameListWidget);
 //        timer->setInterval(1000); // fire every second
@@ -199,11 +200,12 @@ void PersonalAccount::ReadFromFolderAllTweet(QString str)
                     QString message = obj.value("Message").toString();
                     QString hashtag = obj.value("#").toString();
                     QString name = obj.value("Name").toString();
-                    qDebug() << "Username: " << username;
-                    qDebug() << "Message: " << message;
-                    qDebug() << "Hashtag: " << hashtag;
-                    qDebug() << "Name: " << name;
-                    qDebug() << "-------------------";
+                    QString tweetID = obj.value("TweetID").toString();
+//                    qDebug() << "Username: " << username;
+//                    qDebug() << "Message: " << message;
+//                    qDebug() << "Hashtag: " << hashtag;
+//                    qDebug() << "Name: " << name;
+//                    qDebug() << "-------------------";
 
                     // Create a new widget item for the text and button
                     QWidget *widgetItem = new QWidget(ui->FindHashtagOrUsernameListWidget);
@@ -234,11 +236,25 @@ void PersonalAccount::ReadFromFolderAllTweet(QString str)
                     ui->FindHashtagOrUsernameListWidget->setItemWidget(item, widgetItem);
 
                     ui->FindHashtagOrUsernameListWidget->setStyleSheet("color : darkblue");
+
+                    // button signnal and slot (test)
+                    {
+//                        connect(likeButton,&QPushButton::clicked,this,&PersonalAccount::onButtonClicked);
+                        connect(likeButton, &QPushButton::clicked, [=]()
+                        {
+                            test(tweetID);
+                            // Handle the button click here
+                        });
+//                        connect(mentionButton,&QPushButton::clicked,this,&PersonalAccount::onButtonClicked);
+                        connect(mentionButton,&QPushButton::clicked,[=]()
+                        {
+                            onButtonClicked();
+                        });
+                    }
+
+
+
                 }
-
-
-
-
             }
 
             file.close();
@@ -395,11 +411,6 @@ void PersonalAccount::DisplayProfilePersonalAcoount(QString username)
 
 }
 
-void PersonalAccount::test(QString username)
-{
-
-}
-
 void PersonalAccount::on_SettingButton_clicked()
 {
     ui->SettingListWidget->clear();
@@ -459,6 +470,12 @@ void PersonalAccount::ItemClickedSettingListWidget(QListWidgetItem *itemArgument
 
 void PersonalAccount::onButtonClicked()
 {
-    qDebug()<<"OK\n";
+    long test = rand() * rand();
+    qDebug()<<"mentionButton"<<", test = "<<test<<"\n";
+}
+
+void PersonalAccount::test(QString te)
+{
+ qDebug()<<"Tweet ID : "<<te<<"\n";
 }
 

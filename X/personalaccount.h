@@ -15,6 +15,7 @@
 #include <QJsonObject>
 #include <QTimer>
 #include <tweet.h>
+#include <QtGlobal>
 
 
 namespace Ui {
@@ -35,7 +36,7 @@ public:
     void ReadFromFolderAllTweet(QString str);
     void SetUsernameAndNamePersonalAcoount(QString username, QString Name);
     void DisplayProfilePersonalAcoount(QString username);
-    void test(QString username);
+    void GetTweetLikeFromFile();
 
 
 private slots:
@@ -50,7 +51,7 @@ private slots:
     void ItemClickedSettingListWidget(QListWidgetItem *item);
 
     void onButtonClicked();
-
+    void test(QString te);
 
 private:
     Ui::PersonalAccount *ui;

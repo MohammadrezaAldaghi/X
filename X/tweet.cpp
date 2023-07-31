@@ -2,6 +2,7 @@
 
 Tweet::Tweet()
 {
+    srand(time(nullptr));
     QDir().mkdir("Tweet");
     try
     {
@@ -45,7 +46,7 @@ void Tweet::AddTweet(QString username, QString message, QString hashtag,QString 
                 jsonObj["Message"] = message;
                 jsonObj["#"] = hashtag;
                 jsonObj["Name"] = name;
-
+                jsonObj["TweetID"] = QString::fromStdString(std::to_string(rand()*rand()*rand()));
                 jsonArray.append(jsonObj);
 
                 QJsonDocument newJsonDoc(jsonArray);

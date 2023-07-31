@@ -11,6 +11,7 @@
 #include <QMap>
 #include <QByteArray>
 #include <QJsonArray>
+#include <QtGlobal>
 
 
 class Tweet
