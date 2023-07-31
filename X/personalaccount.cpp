@@ -194,20 +194,31 @@ void PersonalAccount::ReadFromFolderAllTweet(QString str)
                 {
                     QJsonObject obj = value.toObject();
 
-                    QString username = obj.value("Username").toString();
-                    QString message = obj.value("Message").toString();
-                    QString hashtag = obj.value("#").toString();
-                    QString name = obj.value("Name").toString();
-                    qDebug() << "Username: " << username;
-                    qDebug() << "Message: " << message;
-                    qDebug() << "Hashtag: " << hashtag;
-                    qDebug() << "Name: " << name;
-                    qDebug() << "-------------------";
+                        QString username = obj.value("Username").toString();
+                        QString message = obj.value("Message").toString();
+                        QString hashtag = obj.value("#").toString();
+                        QString name = obj.value("Name").toString();
+                        qDebug() << "Username: " << username;
+                        qDebug() << "Message: " << message;
+                        qDebug() << "Hashtag: " << hashtag;
+                        qDebug() << "Name: " << name;
+                        qDebug() << "-------------------";
 
-                    QListWidgetItem* item = new QListWidgetItem(name + "  " + username + "\nMessage : " + message + "\n Hashtag : " + hashtag);
-                    ui->FindHashtagOrUsernameListWidget->addItem(item);
-                    ui->FindHashtagOrUsernameListWidget->setStyleSheet("color : darkblue");
+                        QListWidgetItem* item = new QListWidgetItem(name + "  " + username + "\nMessage : " + message + "\n Hashtag : " + hashtag + "\n");
+                        ui->FindHashtagOrUsernameListWidget->addItem(item); // Add item to widget list
+                        QPushButton *button = new QPushButton("Like");
+                        button->setStyleSheet("color : green");
+                        QListWidgetItem *itemButton = new QListWidgetItem(); // Create a new item for the button
+                        ui->FindHashtagOrUsernameListWidget->addItem(itemButton); // Add the button item to the widget list
+                        ui->FindHashtagOrUsernameListWidget->setItemWidget(itemButton, button); // Designate the button as a widget item
+
+                        ui->FindHashtagOrUsernameListWidget->setStyleSheet("color : darkblue");
+
                 }
+
+
+
+
             }
 
             file.close();
@@ -295,6 +306,7 @@ void PersonalAccount::DisplayProfilePersonalAcoount(QString username)
                     item6->setText("Followers : " + followers);
                     item7->setText("Followings : " + followings);
                     item8->setText("Birthday : " + birthday);
+
                     ui->FindHashtagOrUsernameListWidget->addItem(item1);
                     ui->FindHashtagOrUsernameListWidget->addItem(item2);
                     ui->FindHashtagOrUsernameListWidget->addItem(item3);
@@ -303,6 +315,17 @@ void PersonalAccount::DisplayProfilePersonalAcoount(QString username)
                     ui->FindHashtagOrUsernameListWidget->addItem(item6);
                     ui->FindHashtagOrUsernameListWidget->addItem(item7);
                     ui->FindHashtagOrUsernameListWidget->addItem(item8);
+
+//                    QPushButton *button = new QPushButton("test");
+//                    QListWidgetItem *item11 = new QListWidgetItem();
+//                    item->setSizeHint(button->sizeHint());
+//                    ui->FindHashtagOrUsernameListWidget->addItem(item11);
+//                    ui->FindHashtagOrUsernameListWidget->setItemWidget(item11, button);
+//                    qDebug()<<"sdksdskjdlskd\n";
+
+
+
+
 
                 }
 
@@ -349,6 +372,34 @@ void PersonalAccount::DisplayProfilePersonalAcoount(QString username)
             }
         }
     }
+
+}
+
+void PersonalAccount::test(QString username)
+{
+//    int i = 5;
+//    while(i>0)
+//    {
+//        // ایجاد یک آیتم جدید
+//        QListWidgetItem* item = new QListWidgetItem;
+
+//        // ایجاد یک دکمه جدید
+//        QPushButton* button = new QPushButton("Button Text");
+//        item->setText("test");
+//        // تنظیم ویجت دکمه به عنوان ویجت آیتم
+//        item->setSizeHint(button->sizeHint());
+//        ui->FindHashtagOrUsernameListWidget->addItem(item);
+//        ui->FindHashtagOrUsernameListWidget->setItemWidget(item, button);
+//        i--;
+//    }
+    qDebug()<<"Yes\n";
+    QListWidgetItem* item = new QListWidgetItem();
+    QPushButton* likeButton = new QPushButton("Like");
+    connect(likeButton, &QPushButton::clicked, [=]() {
+        // کدهای مورد نیاز برای لایک کردن
+        qDebug() << "Like button clicked for username: " << username;
+    });
+    ui->FindHashtagOrUsernameListWidget->setItemWidget(item, likeButton);
 
 }
 
@@ -407,5 +458,10 @@ void PersonalAccount::ItemClickedSettingListWidget(QListWidgetItem *itemArgument
 
     }
 
+}
+
+void PersonalAccount::onButtonClicked()
+{
+    qDebug()<<"OK\n";
 }
 

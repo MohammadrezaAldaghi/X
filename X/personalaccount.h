@@ -35,6 +35,7 @@ public:
     void ReadFromFolderAllTweet(QString str);
     void SetUsernameAndNamePersonalAcoount(QString username, QString Name);
     void DisplayProfilePersonalAcoount(QString username);
+    void test(QString username);
 
 
 private slots:
@@ -47,6 +48,8 @@ private slots:
     void on_TweetButton_clicked();
 
     void ItemClickedSettingListWidget(QListWidgetItem *item);
+
+    void onButtonClicked();
 
 
 private:
