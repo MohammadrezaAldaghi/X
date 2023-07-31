@@ -36,11 +36,11 @@ bool PersonalUser::SetAttributePersonalUser()
     QJsonObject jsonObj;
     jsonObj["Username"] = Username;
     jsonObj["Password"] = Password;
-    jsonObj["PhoneNember"] = PhoneNember;
+    jsonObj["PhoneNumber"] = PhoneNember;
     jsonObj["Country"] = Country;
     jsonObj["Birthday"] = Birthday;
-    jsonObj["Followers"] = Followers;
-    jsonObj["Followings"] = Followings;
+    jsonObj["Followers"] = QString::fromStdString(std::to_string(Followers));
+    jsonObj["Followings"] = QString::fromStdString(std::to_string(Followings));
     jsonObj["Name"] = Name;
 
     QJsonDocument jsonDoc(jsonObj);

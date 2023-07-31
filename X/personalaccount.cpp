@@ -290,7 +290,7 @@ void PersonalAccount::DisplayProfilePersonalAcoount(QString username)
                     item1->setText("Username : " + username);
                     item2->setText("Password : " + password);
                     item3->setText("PhoneNumber : " + phoneNumber);
-                    item4->setText("PhoneNumber : " + phoneNumber);
+                    item4->setText("name : " + name);
                     item5->setText("Country : " + country);
                     item6->setText("Followers : " + followers);
                     item7->setText("Followings : " + followings);
