@@ -16,6 +16,7 @@
 #include <QTimer>
 #include <tweet.h>
 #include <QtGlobal>
+#include <QTextEdit>
 
 
 namespace Ui {
@@ -37,6 +38,7 @@ public:
     void SetUsernameAndNamePersonalAcoount(QString username, QString Name);
     void DisplayProfilePersonalAcoount(QString username);
     void GetTweetLikeFromFile();
+    void AdjustBiographyWithUsernameAndPassword(QString username,QString bio);
 
 
 private slots:

@@ -128,6 +128,19 @@
     </rect>
    </property>
   </widget>
+  <widget class="QPushButton" name="BiogrphyButton">
+   <property name="geometry">
+    <rect>
+     <x>690</x>
+     <y>540</y>
+     <width>141</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>OK Biography</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

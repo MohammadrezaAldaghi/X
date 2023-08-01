@@ -8,11 +8,15 @@ PersonalAccount::PersonalAccount(QWidget *parent) :
 {
     ui->setupUi(this);
     srand(time(nullptr));
+//    {
+//        QTimer *timer = new QTimer();
+//        timer->setInterval(1000); // fire every second
+//        connect(timer, SIGNAL(), this, SLOT(ReadFromFolderAllTweet()));
+//        timer->start();
+//    }
     {
-        QTimer *timer = new QTimer();
-        timer->setInterval(1000); // fire every second
-        connect(timer, SIGNAL(), this, SLOT(ShowItemClickedInformationWithQString()));
-        timer->start();
+        ui->BiogrphyButton->hide();
+
     }
 
     ReadFromFolderAllAccount();
@@ -287,7 +291,7 @@ void PersonalAccount::SetUsernameAndNamePersonalAcoount(QString username, QStrin
     this->Name = Name;
 }
 
-void PersonalAccount::DisplayProfilePersonalAcoount(QString username)
+void PersonalAccount::DisplayProfilePersonalAcoount(QString username)//کامل نیست قسمت ارگانی و ناشناس
 {
     ui->FindHashtagOrUsernameListWidget->clear();
     {
@@ -332,6 +336,7 @@ void PersonalAccount::DisplayProfilePersonalAcoount(QString username)
                     QString followers = jsonObj["Followers"].toString();
                     QString followings = jsonObj["Followings"].toString();
                     QString birthday = jsonObj["Birthday"].toString();
+                    QString biography = jsonObj["Biography"].toString();
 
                     QListWidgetItem* item1 = new QListWidgetItem();
                     QListWidgetItem* item2 = new QListWidgetItem();
@@ -341,7 +346,7 @@ void PersonalAccount::DisplayProfilePersonalAcoount(QString username)
                     QListWidgetItem* item6 = new QListWidgetItem();
                     QListWidgetItem* item7 = new QListWidgetItem();
                     QListWidgetItem* item8 = new QListWidgetItem();
-
+                    QListWidgetItem* item9 = new QListWidgetItem();
                     item1->setText("Username : " + username);
                     item2->setText("Password : " + password);
                     item3->setText("PhoneNumber : " + phoneNumber);
@@ -350,7 +355,7 @@ void PersonalAccount::DisplayProfilePersonalAcoount(QString username)
                     item6->setText("Followers : " + followers);
                     item7->setText("Followings : " + followings);
                     item8->setText("Birthday : " + birthday);
-
+                    item9->setText("Biography : " + biography);
                     ui->FindHashtagOrUsernameListWidget->addItem(item1);
                     ui->FindHashtagOrUsernameListWidget->addItem(item2);
                     ui->FindHashtagOrUsernameListWidget->addItem(item3);
@@ -359,17 +364,7 @@ void PersonalAccount::DisplayProfilePersonalAcoount(QString username)
                     ui->FindHashtagOrUsernameListWidget->addItem(item6);
                     ui->FindHashtagOrUsernameListWidget->addItem(item7);
                     ui->FindHashtagOrUsernameListWidget->addItem(item8);
-
-//                    QPushButton *button = new QPushButton("test");
-//                    QListWidgetItem *item11 = new QListWidgetItem();
-//                    item->setSizeHint(button->sizeHint());
-//                    ui->FindHashtagOrUsernameListWidget->addItem(item11);
-//                    ui->FindHashtagOrUsernameListWidget->setItemWidget(item11, button);
-//                    qDebug()<<"sdksdskjdlskd\n";
-
-
-
-
+                    ui->FindHashtagOrUsernameListWidget->addItem(item9);
 
                 }
 
@@ -415,6 +410,53 @@ void PersonalAccount::DisplayProfilePersonalAcoount(QString username)
                 return;
             }
         }
+    }
+
+}
+
+void PersonalAccount::AdjustBiographyWithUsernameAndPassword(QString username,QString bio)
+{
+    QFile file("Personal/" + username + ".json");
+
+    try{
+        if(file.open(QIODevice::ReadOnly))
+        {
+            QByteArray jsonData = file.readAll();
+            QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+            if(jsonDoc.isNull())
+            {
+                throw std::invalid_argument("not exist");
+            }
+            else
+            {
+                QJsonObject jsonObj = jsonDoc.object();
+                if(jsonObj.value("Username").toString()==username)
+                {
+                    file.close();
+                    QFile::remove("Personal/" + username);
+                    if(file.open(QIODevice::WriteOnly))
+                    {
+                        jsonObj["Biography"] = bio;
+                        QJsonDocument jDoc(jsonObj);
+                        QByteArray jData = jDoc.toJson();
+                        file.write(jData);
+                        file.close();
+
+                    }
+                }
+
+            }
+
+        }
+        else
+        {
+            throw std::invalid_argument("file not found");
+        }
+
+    }
+    catch(std::exception& e)
+    {
+        QMessageBox::critical(this,"Error",e.what());
     }
 
 }
@@ -469,6 +511,24 @@ void PersonalAccount::ItemClickedSettingListWidget(QListWidgetItem *itemArgument
        if(itemArgument->text()=="Show my profile")
        {
            DisplayProfilePersonalAcoount(Username);
+       }
+       if(itemArgument->text()=="Adjust Biography")
+       {
+           ui->FindHashtagOrUsernameListWidget->clear();
+           QTextEdit* textEdit = new QTextEdit(ui->FindHashtagOrUsernameListWidget);
+           textEdit->setFixedSize(ui->FindHashtagOrUsernameListWidget->size());
+           textEdit->show();
+           ui->SearchLabel->setText("input Biography");
+           ui->SearchLineEdit->hide();
+           ui->TweetButton->hide();
+           ui->BiogrphyButton->show();
+
+           connect(ui->BiogrphyButton,&QPushButton::clicked,[=]()
+           {
+            AdjustBiographyWithUsernameAndPassword(Username,textEdit->toPlainText());
+
+           });
+
        }
 
     } catch (std::exception& e)

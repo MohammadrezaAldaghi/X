@@ -42,6 +42,7 @@ bool PersonalUser::SetAttributePersonalUser()
     jsonObj["Followers"] = QString::fromStdString(std::to_string(Followers));
     jsonObj["Followings"] = QString::fromStdString(std::to_string(Followings));
     jsonObj["Name"] = Name;
+    jsonObj["Biography"] = Biography;
 
     QJsonDocument jsonDoc(jsonObj);
 
@@ -78,6 +79,11 @@ void PersonalUser::SetProfileImagePersonalUser(QImage img)
 void PersonalUser::SetFollowingsPersonalUser()
 {
     Followings = 0;
+}
+
+void PersonalUser::SetBiographyPersonalUser(QString bio)
+{
+    Biography = bio;
 }
 
 void PersonalUser::SetFollowersPersonalUser()

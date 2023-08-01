@@ -23,6 +23,7 @@ public:
     bool SetAttributePersonalUser();
     void SetProfileImagePersonalUser(QImage img);
     void SetFollowingsPersonalUser();
+    void SetBiographyPersonalUser(QString bio);
     void SetFollowersPersonalUser();
 
 
@@ -35,6 +36,7 @@ private:
     QString ColorHeader;
     QString Name;
     QImage ProfileImage;
+    QString Biography;
 
 };
 
