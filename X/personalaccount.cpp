@@ -464,7 +464,7 @@ void PersonalAccount::AdjustBiographyWithUsernameAndPassword(QString username,QS
 void PersonalAccount::on_SettingButton_clicked()
 {
     ui->SettingListWidget->clear();
-    QListWidgetItem* item1 = new QListWidgetItem("Lagout");
+    QListWidgetItem* item1 = new QListWidgetItem("Logout");
     QListWidgetItem* item2 = new QListWidgetItem("Adjust profile");
     QListWidgetItem* item3 = new QListWidgetItem("Adjust Biography");
     QListWidgetItem* item4 = new QListWidgetItem("Change usernam or password");
@@ -501,7 +501,6 @@ void PersonalAccount::on_TweetButton_clicked()
     T->SetUsernameAndNameTweetForm(Username,Name);
     T->show();
 
-
 }
 
 void PersonalAccount::ItemClickedSettingListWidget(QListWidgetItem *itemArgument)
@@ -526,8 +525,45 @@ void PersonalAccount::ItemClickedSettingListWidget(QListWidgetItem *itemArgument
            connect(ui->BiogrphyButton,&QPushButton::clicked,[=]()
            {
             AdjustBiographyWithUsernameAndPassword(Username,textEdit->toPlainText());
-
+            textEdit->clear();
+            textEdit->hide();
+            ui->FindHashtagOrUsernameListWidget->show();
+            ui->SearchLabel->setText("Search :");
+            ui->SearchLineEdit->show();
+            ui->TweetButton->show();
+            ui->BiogrphyButton->hide();
+            on_SearchLineEdit_textChanged("");
            });
+       }
+       if(itemArgument->text() == "Logout")
+       {
+        try{
+            bool THROW = false;
+            if(QFile::remove( "Personal/"+Username + ".json"))
+            {
+               this->close();
+               THROW = true;
+            }
+            if(QFile::remove( "Anonymous/"+Username + ".json"))
+            {
+               this->close();
+               THROW = true;
+            }
+            if(QFile::remove( "Organisation/"+Username + ".json"))
+            {
+                this->close();
+                THROW = true;
+            }
+            if(!THROW)
+            {
+                throw std::invalid_argument("file not removed!!!!!!!!!!!");
+            }
+        }
+           catch(std::exception& e)
+           {
+               QMessageBox::critical(this,"Error",e.what());
+           }
+
 
        }
 
