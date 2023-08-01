@@ -40,7 +40,7 @@ void TweetForm::on_TweetButton_clicked()
 {
 //    qDebug()<<ui->TweetTextEdit->toPlainText()<<"\n"; //get textEdit text
     Tweet* t = new Tweet();
-    t->AddTweet(Username,ui->TweetTextEdit->toPlainText(),"#Mahsa_Amini",Name);
+    t->AddTweet(Username,ui->TweetTextEdit->toPlainText(),"#Mahsa_Amini",Name,0);
     ui->TweetTextEdit->setText("");
     ui->TweetSentLabel->setText("Tweet sent successfully");
     ui->TweetSentLabel->setStyleSheet("color : red");

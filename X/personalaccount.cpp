@@ -8,18 +8,19 @@ PersonalAccount::PersonalAccount(QWidget *parent) :
 {
     ui->setupUi(this);
     srand(time(nullptr));
-//    {
-//        QTimer *timer = new QTimer(ui->FindHashtagOrUsernameListWidget);
-//        timer->setInterval(1000); // fire every second
-//        connect(timer, SIGNAL(timeout()), this, SLOT(ShowItemClickedInformationWithQString()));
-//        timer->start();
-//    }
+    {
+        QTimer *timer = new QTimer();
+        timer->setInterval(1000); // fire every second
+        connect(timer, SIGNAL(), this, SLOT(ShowItemClickedInformationWithQString()));
+        timer->start();
+    }
 
     ReadFromFolderAllAccount();
     ui->SearchLabel->setStyleSheet("color : red");
     connect(ui->listWidget, &QListWidget::itemClicked, this,&PersonalAccount:: ShowItemClickedInformationWithQString);
     connect(ui->SettingListWidget,&QListWidget::itemClicked,this,&PersonalAccount::ItemClickedSettingListWidget);
     connect(ui->FindHashtagOrUsernameListWidget,&QListWidget::itemClicked,this,&PersonalAccount::onButtonClicked);
+    connect(ui->FindHashtagOrUsernameListWidget, &QListWidget::currentRowChanged, this,&PersonalAccount:: ShowItemClickedInformationWithQString);
 
 
 }
@@ -59,7 +60,7 @@ void PersonalAccount::ShowItemClickedInformationWithQString()
 
                     QListWidgetItem* item = new QListWidgetItem("Message : " + message + "\n Hashtag : " + hashtag);
                     ui->FindHashtagOrUsernameListWidget->addItem(item);
-                    ui->FindHashtagOrUsernameListWidget->setStyleSheet("color : yellow");
+                    ui->FindHashtagOrUsernameListWidget->setStyleSheet("color : darkblue");
                 }
             }
 
@@ -178,6 +179,13 @@ void PersonalAccount::ReadFromFolderAllAccountWithQString(QString str)
 
 void PersonalAccount::ReadFromFolderAllTweet(QString str)
 {
+    QFile temp("Tweet/Tweet1.json");
+    if(temp.exists())
+    {
+        QFile::remove("Tweet/Tweet.json");
+        QFile::rename("Tweet/Tweet1.json","Tweet/Tweet.json");
+    }
+
     ui->FindHashtagOrUsernameListWidget->clear();
     QFile file("Tweet/Tweet.json");
     try
@@ -442,6 +450,7 @@ void PersonalAccount::on_SearchLineEdit_textChanged(const QString &arg1)
 {
 //    ReadFromFolderAllAccountWithQString(arg1);
     ReadFromFolderAllTweet(arg1);
+
 }
 
 void PersonalAccount::on_TweetButton_clicked()
@@ -449,6 +458,7 @@ void PersonalAccount::on_TweetButton_clicked()
     TweetForm* T = new TweetForm();
     T->SetUsernameAndNameTweetForm(Username,Name);
     T->show();
+
 
 }
 
@@ -476,6 +486,7 @@ void PersonalAccount::onButtonClicked()
 
 void PersonalAccount::test(QString te)
 {
- qDebug()<<"Tweet ID : "<<te<<"\n";
+    Tweet t;
+    t.test(te);
 }
 

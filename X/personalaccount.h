@@ -51,6 +51,7 @@ private slots:
     void ItemClickedSettingListWidget(QListWidgetItem *item);
 
     void onButtonClicked();
+
     void test(QString te);
 
 private:
@@ -58,6 +59,7 @@ private:
     QString Username;
     QString Name;
     QTimer* timer = new QTimer(this);
+
 
 };
 
