@@ -40,6 +40,11 @@ SignUp::~SignUp()
     delete ui;
 }
 
+void SignUp::SetImage(QImage img)
+{
+    image = img;
+}
+
 void SignUp::on_RegisterButton_clicked()
 {
     PersonalUser* currnetUser = new PersonalUser();
@@ -51,6 +56,7 @@ void SignUp::on_RegisterButton_clicked()
     currnetUser->SetNamePersonalUser(ui->NameLineEdit->text());
     currnetUser->SetFollowersPersonalUser();
     currnetUser->SetFollowingsPersonalUser();
+    currnetUser->SetProfileImagePersonalUser(image);
 
     if(currnetUser->SetAttributePersonalUser())
     {
@@ -75,7 +81,13 @@ void SignUp::on_ChoseProfile_clicked()
     QString fileName = QFileDialog::getOpenFileName(this, "Open Image", "", "Image Files (*.png *.jpg *.bmp)");
 
     if (!fileName.isEmpty()) {
-        // load the image into your application
+        QImage image;
+        bool loaded = image.load(fileName);
+        if (loaded) {
+            this->image = image;
+        } else {
+            qDebug()<<"wrong\n";
+        }
     }
 }
 

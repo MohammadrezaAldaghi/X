@@ -5,6 +5,7 @@
 #include "user.h"
 #include <QTimer>
 #include <QFileDialog>
+#include <QImage>
 
 
 namespace Ui {
@@ -18,6 +19,7 @@ class SignUp : public QWidget
 public:
     explicit SignUp(QWidget *parent = nullptr);
     ~SignUp();
+    void SetImage(QImage img);
 
 private slots:
     void on_RegisterButton_clicked();
@@ -26,6 +28,7 @@ private slots:
 
 private:
     Ui::SignUp *ui;
+    QImage image;
 };
 
 #endif // SIGNUP_H

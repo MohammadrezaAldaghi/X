@@ -18,8 +18,8 @@ int main(int argc, char *argv[])
 //    SignUp S;
 //    S.show();
 
-//    Startwindow S;
-//    S.show();
+    Startwindow S;
+    S.show();
 
 //    SignUpOrganisationUser S;
 //    S.show();
@@ -27,8 +27,8 @@ int main(int argc, char *argv[])
 //    SignUpAnonymousUser S;
 //    S.show();
 
-    LoginForm L;
-    L.show();
+//    LoginForm L;
+//    L.show();
 
 //    PersonalAccount P;
 //    P.show();

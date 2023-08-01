@@ -31,8 +31,6 @@ void PersonalUser::SetPhonNemberPersonalUser(QString number)
 }
 bool PersonalUser::SetAttributePersonalUser()
 {
-    QDir().mkdir(Username);
-
     QJsonObject jsonObj;
     jsonObj["Username"] = Username;
     jsonObj["Password"] = Password;
@@ -43,7 +41,7 @@ bool PersonalUser::SetAttributePersonalUser()
     jsonObj["Followings"] = QString::fromStdString(std::to_string(Followings));
     jsonObj["Name"] = Name;
     jsonObj["Biography"] = Biography;
-
+    ProfileImage.save("Personal/" + Username + ".jpg");
     QJsonDocument jsonDoc(jsonObj);
 
     QByteArray jsonData = jsonDoc.toJson();
