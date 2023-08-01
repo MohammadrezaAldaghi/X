@@ -416,48 +416,151 @@ void PersonalAccount::DisplayProfilePersonalAcoount(QString username)//کامل 
 
 void PersonalAccount::AdjustBiographyWithUsernameAndPassword(QString username,QString bio)
 {
-    QFile file("Personal/" + username + ".json");
-
-    try{
-        if(file.open(QIODevice::ReadOnly))
+    {
+        QFile file("Personal/" + username + ".json");
+        if(file.exists())
         {
-            QByteArray jsonData = file.readAll();
-            QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
-            if(jsonDoc.isNull())
-            {
-                throw std::invalid_argument("not exist");
-            }
-            else
-            {
-                QJsonObject jsonObj = jsonDoc.object();
-                if(jsonObj.value("Username").toString()==username)
+            try{
+
+                if(file.open(QIODevice::ReadOnly))
                 {
-                    file.close();
-                    QFile::remove("Personal/" + username);
-                    if(file.open(QIODevice::WriteOnly))
+                    QByteArray jsonData = file.readAll();
+                    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+                    if(jsonDoc.isNull())
                     {
-                        jsonObj["Biography"] = bio;
-                        QJsonDocument jDoc(jsonObj);
-                        QByteArray jData = jDoc.toJson();
-                        file.write(jData);
-                        file.close();
+                        throw std::invalid_argument("not exist");
+                    }
+                    else
+                    {
+                        QJsonObject jsonObj = jsonDoc.object();
+                        if(jsonObj.value("Username").toString()==username)
+                        {
+                            file.close();
+                            QFile::remove("Personal/" + username);
+                            if(file.open(QIODevice::WriteOnly))
+                            {
+                                jsonObj["Biography"] = bio;
+                                QJsonDocument jDoc(jsonObj);
+                                QByteArray jData = jDoc.toJson();
+                                file.write(jData);
+                                file.close();
+
+                            }
+                        }
 
                     }
+
+                }
+                else
+                {
+                    throw std::invalid_argument("file not found");
                 }
 
             }
-
+            catch(std::exception& e)
+            {
+                QMessageBox::critical(this,"Error",e.what());
+            }
         }
-        else
-        {
-            throw std::invalid_argument("file not found");
-        }
-
+        file.close();
     }
-    catch(std::exception& e)
+    //***************************************************
     {
-        QMessageBox::critical(this,"Error",e.what());
+        QFile file("Organisation/" + username + ".json");
+        if(file.exists())
+        {
+            try{
+                if(file.open(QIODevice::ReadOnly))
+                {
+                    QByteArray jsonData = file.readAll();
+                    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+                    if(jsonDoc.isNull())
+                    {
+                        throw std::invalid_argument("not exist");
+                    }
+                    else
+                    {
+                        QJsonObject jsonObj = jsonDoc.object();
+                        if(jsonObj.value("Username").toString()==username)
+                        {
+                            file.close();
+                            QFile::remove("Organisation/" + username);
+                            if(file.open(QIODevice::WriteOnly))
+                            {
+                                jsonObj["Biography"] = bio;
+                                QJsonDocument jDoc(jsonObj);
+                                QByteArray jData = jDoc.toJson();
+                                file.write(jData);
+                                file.close();
+
+                            }
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    throw std::invalid_argument("file not found");
+                }
+
+            }
+            catch(std::exception& e)
+            {
+                QMessageBox::critical(this,"Error",e.what());
+            }
+        }
+        file.close();
     }
+    //**************************************************************
+    {
+        QFile file("Anonymous/" + username + ".json");
+        if(file.exists())
+        {
+            try{
+                if(file.open(QIODevice::ReadOnly))
+                {
+                    QByteArray jsonData = file.readAll();
+                    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+                    if(jsonDoc.isNull())
+                    {
+                        throw std::invalid_argument("not exist");
+                    }
+                    else
+                    {
+                        QJsonObject jsonObj = jsonDoc.object();
+                        if(jsonObj.value("Username").toString()==username)
+                        {
+                            file.close();
+                            QFile::remove("Anonymous/" + username);
+                            if(file.open(QIODevice::WriteOnly))
+                            {
+                                jsonObj["Biography"] = bio;
+                                QJsonDocument jDoc(jsonObj);
+                                QByteArray jData = jDoc.toJson();
+                                file.write(jData);
+                                file.close();
+
+                            }
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    throw std::invalid_argument("file not found");
+                }
+
+            }
+            catch(std::exception& e)
+            {
+                QMessageBox::critical(this,"Error",e.what());
+            }
+        }
+        file.close();
+    }
+
 
 }
 
@@ -543,16 +646,19 @@ void PersonalAccount::ItemClickedSettingListWidget(QListWidgetItem *itemArgument
             {
                this->close();
                THROW = true;
+               qApp->exit();
             }
             if(QFile::remove( "Anonymous/"+Username + ".json"))
             {
                this->close();
                THROW = true;
+               qApp->exit();
             }
             if(QFile::remove( "Organisation/"+Username + ".json"))
             {
                 this->close();
                 THROW = true;
+                qApp->exit();
             }
             if(!THROW)
             {
@@ -569,9 +675,9 @@ void PersonalAccount::ItemClickedSettingListWidget(QListWidgetItem *itemArgument
 
     } catch (std::exception& e)
     {
-
+        QMessageBox::critical(this,"Error",e.what());
     }
-
+//یک تابع براش باید بنویسم
 }
 
 void PersonalAccount::onButtonClicked()

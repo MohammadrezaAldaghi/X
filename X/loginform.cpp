@@ -52,13 +52,13 @@ void LoginForm::on_LoginButton_clicked()
 //        qDebug()<<"ui->UsernameLineEdit->text() = " <<ui->UsernameLineEdit->text()<<" , " << "ui->PasswordLineEdit->text() = "<<ui->PasswordLineEdit->text();
         if(ui->PasswordLineEdit->text()==password&&ui->UsernameLineEdit->text()==username)
         {
-
+            PersonalAccount* P = new PersonalAccount();
+            P->SetUsernameAndNamePersonalAcoount(username,"name");
+            this->hide();
+            P->show();
+            qDebug()<<"Yes";
         }
-        else
-        {
-            QMessageBox::critical(this,"Error","User not found");
 
-        }
     }
     //read Personal User
     {
@@ -93,15 +93,11 @@ void LoginForm::on_LoginButton_clicked()
                 P->SetUsernameAndNamePersonalAcoount(username,name);
                 this->hide();
                 P->show();
-            qDebug()<<"Yes";
+                qDebug()<<"Yes";
 
 
         }
-        else
-        {
-            QMessageBox::critical(this,"Error","User not found");
 
-        }
 
     }
     //read Anonymous user
@@ -134,11 +130,7 @@ void LoginForm::on_LoginButton_clicked()
 
 
         }
-        else
-        {
-            QMessageBox::critical(this,"Error","User not found");
 
-        }
 
     }
 
