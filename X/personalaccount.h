@@ -41,6 +41,7 @@ public:
     void AdjustBiographyWithUsernameAndPassword(QString username,QString bio);
     void Logout();
     void ChnageNamePersonalAccountWithUsernameAndPasswordChangeSafly(QString usernam,QString NewName);
+    void ChangeBirthdayPersonalAccountWithUsernameAndPasswordChangeSafly(QString usernam,QString NewBirthday);
 
 
 private slots:

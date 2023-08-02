@@ -837,6 +837,154 @@ void PersonalAccount::ChnageNamePersonalAccountWithUsernameAndPasswordChangeSafl
 
 }
 
+void PersonalAccount::ChangeBirthdayPersonalAccountWithUsernameAndPasswordChangeSafly(QString usernam, QString NewBirthday)
+{
+    {
+        QFile file("Personal/" + usernam + ".json");
+        if(file.exists())
+        {
+            try{
+
+                if(file.open(QIODevice::ReadOnly))
+                {
+                    QByteArray jsonData = file.readAll();
+                    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+                    if(jsonDoc.isNull())
+                    {
+                        throw std::invalid_argument("not exist");
+                    }
+                    else
+                    {
+                        QJsonObject jsonObj = jsonDoc.object();
+                        if(jsonObj.value("Username").toString()==usernam)
+                        {
+                            file.close();
+                            QFile::remove("Personal/" + usernam);
+                            if(file.open(QIODevice::WriteOnly))
+                            {
+                                jsonObj["Birthday"] = NewBirthday;
+                                QJsonDocument jDoc(jsonObj);
+                                QByteArray jData = jDoc.toJson();
+                                file.write(jData);
+                                file.close();
+
+                            }
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    throw std::invalid_argument("file not found");
+                }
+
+            }
+            catch(std::exception& e)
+            {
+                QMessageBox::critical(this,"Error",e.what());
+            }
+        }
+        file.close();
+    }
+    //***************************************************
+    {
+        QFile file("Organisation/" + usernam + ".json");
+        if(file.exists())
+        {
+            try{
+                if(file.open(QIODevice::ReadOnly))
+                {
+                    QByteArray jsonData = file.readAll();
+                    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+                    if(jsonDoc.isNull())
+                    {
+                        throw std::invalid_argument("not exist");
+                    }
+                    else
+                    {
+                        QJsonObject jsonObj = jsonDoc.object();
+                        if(jsonObj.value("Username").toString()==usernam)
+                        {
+                            file.close();
+                            QFile::remove("Organisation/" + usernam);
+                            if(file.open(QIODevice::WriteOnly))
+                            {
+                                jsonObj["Birthday"] = NewBirthday;
+                                QJsonDocument jDoc(jsonObj);
+                                QByteArray jData = jDoc.toJson();
+                                file.write(jData);
+                                file.close();
+
+                            }
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    throw std::invalid_argument("file not found");
+                }
+
+            }
+            catch(std::exception& e)
+            {
+                QMessageBox::critical(this,"Error",e.what());
+            }
+        }
+        file.close();
+    }
+    //**************************************************************
+    {
+        QFile file("Anonymous/" + usernam + ".json");
+        if(file.exists())
+        {
+            try{
+                if(file.open(QIODevice::ReadOnly))
+                {
+                    QByteArray jsonData = file.readAll();
+                    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+                    if(jsonDoc.isNull())
+                    {
+                        throw std::invalid_argument("not exist");
+                    }
+                    else
+                    {
+                        QJsonObject jsonObj = jsonDoc.object();
+                        if(jsonObj.value("Username").toString()==usernam)
+                        {
+                            file.close();
+                            QFile::remove("Anonymous/" + usernam);
+                            if(file.open(QIODevice::WriteOnly))
+                            {
+                                jsonObj["Birthday"] = NewBirthday;
+                                QJsonDocument jDoc(jsonObj);
+                                QByteArray jData = jDoc.toJson();
+                                file.write(jData);
+                                file.close();
+
+                            }
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    throw std::invalid_argument("file not found");
+                }
+
+            }
+            catch(std::exception& e)
+            {
+                QMessageBox::critical(this,"Error",e.what());
+            }
+        }
+        file.close();
+    }
+}
+
 void PersonalAccount::on_SettingButton_clicked()
 {
     QFile Personalfile("Personal/" + Username + ".json");
@@ -982,7 +1130,57 @@ void PersonalAccount::ItemClickedSettingListWidget(QListWidgetItem *itemArgument
        }
        if(itemArgument->text() == "Change name")
        {
-            ChnageNamePersonalAccountWithUsernameAndPasswordChangeSafly(Username,"SDDDDDDDdd");
+           ui->FindHashtagOrUsernameListWidget->clear();
+           QTextEdit* textEdit = new QTextEdit(ui->FindHashtagOrUsernameListWidget);
+           textEdit->setFixedSize(ui->FindHashtagOrUsernameListWidget->size()/3);
+           textEdit->show();
+           ui->SearchLabel->setText("Enter new name");
+           ui->SearchLineEdit->hide();
+           ui->TweetButton->hide();
+           ui->BiogrphyButton->setText("Accept");
+           ui->BiogrphyButton->setStyleSheet("color : green");
+           ui->BiogrphyButton->show();
+
+           connect(ui->BiogrphyButton,&QPushButton::clicked,[=]()
+           {
+            ChnageNamePersonalAccountWithUsernameAndPasswordChangeSafly(Username,textEdit->toPlainText());
+            textEdit->clear();
+            textEdit->hide();
+            ui->FindHashtagOrUsernameListWidget->show();
+            ui->SearchLabel->setText("Search :");
+            ui->SearchLineEdit->show();
+            ui->TweetButton->show();
+            ui->BiogrphyButton->hide();
+            on_SearchLineEdit_textChanged("");
+           });
+
+       }
+       if(itemArgument->text() == "change birthday")
+       {
+           ui->FindHashtagOrUsernameListWidget->clear();
+           QTextEdit* textEdit = new QTextEdit(ui->FindHashtagOrUsernameListWidget);
+           textEdit->setFixedSize(ui->FindHashtagOrUsernameListWidget->size()/3);
+           textEdit->show();
+           ui->SearchLabel->setText("Enter new Birthday");
+           ui->SearchLineEdit->hide();
+           ui->TweetButton->hide();
+           ui->BiogrphyButton->setText("Accept");
+           ui->BiogrphyButton->setStyleSheet("color : green");
+           ui->BiogrphyButton->show();
+
+           connect(ui->BiogrphyButton,&QPushButton::clicked,[=]()
+           {
+            ChangeBirthdayPersonalAccountWithUsernameAndPasswordChangeSafly(Username,textEdit->toPlainText());
+            textEdit->clear();
+            textEdit->hide();
+            ui->FindHashtagOrUsernameListWidget->show();
+            ui->SearchLabel->setText("Search :");
+            ui->SearchLineEdit->show();
+            ui->TweetButton->show();
+            ui->BiogrphyButton->hide();
+            on_SearchLineEdit_textChanged("");
+           });
+
        }
 
 
