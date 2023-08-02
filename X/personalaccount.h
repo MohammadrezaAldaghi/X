@@ -39,6 +39,8 @@ public:
     void DisplayProfilePersonalAcoount(QString username);
     void GetTweetLikeFromFile();
     void AdjustBiographyWithUsernameAndPassword(QString username,QString bio);
+    void Logout();
+    void ChnageNamePersonalAccountWithUsernameAndPasswordChangeSafly(QString usernam,QString NewName);
 
 
 private slots:

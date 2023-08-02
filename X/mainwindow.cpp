@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "qjsonarray.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -16,15 +17,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_checkButton_clicked()
 {
-    QImage ProfileImage;
-    QImage profileImageFromFile;
-            if (profileImageFromFile.load("Organisation/Moahmmadreza.json")) {
-                ProfileImage = profileImageFromFile;
-                qDebug()<<"yes";
-            }
-            else {
-              qDebug()<<"No";
+///n(QJsonDocument::Indented);
 
-            }
 }
 

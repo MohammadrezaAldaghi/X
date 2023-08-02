@@ -27,6 +27,7 @@ private:
     QMap<QString,QString> TweetMessage;
     QString Hashtag;
     QString Name;
+    bool UserLike = false;
 };
 
 #endif // TWEET_H

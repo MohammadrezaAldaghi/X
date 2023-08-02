@@ -654,38 +654,286 @@ void PersonalAccount::AdjustBiographyWithUsernameAndPassword(QString username,QS
 
 }
 
+void PersonalAccount::Logout()
+{
+    try{
+        bool THROW = false;
+        if(QFile::remove( "Personal/"+Username + ".json"))
+        {
+           this->close();
+           THROW = true;
+           qApp->exit();
+        }
+        if(QFile::remove( "Anonymous/"+Username + ".json"))
+        {
+           this->close();
+           THROW = true;
+           qApp->exit();
+        }
+        if(QFile::remove( "Organisation/"+Username + ".json"))
+        {
+            this->close();
+            THROW = true;
+            qApp->exit();
+        }
+        if(!THROW)
+        {
+            throw std::invalid_argument("file not removed!!!!!!!!!!!");
+        }
+    }
+       catch(std::exception& e)
+       {
+           QMessageBox::critical(this,"Error",e.what());
+    }
+}
+
+void PersonalAccount::ChnageNamePersonalAccountWithUsernameAndPasswordChangeSafly(QString usernam1,QString NewName)
+{
+    {
+        QFile file("Personal/" + usernam1 + ".json");
+        if(file.exists())
+        {
+            try{
+
+                if(file.open(QIODevice::ReadOnly))
+                {
+                    QByteArray jsonData = file.readAll();
+                    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+                    if(jsonDoc.isNull())
+                    {
+                        throw std::invalid_argument("not exist");
+                    }
+                    else
+                    {
+                        QJsonObject jsonObj = jsonDoc.object();
+                        if(jsonObj.value("Username").toString()==usernam1)
+                        {
+                            file.close();
+                            QFile::remove("Personal/" + usernam1);
+                            if(file.open(QIODevice::WriteOnly))
+                            {
+                                jsonObj["Name"] = NewName;
+                                QJsonDocument jDoc(jsonObj);
+                                QByteArray jData = jDoc.toJson();
+                                file.write(jData);
+                                file.close();
+
+                            }
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    throw std::invalid_argument("file not found");
+                }
+
+            }
+            catch(std::exception& e)
+            {
+                QMessageBox::critical(this,"Error",e.what());
+            }
+        }
+        file.close();
+    }
+    //***************************************************
+    {
+        QFile file("Organisation/" + usernam1 + ".json");
+        if(file.exists())
+        {
+            try{
+                if(file.open(QIODevice::ReadOnly))
+                {
+                    QByteArray jsonData = file.readAll();
+                    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+                    if(jsonDoc.isNull())
+                    {
+                        throw std::invalid_argument("not exist");
+                    }
+                    else
+                    {
+                        QJsonObject jsonObj = jsonDoc.object();
+                        if(jsonObj.value("Username").toString()==usernam1)
+                        {
+                            file.close();
+                            QFile::remove("Organisation/" + usernam1);
+                            if(file.open(QIODevice::WriteOnly))
+                            {
+                                jsonObj["Name"] = NewName;
+                                QJsonDocument jDoc(jsonObj);
+                                QByteArray jData = jDoc.toJson();
+                                file.write(jData);
+                                file.close();
+
+                            }
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    throw std::invalid_argument("file not found");
+                }
+
+            }
+            catch(std::exception& e)
+            {
+                QMessageBox::critical(this,"Error",e.what());
+            }
+        }
+        file.close();
+    }
+    //**************************************************************
+    {
+        QFile file("Anonymous/" + usernam1 + ".json");
+        if(file.exists())
+        {
+            try{
+                if(file.open(QIODevice::ReadOnly))
+                {
+                    QByteArray jsonData = file.readAll();
+                    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+                    if(jsonDoc.isNull())
+                    {
+                        throw std::invalid_argument("not exist");
+                    }
+                    else
+                    {
+                        QJsonObject jsonObj = jsonDoc.object();
+                        if(jsonObj.value("Username").toString()==usernam1)
+                        {
+                            file.close();
+                            QFile::remove("Anonymous/" + usernam1);
+                            if(file.open(QIODevice::WriteOnly))
+                            {
+                                jsonObj["Name"] = NewName;
+                                QJsonDocument jDoc(jsonObj);
+                                QByteArray jData = jDoc.toJson();
+                                file.write(jData);
+                                file.close();
+
+                            }
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    throw std::invalid_argument("file not found");
+                }
+
+            }
+            catch(std::exception& e)
+            {
+                QMessageBox::critical(this,"Error",e.what());
+            }
+        }
+        file.close();
+    }
+
+
+}
+
 void PersonalAccount::on_SettingButton_clicked()
 {
-    ui->SettingListWidget->clear();
-    QListWidgetItem* item1 = new QListWidgetItem("Logout");
-    QListWidgetItem* item2 = new QListWidgetItem("Adjust profile");
-    QListWidgetItem* item3 = new QListWidgetItem("Adjust Biography");
-    QListWidgetItem* item4 = new QListWidgetItem("Change usernam or password");
-    QListWidgetItem* item5 = new QListWidgetItem("Change Phone number");
-    QListWidgetItem* item6 = new QListWidgetItem("Show my profile");
+    QFile Personalfile("Personal/" + Username + ".json");
+    if(Personalfile.exists())
+    {
+        ui->SettingListWidget->clear();
+        QListWidgetItem* item1 = new QListWidgetItem("Logout");
+        QListWidgetItem* item2 = new QListWidgetItem("Adjust profile");
+        QListWidgetItem* item3 = new QListWidgetItem("Adjust Biography");
+        QListWidgetItem* item4 = new QListWidgetItem("Change usernam or password");
+        QListWidgetItem* item5 = new QListWidgetItem("Change Phone number");
+        QListWidgetItem* item6 = new QListWidgetItem("Show my profile");
+        QListWidgetItem* item7 = new QListWidgetItem("Change name");
+        QListWidgetItem* item8 = new QListWidgetItem("change birthday");
+        QListWidgetItem* item9 = new QListWidgetItem("change Country");
 
-    QColor grrenBright(0,155,160);
-    QColor skyColor(135, 100, 170);
-    item1->setBackground(QBrush(skyColor));
-    item2->setBackground(QBrush(skyColor));
-    item3->setBackground(QBrush(skyColor));
-    item4->setBackground(QBrush(skyColor));
-    item5->setBackground(QBrush(skyColor));
-    item6->setBackground(QBrush(grrenBright));
+        QColor grrenBright(0,155,160);
+        QColor skyColor(135, 100, 170);
+        item1->setBackground(QBrush(skyColor));
+        item2->setBackground(QBrush(skyColor));
+        item3->setBackground(QBrush(skyColor));
+        item4->setBackground(QBrush(skyColor));
+        item5->setBackground(QBrush(skyColor));
+        item6->setBackground(QBrush(grrenBright));
+        item7->setBackground(QBrush(grrenBright));
+        item8->setBackground(QBrush(grrenBright));
+        item9->setBackground(QBrush(grrenBright));
 
-    ui->SettingListWidget->addItem(item1);
-    ui->SettingListWidget->addItem(item2);
-    ui->SettingListWidget->addItem(item3);
-    ui->SettingListWidget->addItem(item4);
-    ui->SettingListWidget->addItem(item5);
-    ui->SettingListWidget->addItem(item6);
+        ui->SettingListWidget->addItem(item1);
+        ui->SettingListWidget->addItem(item2);
+        ui->SettingListWidget->addItem(item3);
+        ui->SettingListWidget->addItem(item4);
+        ui->SettingListWidget->addItem(item5);
+        ui->SettingListWidget->addItem(item6);
+        ui->SettingListWidget->addItem(item7);
+        ui->SettingListWidget->addItem(item8);
+        ui->SettingListWidget->addItem(item9);
+        return;
+    }
+
+     QFile Organisationfile("Organisation/" + Username + ".json");
+     if(Personalfile.exists())
+     {
+         ui->SettingListWidget->clear();
+         QListWidgetItem* item1 = new QListWidgetItem("Logout");
+         QListWidgetItem* item3 = new QListWidgetItem("Adjust Biography");
+         QListWidgetItem* item4 = new QListWidgetItem("Change usernam or password");
+         QListWidgetItem* item5 = new QListWidgetItem("Change Phone number");
+         QListWidgetItem* item6 = new QListWidgetItem("Show my profile");
+
+         QColor grrenBright(0,155,160);
+         QColor skyColor(135, 100, 170);
+         item1->setBackground(QBrush(skyColor));
+         item3->setBackground(QBrush(skyColor));
+         item4->setBackground(QBrush(skyColor));
+         item5->setBackground(QBrush(skyColor));
+         item6->setBackground(QBrush(grrenBright));
+
+         ui->SettingListWidget->addItem(item1);
+         ui->SettingListWidget->addItem(item3);
+         ui->SettingListWidget->addItem(item4);
+         ui->SettingListWidget->addItem(item5);
+         ui->SettingListWidget->addItem(item6);
+         return;
+     }
+
+     QFile Anonymousfile("Organisation/" + Username + ".json");
+     if(Anonymousfile.exists())
+     {
+         ui->SettingListWidget->clear();
+         QListWidgetItem* item1 = new QListWidgetItem("Logout");
+         QListWidgetItem* item3 = new QListWidgetItem("Adjust Biography");
+         QListWidgetItem* item4 = new QListWidgetItem("Change usernam or password");
+         QListWidgetItem* item5 = new QListWidgetItem("Change Phone number");
+         QListWidgetItem* item6 = new QListWidgetItem("Show my profile");
+
+         QColor grrenBright(0,155,160);
+         QColor skyColor(135, 100, 170);
+         item1->setBackground(QBrush(skyColor));
+         item3->setBackground(QBrush(skyColor));
+         item4->setBackground(QBrush(skyColor));
+         item5->setBackground(QBrush(skyColor));
+         item6->setBackground(QBrush(grrenBright));
+
+         ui->SettingListWidget->addItem(item1);
+         ui->SettingListWidget->addItem(item3);
+         ui->SettingListWidget->addItem(item4);
+         ui->SettingListWidget->addItem(item5);
+         ui->SettingListWidget->addItem(item6);
+         return;
+     }
+
 }
 
 void PersonalAccount::on_SearchLineEdit_textChanged(const QString &arg1)
 {
-//    ReadFromFolderAllAccountWithQString(arg1);
     ReadFromFolderAllTweet(arg1);
-
 }
 
 void PersonalAccount::on_TweetButton_clicked()
@@ -730,38 +978,14 @@ void PersonalAccount::ItemClickedSettingListWidget(QListWidgetItem *itemArgument
        }
        if(itemArgument->text() == "Logout")
        {
-        try{
-            bool THROW = false;
-            if(QFile::remove( "Personal/"+Username + ".json"))
-            {
-               this->close();
-               THROW = true;
-               qApp->exit();
-            }
-            if(QFile::remove( "Anonymous/"+Username + ".json"))
-            {
-               this->close();
-               THROW = true;
-               qApp->exit();
-            }
-            if(QFile::remove( "Organisation/"+Username + ".json"))
-            {
-                this->close();
-                THROW = true;
-                qApp->exit();
-            }
-            if(!THROW)
-            {
-                throw std::invalid_argument("file not removed!!!!!!!!!!!");
-            }
-        }
-           catch(std::exception& e)
-           {
-               QMessageBox::critical(this,"Error",e.what());
-           }
-
-
+            Logout();
        }
+       if(itemArgument->text() == "Change name")
+       {
+            ChnageNamePersonalAccountWithUsernameAndPasswordChangeSafly(Username,"SDDDDDDDdd");
+       }
+
+
 
     } catch (std::exception& e)
     {
