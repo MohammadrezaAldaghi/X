@@ -42,6 +42,7 @@ public:
     void Logout();
     void ChnageNamePersonalAccountWithUsernameAndPasswordChangeSafly(QString usernam,QString NewName);
     void ChangeBirthdayPersonalAccountWithUsernameAndPasswordChangeSafly(QString usernam,QString NewBirthday);
+    void ChangeCountryPersonalAccountWithUsernameAndPasswordChangeSafly(QString username,QString newCountry);
 
 
 private slots:
