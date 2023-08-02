@@ -1358,6 +1358,7 @@ void PersonalAccount::ItemClickedSettingListWidget(QListWidgetItem *itemArgument
        }
 
 
+
     } catch (std::exception& e)
     {
         QMessageBox::critical(this,"Error",e.what());

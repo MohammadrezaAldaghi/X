@@ -12,8 +12,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-//    MainWindow w;
-//    w.show();
+    MainWindow w;
+    w.show();
 
 //    SignUp S;
 //    S.show();
@@ -27,8 +27,8 @@ int main(int argc, char *argv[])
 //    SignUpAnonymousUser S;
 //    S.show();
 
-    LoginForm L;
-    L.show();
+//    LoginForm L;
+//    L.show();
 
 //    PersonalAccount P;
 //    P.show();
