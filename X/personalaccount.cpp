@@ -213,6 +213,9 @@ void PersonalAccount::ReadFromFolderAllTweet(QString str)
                     QString name = obj.value("Name").toString();
                     QString tweetID = obj.value("TweetID").toString();
                     QString likeTweet = obj.value("Like").toString();
+                    {
+                        likeTweet = QString::fromStdString(std::to_string(GetTweetLikePersonalAccountWithTweetID(tweetID)));
+                    }
 
                     // Create a new widget item for the text and button
                     QWidget *widgetItem = new QWidget(ui->FindHashtagOrUsernameListWidget);
@@ -260,7 +263,7 @@ void PersonalAccount::ReadFromFolderAllTweet(QString str)
 //                        connect(likeButton,&QPushButton::clicked,this,&PersonalAccount::onButtonClicked);
                         connect(likeButton, &QPushButton::clicked, [=]()
                         {
-                            test(tweetID);
+                            test(tweetID,username);
                             // Handle the button click here
                         });
 //                        connect(mentionButton,&QPushButton::clicked,this,&PersonalAccount::onButtonClicked);
@@ -1133,6 +1136,64 @@ void PersonalAccount::ChangeCountryPersonalAccountWithUsernameAndPasswordChangeS
     }
 }
 
+int PersonalAccount::GetTweetLikePersonalAccountWithTweetID(QString tweetID)
+{
+    int total = 0;
+    QFile file("Tweet/Like.json");
+    try
+    {
+        if (file.open(QIODevice::ReadOnly))
+        {
+            QByteArray fileData = file.readAll();
+
+            QJsonDocument jsonDoc = QJsonDocument::fromJson(fileData);
+
+            if (jsonDoc.isArray())
+            {
+                QJsonArray jsonArray = jsonDoc.array();
+
+                for (const auto& jsonValue : jsonArray)
+                {
+                    if (jsonValue.isObject())
+                    {
+                        QJsonObject jsonObj = jsonValue.toObject();
+                        QString username = jsonObj.value("Username").toString();
+                        QString usernameLike = jsonObj.value("UsernameLike").toString();
+                        QString tweetId = jsonObj.value("TweetID").toString();
+                        int likeCounter;
+                        if(jsonObj.value("TweetLike").toString()=="")
+                        {
+                            likeCounter = 0;
+                        }
+                        else
+                        {
+                            likeCounter = jsonObj.value("TweetLike").toInt();
+                        }
+                        if(tweetID == tweetId)
+                        {
+                            total++;
+                        }
+
+                    }
+                }
+            }
+
+            file.close();
+        }
+        else
+        {
+            file.close();
+            throw std::invalid_argument("invalid file path");
+        }
+    }
+    catch(std::exception &e)
+    {
+        QMessageBox::critical(nullptr,e.what(),"There was a problem, please try again");
+    }
+    qDebug()<<"Total = "<<total<<"\n";
+    return total;
+}
+
 void PersonalAccount::on_SettingButton_clicked()
 {
     QFile Personalfile("Personal/" + Username + ".json");
@@ -1372,9 +1433,9 @@ void PersonalAccount::onButtonClicked()
     qDebug()<<"mentionButton"<<", test = "<<test<<"\n";
 }
 
-void PersonalAccount::test(QString te)
+void PersonalAccount::test(QString tweetid,QString tweetUsername)
 {
     Tweet t;
-    t.test(te);
+    t.AddُTheNumberOfLikesToTweet(Username,tweetid,tweetUsername);
 }
 

@@ -70,11 +70,66 @@ void Tweet::AddTweet(QString username, QString message, QString hashtag,QString 
     }
 }
 
-void Tweet::test(QString tweetid)
+bool Tweet::test(QString tweetid,QString usernamePeson)
 {
-    QFile file("Tweet/Tweet.json");
+    qDebug()<<"test\n";
+    QFile file("Tweet/Like.json");
+    try
+    {
+        if(file.exists())
+        {
+            if (file.open(QIODevice::ReadOnly))
+            {
+                QByteArray fileData = file.readAll();
 
-        if(file.open(QIODevice::ReadOnly))
+                QJsonDocument jsonDoc = QJsonDocument::fromJson(fileData);
+
+                if (jsonDoc.isArray())
+                {
+                    QJsonArray jsonArray = jsonDoc.array();
+
+                    for (const auto& jsonValue : jsonArray)
+                    {
+                        if (jsonValue.isObject())
+                        {
+                            QJsonObject jsonObj = jsonValue.toObject();
+                            QString username = jsonObj.value("Username").toString();
+                            QString usernameLike = jsonObj.value("UsernameLike").toString();
+                            QString tweetID = jsonObj.value("TweetID").toString();
+                            qDebug()<<"username = "<<username<<" , usernameLike = "<<usernameLike<<" , tweetID = "<<tweetID<<"\n";
+                            if(usernamePeson == usernameLike && tweetid == tweetID)
+                            {
+                                qDebug()<<"usernamePeson = " << usernamePeson << "\n";
+                                file.close();
+                                return false;
+                            }
+                        }
+                    }
+                }
+
+                file.close();
+            }
+        }
+        else
+        {
+            file.close();
+            throw std::invalid_argument("invalid file path");
+        }
+    }
+    catch(std::exception &e)
+    {
+        QMessageBox::critical(nullptr,e.what(),"There was a problem, please try again");
+    }
+    file.close();
+    return true;
+}
+
+int Tweet::GetTweetLikeCounter(QString tweetID)
+{
+    QFile file("Tweet/Like.json");
+    try
+    {
+        if (file.open(QIODevice::ReadOnly))
         {
             QByteArray fileData = file.readAll();
 
@@ -84,48 +139,52 @@ void Tweet::test(QString tweetid)
             {
                 QJsonArray jsonArray = jsonDoc.array();
 
-                foreach (const QJsonValue &value, jsonArray)
+                for (const auto& jsonValue : jsonArray)
                 {
-                    QJsonObject obj = value.toObject();
-
-                    QString username = obj.value("Username").toString();
-                    QString message = obj.value("Message").toString();
-                    QString hashtag = obj.value("#").toString();
-                    QString name = obj.value("Name").toString();
-                    QString tweetID = obj.value("TweetID").toString();
-                    QString like = obj.value("Like").toString();
-
+                    if (jsonValue.isObject())
                     {
-                        if(tweetid==tweetID)
+                        QJsonObject jsonObj = jsonValue.toObject();
+                        QString username = jsonObj.value("Username").toString();
+                        QString usernameLike = jsonObj.value("UsernameLike").toString();
+                        QString tweetId = jsonObj.value("TweetID").toString();
+                        int likeCounter;
+                        if(jsonObj.value("TweetLike").toString()=="")
                         {
-                            AddُTheNumberOfLikesToTweet(username,message,hashtag,name,like.toInt()+1,tweetid);
+                            likeCounter = 0;
                         }
                         else
                         {
-                            AddُTheNumberOfLikesToTweet(username,message,hashtag,name,like.toInt(),tweetid);
+                            likeCounter = jsonObj.value("TweetLike").toInt();
+                        }
+                        if(tweetID == tweetId)
+                        {
+                            return likeCounter;
                         }
 
                     }
-
-
-
                 }
             }
-        file.close();
+
+            file.close();
         }
-
-
-
+        else
+        {
+            file.close();
+            throw std::invalid_argument("invalid file path");
+        }
+    }
+    catch(std::exception &e)
+    {
+        QMessageBox::critical(nullptr,e.what(),"There was a problem, please try again");
+    }
 }
 
-
-
-void Tweet::AddُTheNumberOfLikesToTweet(QString username, QString message, QString hashtag,QString name,int like,QString tweetId)
+void Tweet::AddُTheNumberOfLikesToTweet(QString usernameLike,QString TweetID,QString TweetUsername)
 {
-
-
+    qDebug()<<"AddُTheNumberOfLikesToTweet\n";
+    if(test(TweetID,usernameLike)==true)
     {
-        QFile file("Tweet/Tweet1.json");
+        QFile file("Tweet/Like.json");
         try
         {
             if (file.open(QIODevice::ReadWrite))
@@ -141,19 +200,16 @@ void Tweet::AddُTheNumberOfLikesToTweet(QString username, QString message, QStr
                 }
 
                 QJsonObject jsonObj;
-                jsonObj["Username"] = username;
-                jsonObj["Message"] = message;
-                jsonObj["#"] = hashtag;
-                jsonObj["Name"] = name;
-                jsonObj["TweetID"] = QString::fromStdString(std::to_string(rand()*rand()*rand()));
-                jsonObj["Like"] = QString::fromStdString(std::to_string(like));
+                jsonObj["Username"] = TweetUsername;
+                jsonObj["UsernameLike"] = usernameLike;
+                jsonObj["TweetID"] = TweetID;
+                jsonObj["TweetLike"] = QString::fromStdString(std::to_string(GetTweetLikeCounter(TweetID) + 1));
                 jsonArray.append(jsonObj);
 
                 QJsonDocument newJsonDoc(jsonArray);
 
                 file.resize(0);
                 file.write(newJsonDoc.toJson());
-
                 file.close();
             }
             else
@@ -168,6 +224,7 @@ void Tweet::AddُTheNumberOfLikesToTweet(QString username, QString message, QStr
         }
         file.close();
     }
+
 
 
 

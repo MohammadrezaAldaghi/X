@@ -19,8 +19,10 @@ class Tweet
 public:
     Tweet();
     void AddTweet(QString username,QString message,QString hashtag,QString name,int like);
-    void AddُTheNumberOfLikesToTweet(QString username, QString message, QString hashtag,QString name,int like,QString tweetId);
-    void test(QString tweetid);
+    void AddُTheNumberOfLikesToTweet(QString usernameLike,QString TweetID,QString TweetUsername);
+    bool test(QString tweetid,QString username);
+    int GetTweetLikeCounter(QString tweetID);
+
 
 private:
 //    QMap<QString UsernameTweet,QString Message> TweetMessage

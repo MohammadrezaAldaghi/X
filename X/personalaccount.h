@@ -43,6 +43,7 @@ public:
     void ChnageNamePersonalAccountWithUsernameAndPasswordChangeSafly(QString usernam,QString NewName);
     void ChangeBirthdayPersonalAccountWithUsernameAndPasswordChangeSafly(QString usernam,QString NewBirthday);
     void ChangeCountryPersonalAccountWithUsernameAndPasswordChangeSafly(QString username,QString newCountry);
+    int GetTweetLikePersonalAccountWithTweetID(QString tweetid);
 
 
 private slots:
@@ -58,7 +59,7 @@ private slots:
 
     void onButtonClicked();
 
-    void test(QString te);
+    void test(QString te,QString usernamSendTweet);
 
 private:
     Ui::PersonalAccount *ui;
