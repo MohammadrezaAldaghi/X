@@ -17,6 +17,7 @@
 #include <tweet.h>
 #include <QtGlobal>
 #include <QTextEdit>
+#include "followersclasses.h"
 
 
 namespace Ui {
@@ -59,7 +60,11 @@ private slots:
 
     void onButtonClicked();
 
-    void test(QString te,QString usernamSendTweet);
+    void LikeButtonTweet(QString te,QString usernamSendTweet);
+
+    void FollowerButtonAccount(QString UsernameSendTweet,QString FollowerUsername);
+
+    void on_FollowersButton_clicked();
 
 private:
     Ui::PersonalAccount *ui;

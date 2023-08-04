@@ -221,13 +221,16 @@ void PersonalAccount::ReadFromFolderAllTweet(QString str)
                     QWidget *widgetItem = new QWidget(ui->FindHashtagOrUsernameListWidget);
 
                     // Create a label for the text
-                    QLabel *textLabel = new QLabel(name + "  " + username + "\nMessage : " + message + "\n Hashtag : " + hashtag + "\n", widgetItem);
+                    QLabel *textLabel = new QLabel(name + "  @" + username + "\nMessage : " + message + "\n Hashtag : " + hashtag + "\n", widgetItem);
 
                     // Create the button
                     QPushButton *likeButton = new QPushButton("Like", widgetItem);
                     QPushButton *mentionButton = new QPushButton("Mention",widgetItem);
+                    QPushButton *FollowButton = new QPushButton("Follow",widgetItem);
+
                     likeButton->setStyleSheet("color : green");
                     mentionButton->setStyleSheet("color : purple");
+                    FollowButton->setStyleSheet("color : blue");
 
                     // Create a label for the button and text
                     QLabel* likeLabel = new QLabel();
@@ -246,6 +249,7 @@ void PersonalAccount::ReadFromFolderAllTweet(QString str)
                     layout->addStretch(); // Add a stretchable space between the label and button
                     layout->addWidget(likeButton);
                     layout->addWidget(mentionButton);
+                    layout->addWidget(FollowButton);
                     layout->addWidget(likeLabel);
                     widgetItem->setLayout(layout);
 
@@ -263,13 +267,18 @@ void PersonalAccount::ReadFromFolderAllTweet(QString str)
 //                        connect(likeButton,&QPushButton::clicked,this,&PersonalAccount::onButtonClicked);
                         connect(likeButton, &QPushButton::clicked, [=]()
                         {
-                            test(tweetID,username);
+                            LikeButtonTweet(tweetID,username);
                             // Handle the button click here
                         });
 //                        connect(mentionButton,&QPushButton::clicked,this,&PersonalAccount::onButtonClicked);
                         connect(mentionButton,&QPushButton::clicked,[=]()
                         {
                             onButtonClicked();
+                        });
+//                        connect(FollowButton,&QPushButton::clicked,this,&PersonalAccount::onButtonClicked);
+                        connect(FollowButton,&QPushButton::clicked,[=]()
+                        {
+                            FollowerButtonAccount(username,Username);
                         });
                     }
 
@@ -1142,45 +1151,52 @@ int PersonalAccount::GetTweetLikePersonalAccountWithTweetID(QString tweetID)
     QFile file("Tweet/Like.json");
     try
     {
-        if (file.open(QIODevice::ReadOnly))
+        if(file.exists())
         {
-            QByteArray fileData = file.readAll();
-
-            QJsonDocument jsonDoc = QJsonDocument::fromJson(fileData);
-
-            if (jsonDoc.isArray())
+            if (file.open(QIODevice::ReadOnly))
             {
-                QJsonArray jsonArray = jsonDoc.array();
+                QByteArray fileData = file.readAll();
 
-                for (const auto& jsonValue : jsonArray)
+                QJsonDocument jsonDoc = QJsonDocument::fromJson(fileData);
+
+                if (jsonDoc.isArray())
                 {
-                    if (jsonValue.isObject())
-                    {
-                        QJsonObject jsonObj = jsonValue.toObject();
-                        QString username = jsonObj.value("Username").toString();
-                        QString usernameLike = jsonObj.value("UsernameLike").toString();
-                        QString tweetId = jsonObj.value("TweetID").toString();
-                        int likeCounter;
-                        if(jsonObj.value("TweetLike").toString()=="")
-                        {
-                            likeCounter = 0;
-                        }
-                        else
-                        {
-                            likeCounter = jsonObj.value("TweetLike").toInt();
-                        }
-                        if(tweetID == tweetId)
-                        {
-                            total++;
-                        }
+                    QJsonArray jsonArray = jsonDoc.array();
 
+                    for (const auto& jsonValue : jsonArray)
+                    {
+                        if (jsonValue.isObject())
+                        {
+                            QJsonObject jsonObj = jsonValue.toObject();
+                            QString username = jsonObj.value("Username").toString();
+                            QString usernameLike = jsonObj.value("UsernameLike").toString();
+                            QString tweetId = jsonObj.value("TweetID").toString();
+                            int likeCounter;
+                            if(jsonObj.value("TweetLike").toString()=="")
+                            {
+                                likeCounter = 0;
+                            }
+                            else
+                            {
+                                likeCounter = jsonObj.value("TweetLike").toInt();
+                            }
+                            if(tweetID == tweetId)
+                            {
+                                total++;
+                            }
+
+                        }
                     }
                 }
             }
 
             file.close();
         }
-        else
+        if(!file.exists())
+        {
+            return 0;
+        }
+        if(file.error())
         {
             file.close();
             throw std::invalid_argument("invalid file path");
@@ -1433,9 +1449,182 @@ void PersonalAccount::onButtonClicked()
     qDebug()<<"mentionButton"<<", test = "<<test<<"\n";
 }
 
-void PersonalAccount::test(QString tweetid,QString tweetUsername)
+void PersonalAccount::LikeButtonTweet(QString tweetid,QString tweetUsername)
 {
     Tweet t;
     t.AddُTheNumberOfLikesToTweet(Username,tweetid,tweetUsername);
+}
+
+void PersonalAccount::FollowerButtonAccount(QString FollowedAccount, QString FollowerAccount)
+{
+    FollowersClasses F;
+    F.SetFollowersClassesFollowedAccount(FollowedAccount);
+    F.SetFollowersClassesFollowerAccount(FollowerAccount);
+    F.SetAttributeFollowersClasses();
+
+    qDebug()<<"FollowersClasses counter = " << F.GetFollowerClassFollowedAccount(Username)<<"\n";
+
+    {
+        {
+            QFile file("Personal/" + Username + ".json");
+            if(file.exists())
+            {
+                try{
+
+                    if(file.open(QIODevice::ReadOnly))
+                    {
+                        QByteArray jsonData = file.readAll();
+                        QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+                        if(jsonDoc.isNull())
+                        {
+                            throw std::invalid_argument("not exist");
+                        }
+                        else
+                        {
+                            QJsonObject jsonObj = jsonDoc.object();
+                            if(jsonObj.value("Username").toString()==Username)
+                            {
+                                file.close();
+                                QFile::remove("Personal/" + Username);
+                                if(file.open(QIODevice::WriteOnly))
+                                {
+                                    jsonObj["Followers"] = QString::fromStdString(std::to_string(F.GetFollowerClassFollowedAccount(Username)));
+                                    QJsonDocument jDoc(jsonObj);
+                                    QByteArray jData = jDoc.toJson();
+                                    file.write(jData);
+                                    file.close();
+
+                                }
+                            }
+
+                        }
+
+                    }
+                    else
+                    {
+                        throw std::invalid_argument("file not found");
+                    }
+
+                }
+                catch(std::exception& e)
+                {
+                    QMessageBox::critical(this,"Error",e.what());
+                }
+            }
+            file.close();
+        }
+        //***************************************************
+        {
+            QFile file("Organisation/" + Username + ".json");
+            if(file.exists())
+            {
+                try{
+                    if(file.open(QIODevice::ReadOnly))
+                    {
+                        QByteArray jsonData = file.readAll();
+                        QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+                        if(jsonDoc.isNull())
+                        {
+                            throw std::invalid_argument("not exist");
+                        }
+                        else
+                        {
+                            QJsonObject jsonObj = jsonDoc.object();
+                            if(jsonObj.value("Username").toString()==Username)
+                            {
+                                file.close();
+                                QFile::remove("Organisation/" + Username);
+                                if(file.open(QIODevice::WriteOnly))
+                                {
+                                    jsonObj["Followers"] = QString::fromStdString(std::to_string(F.GetFollowerClassFollowedAccount(Username)));
+                                    QJsonDocument jDoc(jsonObj);
+                                    QByteArray jData = jDoc.toJson();
+                                    file.write(jData);
+                                    file.close();
+
+                                }
+                            }
+
+                        }
+
+                    }
+                    else
+                    {
+                        throw std::invalid_argument("file not found");
+                    }
+
+                }
+                catch(std::exception& e)
+                {
+                    QMessageBox::critical(this,"Error",e.what());
+                }
+            }
+            file.close();
+        }
+        //**************************************************************
+        {
+            QFile file("Anonymous/" + Username + ".json");
+            if(file.exists())
+            {
+                try{
+                    if(file.open(QIODevice::ReadOnly))
+                    {
+                        QByteArray jsonData = file.readAll();
+                        QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+                        if(jsonDoc.isNull())
+                        {
+                            throw std::invalid_argument("not exist");
+                        }
+                        else
+                        {
+                            QJsonObject jsonObj = jsonDoc.object();
+                            if(jsonObj.value("Username").toString()==Username)
+                            {
+                                file.close();
+                                QFile::remove("Anonymous/" + Username);
+                                if(file.open(QIODevice::WriteOnly))
+                                {
+                                    jsonObj["Followers"] = QString::fromStdString(std::to_string(F.GetFollowerClassFollowedAccount(Username)));
+                                    QJsonDocument jDoc(jsonObj);
+                                    QByteArray jData = jDoc.toJson();
+                                    file.write(jData);
+                                    file.close();
+
+                                }
+                            }
+
+                        }
+
+                    }
+                    else
+                    {
+                        throw std::invalid_argument("file not found");
+                    }
+
+                }
+                catch(std::exception& e)
+                {
+                    QMessageBox::critical(this,"Error",e.what());
+                }
+            }
+            file.close();
+        }
+
+    }
+
+
+}
+
+
+void PersonalAccount::on_FollowersButton_clicked()
+{
+    ui->listWidget->clear();
+    FollowersClasses F;
+    for(auto follower : F.GetFollowersClassesFollowedAccount(Username))
+    {
+        QListWidgetItem* item = new QListWidgetItem(follower);
+        ui->listWidget->addItem(item);
+    }
+
 }
 

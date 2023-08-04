@@ -110,6 +110,10 @@ bool Tweet::test(QString tweetid,QString usernamePeson)
                 file.close();
             }
         }
+        if(!file.exists())
+        {
+            return true;
+        }
         else
         {
             file.close();
@@ -118,7 +122,7 @@ bool Tweet::test(QString tweetid,QString usernamePeson)
     }
     catch(std::exception &e)
     {
-        QMessageBox::critical(nullptr,e.what(),"There was a problem, please try again");
+//        QMessageBox::critical(nullptr,e.what(),"There was a problem, please try again");
     }
     file.close();
     return true;
@@ -126,48 +130,56 @@ bool Tweet::test(QString tweetid,QString usernamePeson)
 
 int Tweet::GetTweetLikeCounter(QString tweetID)
 {
+    int total = 0;
     QFile file("Tweet/Like.json");
     try
     {
-        if (file.open(QIODevice::ReadOnly))
+        if(file.exists())
         {
-            QByteArray fileData = file.readAll();
-
-            QJsonDocument jsonDoc = QJsonDocument::fromJson(fileData);
-
-            if (jsonDoc.isArray())
+            if (file.open(QIODevice::ReadOnly))
             {
-                QJsonArray jsonArray = jsonDoc.array();
+                QByteArray fileData = file.readAll();
 
-                for (const auto& jsonValue : jsonArray)
+                QJsonDocument jsonDoc = QJsonDocument::fromJson(fileData);
+
+                if (jsonDoc.isArray())
                 {
-                    if (jsonValue.isObject())
-                    {
-                        QJsonObject jsonObj = jsonValue.toObject();
-                        QString username = jsonObj.value("Username").toString();
-                        QString usernameLike = jsonObj.value("UsernameLike").toString();
-                        QString tweetId = jsonObj.value("TweetID").toString();
-                        int likeCounter;
-                        if(jsonObj.value("TweetLike").toString()=="")
-                        {
-                            likeCounter = 0;
-                        }
-                        else
-                        {
-                            likeCounter = jsonObj.value("TweetLike").toInt();
-                        }
-                        if(tweetID == tweetId)
-                        {
-                            return likeCounter;
-                        }
+                    QJsonArray jsonArray = jsonDoc.array();
 
+                    for (const auto& jsonValue : jsonArray)
+                    {
+                        if (jsonValue.isObject())
+                        {
+                            QJsonObject jsonObj = jsonValue.toObject();
+                            QString username = jsonObj.value("Username").toString();
+                            QString usernameLike = jsonObj.value("UsernameLike").toString();
+                            QString tweetId = jsonObj.value("TweetID").toString();
+                            int likeCounter;
+                            if(jsonObj.value("TweetLike").toString()=="")
+                            {
+                                likeCounter = 0;
+                            }
+                            else
+                            {
+                                likeCounter = jsonObj.value("TweetLike").toInt();
+                            }
+                            if(tweetID == tweetId)
+                            {
+                                total++;
+                            }
+
+                        }
                     }
                 }
             }
 
             file.close();
         }
-        else
+        if(!file.exists())
+        {
+            return 0;
+        }
+        if(file.error())
         {
             file.close();
             throw std::invalid_argument("invalid file path");
@@ -177,45 +189,50 @@ int Tweet::GetTweetLikeCounter(QString tweetID)
     {
         QMessageBox::critical(nullptr,e.what(),"There was a problem, please try again");
     }
+    qDebug()<<"Total = "<<total<<"\n";
+    return total;
 }
 
 void Tweet::AddُTheNumberOfLikesToTweet(QString usernameLike,QString TweetID,QString TweetUsername)
 {
     qDebug()<<"AddُTheNumberOfLikesToTweet\n";
-    if(test(TweetID,usernameLike)==true)
+
     {
         QFile file("Tweet/Like.json");
         try
         {
-            if (file.open(QIODevice::ReadWrite))
+            if(test(TweetID,usernameLike)==true)
             {
-                QByteArray fileData = file.readAll();
-
-                QJsonDocument jsonDoc = QJsonDocument::fromJson(fileData);
-
-                QJsonArray jsonArray;
-                if (jsonDoc.isArray())
+                if (file.open(QIODevice::ReadWrite))
                 {
-                    jsonArray = jsonDoc.array();
+                    QByteArray fileData = file.readAll();
+
+                    QJsonDocument jsonDoc = QJsonDocument::fromJson(fileData);
+
+                    QJsonArray jsonArray;
+                    if (jsonDoc.isArray())
+                    {
+                        jsonArray = jsonDoc.array();
+                    }
+
+                    QJsonObject jsonObj;
+                    jsonObj["Username"] = TweetUsername;
+                    jsonObj["UsernameLike"] = usernameLike;
+                    jsonObj["TweetID"] = TweetID;
+                    jsonObj["TweetLike"] = QString::fromStdString(std::to_string(GetTweetLikeCounter(TweetID) + 1));
+                    jsonArray.append(jsonObj);
+
+                    QJsonDocument newJsonDoc(jsonArray);
+
+                    file.resize(0);
+                    file.write(newJsonDoc.toJson());
+                    file.close();
                 }
-
-                QJsonObject jsonObj;
-                jsonObj["Username"] = TweetUsername;
-                jsonObj["UsernameLike"] = usernameLike;
-                jsonObj["TweetID"] = TweetID;
-                jsonObj["TweetLike"] = QString::fromStdString(std::to_string(GetTweetLikeCounter(TweetID) + 1));
-                jsonArray.append(jsonObj);
-
-                QJsonDocument newJsonDoc(jsonArray);
-
-                file.resize(0);
-                file.write(newJsonDoc.toJson());
-                file.close();
-            }
-            else
-            {
-                file.close();
-                throw std::invalid_argument("invalid file path");
+                else
+                {
+                    file.close();
+                    throw std::invalid_argument("invalid file path");
+                }
             }
         }
         catch(std::exception &e)
