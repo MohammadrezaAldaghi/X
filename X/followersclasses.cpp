@@ -233,3 +233,26 @@ bool FollowersClasses::Test(QString followedAccount, QString followerAccount)
     file.close();
     return true;
 }
+
+bool FollowersClasses::IsUserCanFollower(QString USER)
+{
+    qDebug()<<"FollowerAccount = "<<USER<<"\n";
+    //read from Organisation User
+    {
+        QFile jsonFile("Organisation/"+ USER +".json");
+        if(jsonFile.exists())
+        {
+            return true;
+        }
+    }
+    //read Personal User
+    {
+        QFile jsonFile("Personal/"+USER+".json");
+        if(jsonFile.exists())
+        {
+            return true;
+        }
+
+    }
+    return false;
+}

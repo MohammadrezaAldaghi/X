@@ -30,6 +30,8 @@ private slots:
 
     void on_TweetButton_clicked();
 
+
+
 private:
     Ui::TweetForm *ui;
     QString Name;

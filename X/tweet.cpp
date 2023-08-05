@@ -46,7 +46,7 @@ void Tweet::AddTweet(QString username, QString message, QString hashtag,QString 
                 jsonObj["Message"] = message;
                 jsonObj["#"] = hashtag;
                 jsonObj["Name"] = name;
-                jsonObj["TweetID"] = QString::fromStdString(std::to_string(rand()*rand()*rand()));
+                jsonObj["TweetID"] = QString::fromStdString(std::to_string(abs(rand()*rand()*rand())));
                 jsonObj["Like"] = QString::fromStdString(std::to_string(like));
                 jsonArray.append(jsonObj);
 

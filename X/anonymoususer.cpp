@@ -15,6 +15,7 @@ bool AnonymousUser::SetAttributeAnonymousUser()
     QJsonObject jsonObj;
     jsonObj["Username"] = Username;
     jsonObj["Password"] = Password;
+    jsonObj["Name"] = "User Anonymous";
 
     QJsonDocument jsonDoc(jsonObj);
 

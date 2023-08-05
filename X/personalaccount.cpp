@@ -26,6 +26,8 @@ PersonalAccount::PersonalAccount(QWidget *parent) :
     connect(ui->FindHashtagOrUsernameListWidget, &QListWidget::itemClicked, this,&PersonalAccount:: ItemClickedSettingListWidget);
 
 
+
+
 }
 PersonalAccount::~PersonalAccount()
 {
@@ -1225,7 +1227,7 @@ void PersonalAccount::on_SettingButton_clicked()
         QListWidgetItem* item7 = new QListWidgetItem("Change name");
         QListWidgetItem* item8 = new QListWidgetItem("change birthday");
         QListWidgetItem* item9 = new QListWidgetItem("change Country");
-
+        QListWidgetItem* item10 = new QListWidgetItem("Show All HashTAG");
         QColor grrenBright(0,155,160);
         QColor skyColor(135, 100, 170);
         item1->setBackground(QBrush(skyColor));
@@ -1237,6 +1239,7 @@ void PersonalAccount::on_SettingButton_clicked()
         item7->setBackground(QBrush(grrenBright));
         item8->setBackground(QBrush(grrenBright));
         item9->setBackground(QBrush(grrenBright));
+        item10->setBackground(QBrush("red"));
 
         ui->SettingListWidget->addItem(item1);
         ui->SettingListWidget->addItem(item2);
@@ -1247,6 +1250,7 @@ void PersonalAccount::on_SettingButton_clicked()
         ui->SettingListWidget->addItem(item7);
         ui->SettingListWidget->addItem(item8);
         ui->SettingListWidget->addItem(item9);
+        ui->SettingListWidget->addItem(item10);
         return;
     }
 
@@ -1433,6 +1437,11 @@ void PersonalAccount::ItemClickedSettingListWidget(QListWidgetItem *itemArgument
             on_SearchLineEdit_textChanged("");
            });
        }
+       if(itemArgument->text() == "Show All HashTAG")
+       {
+
+       }
+
 
 
 
@@ -1458,163 +1467,165 @@ void PersonalAccount::LikeButtonTweet(QString tweetid,QString tweetUsername)
 void PersonalAccount::FollowerButtonAccount(QString FollowedAccount, QString FollowerAccount)
 {
     FollowersClasses F;
-    F.SetFollowersClassesFollowedAccount(FollowedAccount);
-    F.SetFollowersClassesFollowerAccount(FollowerAccount);
-    F.SetAttributeFollowersClasses();
-
-    qDebug()<<"FollowersClasses counter = " << F.GetFollowerClassFollowedAccount(Username)<<"\n";
-
+    if(F.IsUserCanFollower(FollowedAccount) == true)
     {
+        F.SetFollowersClassesFollowedAccount(FollowedAccount);
+        F.SetFollowersClassesFollowerAccount(FollowerAccount);
+        F.SetAttributeFollowersClasses();
+
+        qDebug()<<"FollowersClasses counter = " << F.GetFollowerClassFollowedAccount(Username)<<"\n";
+
         {
-            QFile file("Personal/" + Username + ".json");
-            if(file.exists())
             {
-                try{
+                QFile file("Personal/" + Username + ".json");
+                if(file.exists())
+                {
+                    try{
 
-                    if(file.open(QIODevice::ReadOnly))
-                    {
-                        QByteArray jsonData = file.readAll();
-                        QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
-                        if(jsonDoc.isNull())
+                        if(file.open(QIODevice::ReadOnly))
                         {
-                            throw std::invalid_argument("not exist");
-                        }
-                        else
-                        {
-                            QJsonObject jsonObj = jsonDoc.object();
-                            if(jsonObj.value("Username").toString()==Username)
+                            QByteArray jsonData = file.readAll();
+                            QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+                            if(jsonDoc.isNull())
                             {
-                                file.close();
-                                QFile::remove("Personal/" + Username);
-                                if(file.open(QIODevice::WriteOnly))
+                                throw std::invalid_argument("not exist");
+                            }
+                            else
+                            {
+                                QJsonObject jsonObj = jsonDoc.object();
+                                if(jsonObj.value("Username").toString()==Username)
                                 {
-                                    jsonObj["Followers"] = QString::fromStdString(std::to_string(F.GetFollowerClassFollowedAccount(Username)));
-                                    QJsonDocument jDoc(jsonObj);
-                                    QByteArray jData = jDoc.toJson();
-                                    file.write(jData);
                                     file.close();
+                                    QFile::remove("Personal/" + Username);
+                                    if(file.open(QIODevice::WriteOnly))
+                                    {
+                                        jsonObj["Followers"] = QString::fromStdString(std::to_string(F.GetFollowerClassFollowedAccount(Username)));
+                                        QJsonDocument jDoc(jsonObj);
+                                        QByteArray jData = jDoc.toJson();
+                                        file.write(jData);
+                                        file.close();
 
+                                    }
                                 }
+
                             }
 
                         }
-
-                    }
-                    else
-                    {
-                        throw std::invalid_argument("file not found");
-                    }
-
-                }
-                catch(std::exception& e)
-                {
-                    QMessageBox::critical(this,"Error",e.what());
-                }
-            }
-            file.close();
-        }
-        //***************************************************
-        {
-            QFile file("Organisation/" + Username + ".json");
-            if(file.exists())
-            {
-                try{
-                    if(file.open(QIODevice::ReadOnly))
-                    {
-                        QByteArray jsonData = file.readAll();
-                        QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
-                        if(jsonDoc.isNull())
-                        {
-                            throw std::invalid_argument("not exist");
-                        }
                         else
                         {
-                            QJsonObject jsonObj = jsonDoc.object();
-                            if(jsonObj.value("Username").toString()==Username)
-                            {
-                                file.close();
-                                QFile::remove("Organisation/" + Username);
-                                if(file.open(QIODevice::WriteOnly))
-                                {
-                                    jsonObj["Followers"] = QString::fromStdString(std::to_string(F.GetFollowerClassFollowedAccount(Username)));
-                                    QJsonDocument jDoc(jsonObj);
-                                    QByteArray jData = jDoc.toJson();
-                                    file.write(jData);
-                                    file.close();
+                            throw std::invalid_argument("file not found");
+                        }
 
+                    }
+                    catch(std::exception& e)
+                    {
+                        QMessageBox::critical(this,"Error",e.what());
+                    }
+                }
+                file.close();
+            }
+            //***************************************************
+            {
+                QFile file("Organisation/" + Username + ".json");
+                if(file.exists())
+                {
+                    try{
+                        if(file.open(QIODevice::ReadOnly))
+                        {
+                            QByteArray jsonData = file.readAll();
+                            QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+                            if(jsonDoc.isNull())
+                            {
+                                throw std::invalid_argument("not exist");
+                            }
+                            else
+                            {
+                                QJsonObject jsonObj = jsonDoc.object();
+                                if(jsonObj.value("Username").toString()==Username)
+                                {
+                                    file.close();
+                                    QFile::remove("Organisation/" + Username);
+                                    if(file.open(QIODevice::WriteOnly))
+                                    {
+                                        jsonObj["Followers"] = QString::fromStdString(std::to_string(F.GetFollowerClassFollowedAccount(Username)));
+                                        QJsonDocument jDoc(jsonObj);
+                                        QByteArray jData = jDoc.toJson();
+                                        file.write(jData);
+                                        file.close();
+
+                                    }
                                 }
+
                             }
 
                         }
-
-                    }
-                    else
-                    {
-                        throw std::invalid_argument("file not found");
-                    }
-
-                }
-                catch(std::exception& e)
-                {
-                    QMessageBox::critical(this,"Error",e.what());
-                }
-            }
-            file.close();
-        }
-        //**************************************************************
-        {
-            QFile file("Anonymous/" + Username + ".json");
-            if(file.exists())
-            {
-                try{
-                    if(file.open(QIODevice::ReadOnly))
-                    {
-                        QByteArray jsonData = file.readAll();
-                        QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
-                        if(jsonDoc.isNull())
-                        {
-                            throw std::invalid_argument("not exist");
-                        }
                         else
                         {
-                            QJsonObject jsonObj = jsonDoc.object();
-                            if(jsonObj.value("Username").toString()==Username)
-                            {
-                                file.close();
-                                QFile::remove("Anonymous/" + Username);
-                                if(file.open(QIODevice::WriteOnly))
-                                {
-                                    jsonObj["Followers"] = QString::fromStdString(std::to_string(F.GetFollowerClassFollowedAccount(Username)));
-                                    QJsonDocument jDoc(jsonObj);
-                                    QByteArray jData = jDoc.toJson();
-                                    file.write(jData);
-                                    file.close();
+                            throw std::invalid_argument("file not found");
+                        }
 
+                    }
+                    catch(std::exception& e)
+                    {
+                        QMessageBox::critical(this,"Error",e.what());
+                    }
+                }
+                file.close();
+            }
+            //**************************************************************
+            {
+                QFile file("Anonymous/" + Username + ".json");
+                if(file.exists())
+                {
+                    try{
+                        if(file.open(QIODevice::ReadOnly))
+                        {
+                            QByteArray jsonData = file.readAll();
+                            QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+                            if(jsonDoc.isNull())
+                            {
+                                throw std::invalid_argument("not exist");
+                            }
+                            else
+                            {
+                                QJsonObject jsonObj = jsonDoc.object();
+                                if(jsonObj.value("Username").toString()==Username)
+                                {
+                                    file.close();
+                                    QFile::remove("Anonymous/" + Username);
+                                    if(file.open(QIODevice::WriteOnly))
+                                    {
+                                        jsonObj["Followers"] = QString::fromStdString(std::to_string(F.GetFollowerClassFollowedAccount(Username)));
+                                        QJsonDocument jDoc(jsonObj);
+                                        QByteArray jData = jDoc.toJson();
+                                        file.write(jData);
+                                        file.close();
+
+                                    }
                                 }
+
                             }
 
                         }
+                        else
+                        {
+                            throw std::invalid_argument("file not found");
+                        }
 
                     }
-                    else
+                    catch(std::exception& e)
                     {
-                        throw std::invalid_argument("file not found");
+                        QMessageBox::critical(this,"Error",e.what());
                     }
-
                 }
-                catch(std::exception& e)
-                {
-                    QMessageBox::critical(this,"Error",e.what());
-                }
+                file.close();
             }
-            file.close();
-        }
 
+        }
     }
 
 
 }
-
 
 void PersonalAccount::on_FollowersButton_clicked()
 {
@@ -1625,6 +1636,133 @@ void PersonalAccount::on_FollowersButton_clicked()
         QListWidgetItem* item = new QListWidgetItem(follower);
         ui->listWidget->addItem(item);
     }
+    connect(ui->listWidget,&QListWidget::itemClicked,this,&PersonalAccount::ShowAllTweetWithFollowerAccountUsername);
 
+
+}
+
+void PersonalAccount::ShowAllTweetWithFollowerAccountUsername(QListWidgetItem *item)
+{
+//    qDebug()<<item->text() + " ShowAllTweetWithFollowerAccountUsername"<<"\n";
+    QFile temp("Tweet/Tweet1.json");
+    if(temp.exists())
+    {
+        QFile::remove("Tweet/Tweet.json");
+        QFile::rename("Tweet/Tweet1.json","Tweet/Tweet.json");
+    }
+
+    ui->FindHashtagOrUsernameListWidget->clear();
+    QFile file("Tweet/Tweet.json");
+    try
+    {
+        if(file.open(QIODevice::ReadOnly))
+        {
+            QByteArray fileData = file.readAll();
+
+            QJsonDocument jsonDoc = QJsonDocument::fromJson(fileData);
+
+            if (jsonDoc.isArray())
+            {
+                QJsonArray jsonArray = jsonDoc.array();
+
+                foreach (const QJsonValue &value, jsonArray)
+                {
+                    QJsonObject obj = value.toObject();
+
+                    QString username = obj.value("Username").toString();
+                    if(username == item->text())
+                    {
+                        QString message = obj.value("Message").toString();
+                        QString hashtag = obj.value("#").toString();
+                        QString name = obj.value("Name").toString();
+                        QString tweetID = obj.value("TweetID").toString();
+                        QString likeTweet = obj.value("Like").toString();
+                        {
+                            likeTweet = QString::fromStdString(std::to_string(GetTweetLikePersonalAccountWithTweetID(tweetID)));
+                        }
+
+                        // Create a new widget item for the text and button
+                        QWidget *widgetItem = new QWidget(ui->FindHashtagOrUsernameListWidget);
+
+                        // Create a label for the text
+                        QLabel *textLabel = new QLabel(name + "  @" + username + "\nMessage : " + message + "\n Hashtag : " + hashtag + "\n", widgetItem);
+
+                        // Create the button
+                        QPushButton *likeButton = new QPushButton("Like", widgetItem);
+                        QPushButton *mentionButton = new QPushButton("Mention",widgetItem);
+                        QPushButton *FollowButton = new QPushButton("Follow",widgetItem);
+
+                        likeButton->setStyleSheet("color : green");
+                        mentionButton->setStyleSheet("color : purple");
+                        FollowButton->setStyleSheet("color : blue");
+
+                        // Create a label for the button and text
+                        QLabel* likeLabel = new QLabel();
+                        likeLabel->setFixedSize(likeButton->size());
+                        likeLabel->setText(likeTweet + " Likes ❤️");
+
+                        // Create an object of the QFont class to set the text font
+                        QFont font("Arial", 11);
+                        likeLabel->setFont(font);
+
+                        likeLabel->setStyleSheet("color : red");
+
+                        // Create a horizontal layout for the button and text
+                        QHBoxLayout *layout = new QHBoxLayout();
+                        layout->addWidget(textLabel);
+                        layout->addStretch(); // Add a stretchable space between the label and button
+                        layout->addWidget(likeButton);
+                        layout->addWidget(mentionButton);
+                        layout->addWidget(FollowButton);
+                        layout->addWidget(likeLabel);
+                        widgetItem->setLayout(layout);
+
+                        // Create a new item for the widget
+                        QListWidgetItem *item = new QListWidgetItem(ui->FindHashtagOrUsernameListWidget);
+                        item->setSizeHint(widgetItem->sizeHint()); // Set the size hint for the item to match the size of the widget
+
+                        // Set the widget as the item widget
+                        ui->FindHashtagOrUsernameListWidget->setItemWidget(item, widgetItem);
+
+                        ui->FindHashtagOrUsernameListWidget->setStyleSheet("color : darkblue");
+
+                        // button signnal and slot (test)
+                        {
+                            //                        connect(likeButton,&QPushButton::clicked,this,&PersonalAccount::onButtonClicked);
+                            connect(likeButton, &QPushButton::clicked, [=]()
+                            {
+                                LikeButtonTweet(tweetID,username);
+                                // Handle the button click here
+                            });
+                            //                        connect(mentionButton,&QPushButton::clicked,this,&PersonalAccount::onButtonClicked);
+                            connect(mentionButton,&QPushButton::clicked,[=]()
+                            {
+                                onButtonClicked();
+                            });
+                            //                        connect(FollowButton,&QPushButton::clicked,this,&PersonalAccount::onButtonClicked);
+                            connect(FollowButton,&QPushButton::clicked,[=]()
+                            {
+                                FollowerButtonAccount(username,Username);
+                            });
+                        }
+                    }
+
+
+
+                }
+            }
+
+            file.close();
+        }
+        else
+        {
+            file.close();
+            throw std::invalid_argument("invalid file path");
+        }
+    }
+    catch(std::exception &e)
+    {
+        QMessageBox::critical(nullptr,e.what(),"There was a problem, please try again");
+    }
 }
 
