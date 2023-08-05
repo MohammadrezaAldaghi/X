@@ -1631,14 +1631,12 @@ void PersonalAccount::on_FollowersButton_clicked()
 {
     ui->listWidget->clear();
     FollowersClasses F;
-    for(auto follower : F.GetFollowersClassesFollowedAccount(Username))
+    for(auto followed : F.GetFollowedClassFollowedAccount(Username))
     {
-        QListWidgetItem* item = new QListWidgetItem(follower);
+        QListWidgetItem* item = new QListWidgetItem(followed);
         ui->listWidget->addItem(item);
     }
     connect(ui->listWidget,&QListWidget::itemClicked,this,&PersonalAccount::ShowAllTweetWithFollowerAccountUsername);
-
-
 }
 
 void PersonalAccount::ShowAllTweetWithFollowerAccountUsername(QListWidgetItem *item)
@@ -1764,5 +1762,19 @@ void PersonalAccount::ShowAllTweetWithFollowerAccountUsername(QListWidgetItem *i
     {
         QMessageBox::critical(nullptr,e.what(),"There was a problem, please try again");
     }
+}
+
+
+void PersonalAccount::on_FollowingsButton_clicked()
+{
+    ui->listWidget->clear();
+    FollowersClasses F;
+    for(auto follower : F.GetFollowersClassesFollowedAccount(Username))
+    {
+        QListWidgetItem* item = new QListWidgetItem(follower);
+        ui->listWidget->addItem(item);
+    }
+    connect(ui->listWidget,&QListWidget::itemClicked,this,&PersonalAccount::ShowAllTweetWithFollowerAccountUsername);
+
 }
 

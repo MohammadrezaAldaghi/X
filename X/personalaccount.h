@@ -69,6 +69,8 @@ private slots:
     void ShowAllTweetWithFollowerAccountUsername(QListWidgetItem *item);
 
 
+    void on_FollowingsButton_clicked();
+
 private:
     Ui::PersonalAccount *ui;
     QString Username;

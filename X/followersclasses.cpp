@@ -256,3 +256,62 @@ bool FollowersClasses::IsUserCanFollower(QString USER)
     }
     return false;
 }
+
+QVector<QString> FollowersClasses::GetFollowedClassFollowedAccount(QString followedAccountUsername)
+{
+    QVector <QString> result;
+    QFile file("Follower/Follower.json");
+    try
+    {
+        if(file.exists())
+        {
+            if (file.open(QIODevice::ReadOnly))
+            {
+                QByteArray fileData = file.readAll();
+
+                QJsonDocument jsonDoc = QJsonDocument::fromJson(fileData);
+
+                if (jsonDoc.isArray())
+                {
+                    QJsonArray jsonArray = jsonDoc.array();
+
+                    for (const auto& jsonValue : jsonArray)
+                    {
+                        if (jsonValue.isObject())
+                        {
+                            QJsonObject jsonObj = jsonValue.toObject();
+                            QString followerAccount = jsonObj.value("FollowerAccount").toString();
+                            QString followedAccount = jsonObj.value("FollowedAccount").toString();
+
+                            if(followedAccount == followedAccountUsername)
+                            {
+                                result.push_back(followerAccount);
+
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                    }
+                }
+            }
+
+            file.close();
+        }
+        if(!file.exists())
+        {
+            return result;
+        }
+        if(file.error())
+        {
+            file.close();
+            throw std::invalid_argument("invalid file path");
+        }
+    }
+    catch(std::exception &e)
+    {
+        QMessageBox::critical(nullptr,e.what(),"There was a problem, please try again");
+    }
+    return result;
+}
