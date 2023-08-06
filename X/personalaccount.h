@@ -45,6 +45,8 @@ public:
     void ChangeBirthdayPersonalAccountWithUsernameAndPasswordChangeSafly(QString usernam,QString NewBirthday);
     void ChangeCountryPersonalAccountWithUsernameAndPasswordChangeSafly(QString username,QString newCountry);
     int GetTweetLikePersonalAccountWithTweetID(QString tweetid);
+    void ChangeUsernamePersonalAccountWithUsernameAndPasswordChangeSafly(QString oldUsername,QString newUsername);
+    void ChangePasswordPersonalAccountWithUsernameAndPasswordChangeSafly(QString oldPassword,QString NewPassword,QString usernameAccount);
 
 
 private slots:
@@ -68,8 +70,8 @@ private slots:
 
     void ShowAllTweetWithFollowerAccountUsername(QListWidgetItem *item);
 
-
     void on_FollowingsButton_clicked();
+
 
 private:
     Ui::PersonalAccount *ui;

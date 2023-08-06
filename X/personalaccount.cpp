@@ -1212,6 +1212,281 @@ int PersonalAccount::GetTweetLikePersonalAccountWithTweetID(QString tweetID)
     return total;
 }
 
+void PersonalAccount::ChangeUsernamePersonalAccountWithUsernameAndPasswordChangeSafly(QString oldUsername, QString newUsername)
+{
+    {
+        QFile file("Personal/" + oldUsername + ".json");
+        if (file.exists()) {
+            try {
+                if (file.open(QIODevice::ReadOnly)) {
+                    QByteArray jsonData = file.readAll();
+                    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+                    if (jsonDoc.isNull()) {
+                        throw std::invalid_argument("not exist");
+                    } else {
+                        QJsonObject jsonObj = jsonDoc.object();
+                        if (jsonObj.value("Username").toString() == oldUsername) {
+                            file.close();
+                            QString newFilePath = "Personal/" + newUsername + ".json";
+                            if (QFile::rename("Personal/" + oldUsername + ".json", newFilePath)) {
+                                QFile newFile(newFilePath);
+                                if (newFile.open(QIODevice::WriteOnly)) {
+                                    jsonObj["Username"] = newUsername;
+                                    QJsonDocument jDoc(jsonObj);
+                                    QByteArray jData = jDoc.toJson();
+                                    newFile.write(jData);
+                                    newFile.close();
+                                    qDebug() << "rename successfully" << "\n";
+                                } else {
+                                    qDebug() << "Failed to open new file for writing" << "\n";
+                                }
+                            } else {
+                                qDebug() << "rename not successful" << "\n";
+                            }
+                        }
+                    }
+                } else {
+                    throw std::invalid_argument("file not found");
+                }
+            } catch (std::exception& e) {
+                QMessageBox::critical(this, "Error", e.what());
+            }
+            file.close();
+        }
+    }
+    //***************************************************
+    {
+        QFile file("Organisation/" + oldUsername + ".json");
+        if (file.exists()) {
+            try {
+                if (file.open(QIODevice::ReadOnly)) {
+                    QByteArray jsonData = file.readAll();
+                    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+                    if (jsonDoc.isNull()) {
+                        throw std::invalid_argument("not exist");
+                    } else {
+                        QJsonObject jsonObj = jsonDoc.object();
+                        if (jsonObj.value("Username").toString() == oldUsername) {
+                            file.close();
+                            QString newFilePath = "Organisation/" + newUsername + ".json";
+                            if (QFile::rename("Organisation/" + oldUsername + ".json", newFilePath)) {
+                                QFile newFile(newFilePath);
+                                if (newFile.open(QIODevice::WriteOnly)) {
+                                    jsonObj["Username"] = newUsername;
+                                    QJsonDocument jDoc(jsonObj);
+                                    QByteArray jData = jDoc.toJson();
+                                    newFile.write(jData);
+                                    newFile.close();
+                                    qDebug() << "rename successfully" << "\n";
+                                } else {
+                                    qDebug() << "Failed to open new file for writing" << "\n";
+                                }
+                            } else {
+                                qDebug() << "rename not successful" << "\n";
+                            }
+                        }
+                    }
+                } else {
+                    throw std::invalid_argument("file not found");
+                }
+            } catch (std::exception& e) {
+                QMessageBox::critical(this, "Error", e.what());
+            }
+            file.close();
+        }
+    }
+    //**************************************************************
+    {
+        QFile file("Anonymous/" + oldUsername + ".json");
+        if (file.exists()) {
+            try {
+                if (file.open(QIODevice::ReadOnly)) {
+                    QByteArray jsonData = file.readAll();
+                    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+                    if (jsonDoc.isNull()) {
+                        throw std::invalid_argument("not exist");
+                    } else {
+                        QJsonObject jsonObj = jsonDoc.object();
+                        if (jsonObj.value("Username").toString() == oldUsername) {
+                            file.close();
+                            QString newFilePath = "Anonymous/" + newUsername + ".json";
+                            if (QFile::rename("Anonymous/" + oldUsername + ".json", newFilePath)) {
+                                QFile newFile(newFilePath);
+                                if (newFile.open(QIODevice::WriteOnly)) {
+                                    jsonObj["Username"] = newUsername;
+                                    QJsonDocument jDoc(jsonObj);
+                                    QByteArray jData = jDoc.toJson();
+                                    newFile.write(jData);
+                                    newFile.close();
+                                    qDebug() << "rename successfully" << "\n";
+                                } else {
+                                    qDebug() << "Failed to open new file for writing" << "\n";
+                                }
+                            } else {
+                                qDebug() << "rename not successful" << "\n";
+                            }
+                        }
+                    }
+                } else {
+                    throw std::invalid_argument("file not found");
+                }
+            } catch (std::exception& e) {
+                QMessageBox::critical(this, "Error", e.what());
+            }
+            file.close();
+        }
+    }
+}
+
+void PersonalAccount::ChangePasswordPersonalAccountWithUsernameAndPasswordChangeSafly(QString oldPassword, QString NewPassword, QString usernameAccount)
+{
+    {
+        QFile file("Personal/" + usernameAccount + ".json");
+        if(file.exists())
+        {
+            try{
+
+                if(file.open(QIODevice::ReadOnly))
+                {
+                    QByteArray jsonData = file.readAll();
+                    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+                    if(jsonDoc.isNull())
+                    {
+                        throw std::invalid_argument("not exist");
+                    }
+                    else
+                    {
+                        QJsonObject jsonObj = jsonDoc.object();
+                        if(jsonObj.value("Username").toString()==usernameAccount)
+                        {
+                            file.close();
+                            QFile::remove("Personal/" + usernameAccount);
+                            if(file.open(QIODevice::WriteOnly))
+                            {
+                                jsonObj["Password"] = NewPassword;
+                                QJsonDocument jDoc(jsonObj);
+                                QByteArray jData = jDoc.toJson();
+                                file.write(jData);
+                                file.close();
+
+                            }
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    throw std::invalid_argument("file not found");
+                }
+
+            }
+            catch(std::exception& e)
+            {
+                QMessageBox::critical(this,"Error",e.what());
+            }
+        }
+        file.close();
+    }
+    //***************************************************
+    {
+        QFile file("Organisation/" + usernameAccount + ".json");
+        if(file.exists())
+        {
+            try{
+                if(file.open(QIODevice::ReadOnly))
+                {
+                    QByteArray jsonData = file.readAll();
+                    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+                    if(jsonDoc.isNull())
+                    {
+                        throw std::invalid_argument("not exist");
+                    }
+                    else
+                    {
+                        QJsonObject jsonObj = jsonDoc.object();
+                        if(jsonObj.value("Username").toString()==usernameAccount)
+                        {
+                            file.close();
+                            QFile::remove("Organisation/" + usernameAccount);
+                            if(file.open(QIODevice::WriteOnly))
+                            {
+                                jsonObj["Password"] = NewPassword;
+                                QJsonDocument jDoc(jsonObj);
+                                QByteArray jData = jDoc.toJson();
+                                file.write(jData);
+                                file.close();
+
+                            }
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    throw std::invalid_argument("file not found");
+                }
+
+            }
+            catch(std::exception& e)
+            {
+                QMessageBox::critical(this,"Error",e.what());
+            }
+        }
+        file.close();
+    }
+    //**************************************************************
+    {
+        QFile file("Anonymous/" + usernameAccount + ".json");
+        if(file.exists())
+        {
+            try{
+                if(file.open(QIODevice::ReadOnly))
+                {
+                    QByteArray jsonData = file.readAll();
+                    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+                    if(jsonDoc.isNull())
+                    {
+                        throw std::invalid_argument("not exist");
+                    }
+                    else
+                    {
+                        QJsonObject jsonObj = jsonDoc.object();
+                        if(jsonObj.value("Username").toString()==usernameAccount)
+                        {
+                            file.close();
+                            QFile::remove("Anonymous/" + usernameAccount);
+                            if(file.open(QIODevice::WriteOnly))
+                            {
+                                jsonObj["Password"] = NewPassword;
+                                QJsonDocument jDoc(jsonObj);
+                                QByteArray jData = jDoc.toJson();
+                                file.write(jData);
+                                file.close();
+
+                            }
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    throw std::invalid_argument("file not found");
+                }
+
+            }
+            catch(std::exception& e)
+            {
+                QMessageBox::critical(this,"Error",e.what());
+            }
+        }
+        file.close();
+    }
+
+}
+
 void PersonalAccount::on_SettingButton_clicked()
 {
     QFile Personalfile("Personal/" + Username + ".json");
@@ -1221,13 +1496,14 @@ void PersonalAccount::on_SettingButton_clicked()
         QListWidgetItem* item1 = new QListWidgetItem("Logout");
         QListWidgetItem* item2 = new QListWidgetItem("Adjust profile");
         QListWidgetItem* item3 = new QListWidgetItem("Adjust Biography");
-        QListWidgetItem* item4 = new QListWidgetItem("Change usernam or password");
+        QListWidgetItem* item4 = new QListWidgetItem("Change username");
         QListWidgetItem* item5 = new QListWidgetItem("Change Phone number");
         QListWidgetItem* item6 = new QListWidgetItem("Show my profile");
         QListWidgetItem* item7 = new QListWidgetItem("Change name");
         QListWidgetItem* item8 = new QListWidgetItem("change birthday");
         QListWidgetItem* item9 = new QListWidgetItem("change Country");
         QListWidgetItem* item10 = new QListWidgetItem("Show All HashTAG");
+        QListWidgetItem* item11 = new QListWidgetItem("Change Password");
         QColor grrenBright(0,155,160);
         QColor skyColor(135, 100, 170);
         item1->setBackground(QBrush(skyColor));
@@ -1240,6 +1516,7 @@ void PersonalAccount::on_SettingButton_clicked()
         item8->setBackground(QBrush(grrenBright));
         item9->setBackground(QBrush(grrenBright));
         item10->setBackground(QBrush("red"));
+        item10->setBackground(QBrush("blue"));
 
         ui->SettingListWidget->addItem(item1);
         ui->SettingListWidget->addItem(item2);
@@ -1251,6 +1528,7 @@ void PersonalAccount::on_SettingButton_clicked()
         ui->SettingListWidget->addItem(item8);
         ui->SettingListWidget->addItem(item9);
         ui->SettingListWidget->addItem(item10);
+        ui->SettingListWidget->addItem(item11);
         return;
     }
 
@@ -1260,7 +1538,7 @@ void PersonalAccount::on_SettingButton_clicked()
          ui->SettingListWidget->clear();
          QListWidgetItem* item1 = new QListWidgetItem("Logout");
          QListWidgetItem* item3 = new QListWidgetItem("Adjust Biography");
-         QListWidgetItem* item4 = new QListWidgetItem("Change usernam or password");
+         QListWidgetItem* item4 = new QListWidgetItem("Change username or password");
          QListWidgetItem* item5 = new QListWidgetItem("Change Phone number");
          QListWidgetItem* item6 = new QListWidgetItem("Show my profile");
 
@@ -1286,7 +1564,7 @@ void PersonalAccount::on_SettingButton_clicked()
          ui->SettingListWidget->clear();
          QListWidgetItem* item1 = new QListWidgetItem("Logout");
          QListWidgetItem* item3 = new QListWidgetItem("Adjust Biography");
-         QListWidgetItem* item4 = new QListWidgetItem("Change usernam or password");
+         QListWidgetItem* item4 = new QListWidgetItem("Change username or password");
          QListWidgetItem* item5 = new QListWidgetItem("Change Phone number");
          QListWidgetItem* item6 = new QListWidgetItem("Show my profile");
 
@@ -1325,6 +1603,62 @@ void PersonalAccount::ItemClickedSettingListWidget(QListWidgetItem *itemArgument
 {
     qDebug()<<itemArgument->text()<<"\n";
     try {
+       if(itemArgument->text()=="Change username")
+       {
+           ui->FindHashtagOrUsernameListWidget->clear();
+           QTextEdit* textEdit = new QTextEdit(ui->FindHashtagOrUsernameListWidget);
+           textEdit->setFixedSize(ui->FindHashtagOrUsernameListWidget->size()/3);
+           textEdit->show();
+           ui->SearchLabel->setText("Enter new Username");
+           ui->SearchLineEdit->hide();
+           ui->TweetButton->hide();
+           ui->BiogrphyButton->setText("Accept");
+           ui->BiogrphyButton->setStyleSheet("color : green");
+           ui->BiogrphyButton->show();
+
+           {
+               connect(ui->BiogrphyButton,&QPushButton::clicked,[=]()
+               {
+                   ChangeUsernamePersonalAccountWithUsernameAndPasswordChangeSafly(Username,textEdit->toPlainText());
+                   textEdit->clear();
+                   textEdit->hide();
+                   ui->FindHashtagOrUsernameListWidget->show();
+                   ui->SearchLabel->setText("Search :");
+                   ui->SearchLineEdit->show();
+                   ui->TweetButton->show();
+                   ui->BiogrphyButton->hide();
+                   on_SearchLineEdit_textChanged("");
+               });
+           }
+       }
+       if(itemArgument->text()=="Change Password")
+       {
+           ui->FindHashtagOrUsernameListWidget->clear();
+           QTextEdit* textEdit = new QTextEdit(ui->FindHashtagOrUsernameListWidget);
+           textEdit->setFixedSize(ui->FindHashtagOrUsernameListWidget->size()/3);
+           textEdit->show();
+           ui->SearchLabel->setText("Enter new Password");
+           ui->SearchLineEdit->hide();
+           ui->TweetButton->hide();
+           ui->BiogrphyButton->setText("Accept");
+           ui->BiogrphyButton->setStyleSheet("color : green");
+           ui->BiogrphyButton->show();
+           {
+               connect(ui->BiogrphyButton,&QPushButton::clicked,[=]()
+               {
+                   ChangePasswordPersonalAccountWithUsernameAndPasswordChangeSafly("",textEdit->toPlainText(),Username);
+                   textEdit->clear();
+                   textEdit->hide();
+                   ui->FindHashtagOrUsernameListWidget->show();
+                   ui->SearchLabel->setText("Search :");
+                   ui->SearchLineEdit->show();
+                   ui->TweetButton->show();
+                   ui->BiogrphyButton->hide();
+                   on_SearchLineEdit_textChanged("");
+               });
+           }
+
+       }
        if(itemArgument->text()=="Show my profile")
        {
            DisplayProfilePersonalAcoount(Username);
@@ -1763,7 +2097,6 @@ void PersonalAccount::ShowAllTweetWithFollowerAccountUsername(QListWidgetItem *i
         QMessageBox::critical(nullptr,e.what(),"There was a problem, please try again");
     }
 }
-
 
 void PersonalAccount::on_FollowingsButton_clicked()
 {
