@@ -14,6 +14,7 @@ SOURCES += \
     loginform.cpp \
     main.cpp \
     mainwindow.cpp \
+    mentionclasses.cpp \
     organisationuser.cpp \
     personalaccount.cpp \
     personaluser.cpp \
@@ -30,6 +31,7 @@ HEADERS += \
     followersclasses.h \
     loginform.h \
     mainwindow.h \
+    mentionclasses.h \
     organisationuser.h \
     personalaccount.h \
     personaluser.h \

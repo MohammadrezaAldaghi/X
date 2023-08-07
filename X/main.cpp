@@ -8,10 +8,28 @@
 #include "personalaccount.h"
 #include "tweetform.h"
 
+#include <QDate>
+#include <QTime>
+#include <QDebug>
+
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+//    QDateTime currentDateTime = QDateTime::currentDateTime();
+
+//    QDate currentDate = QDate::currentDate();
+//        QTime currentTime = QTime::currentTime();
+
+//        QString formattedDate = currentDate.toString("dddd, d MMMM yyyy");
+//        QString formattedTime = currentTime.toString("hh:mm AP");
+
+//        qDebug() << "Current Date: " << formattedDate;
+//        qDebug() << "Current Time: " << formattedTime;
+
+
+
 //    MainWindow w;
 //    w.show();
 

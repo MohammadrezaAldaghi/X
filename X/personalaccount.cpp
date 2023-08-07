@@ -22,7 +22,6 @@ PersonalAccount::PersonalAccount(QWidget *parent) :
     ui->SearchLabel->setStyleSheet("color : red");
     connect(ui->listWidget, &QListWidget::itemClicked, this,&PersonalAccount::ItemClickedSettingListWidget);
     connect(ui->SettingListWidget,&QListWidget::itemClicked,this,&PersonalAccount::ItemClickedSettingListWidget);
-    connect(ui->FindHashtagOrUsernameListWidget,&QListWidget::itemClicked,this,&PersonalAccount::onButtonClicked);
     connect(ui->FindHashtagOrUsernameListWidget, &QListWidget::itemClicked, this,&PersonalAccount:: ItemClickedSettingListWidget);
 
 
@@ -185,17 +184,17 @@ void PersonalAccount::ReadFromFolderAllAccountWithQString(QString str)
 void PersonalAccount::ReadFromFolderAllTweet(QString str)
 {
     QFile temp("Tweet/Tweet1.json");
-    if(temp.exists())
+    if (temp.exists())
     {
         QFile::remove("Tweet/Tweet.json");
-        QFile::rename("Tweet/Tweet1.json","Tweet/Tweet.json");
+        QFile::rename("Tweet/Tweet1.json", "Tweet/Tweet.json");
     }
 
     ui->FindHashtagOrUsernameListWidget->clear();
     QFile file("Tweet/Tweet.json");
     try
     {
-        if(file.open(QIODevice::ReadOnly))
+        if (file.open(QIODevice::ReadOnly))
         {
             QByteArray fileData = file.readAll();
 
@@ -225,19 +224,28 @@ void PersonalAccount::ReadFromFolderAllTweet(QString str)
                     // Create a label for the text
                     QLabel *textLabel = new QLabel(name + "  @" + username + "\nMessage : " + message + "\n Hashtag : " + hashtag + "\n", widgetItem);
 
-                    // Create the button
+                    // Create the buttons
                     QPushButton *likeButton = new QPushButton("Like", widgetItem);
-                    QPushButton *mentionButton = new QPushButton("Mention",widgetItem);
-                    QPushButton *FollowButton = new QPushButton("Follow",widgetItem);
+                    QPushButton *mentionButton = new QPushButton("Mention sent", widgetItem);
+                    QPushButton *followButton = new QPushButton("Follow", widgetItem);
+                    QPushButton *ShowMention = new QPushButton("Show Mention",widgetItem);
 
                     likeButton->setStyleSheet("color : green");
                     mentionButton->setStyleSheet("color : purple");
-                    FollowButton->setStyleSheet("color : blue");
+                    followButton->setStyleSheet("color : blue");
+                    ShowMention->setStyleSheet("color : red");
 
                     // Create a label for the button and text
-                    QLabel* likeLabel = new QLabel();
+                    QLabel *likeLabel = new QLabel();
                     likeLabel->setFixedSize(likeButton->size());
                     likeLabel->setText(likeTweet + " Likes ❤️");
+
+                    // Create a LineEdit for the button and text
+                    QLineEdit *mentionLineEdit = new QLineEdit();
+                    mentionLineEdit->setStyleSheet("color: rgb(150, 150, 150)");
+                    mentionLineEdit->setFixedWidth(725);
+                    mentionLineEdit->setFixedHeight(40);
+                    mentionLineEdit->setToolTip("mention");
 
                     // Create an object of the QFont class to set the text font
                     QFont font("Arial", 11);
@@ -245,15 +253,20 @@ void PersonalAccount::ReadFromFolderAllTweet(QString str)
 
                     likeLabel->setStyleSheet("color : red");
 
-                    // Create a horizontal layout for the button and text
-                    QHBoxLayout *layout = new QHBoxLayout();
-                    layout->addWidget(textLabel);
-                    layout->addStretch(); // Add a stretchable space between the label and button
-                    layout->addWidget(likeButton);
-                    layout->addWidget(mentionButton);
-                    layout->addWidget(FollowButton);
-                    layout->addWidget(likeLabel);
-                    widgetItem->setLayout(layout);
+                    // Create a horizontal layout for the buttons
+                    QHBoxLayout *buttonLayout = new QHBoxLayout();
+                    buttonLayout->addWidget(likeButton);
+                    buttonLayout->addWidget(mentionButton);
+                    buttonLayout->addWidget(followButton);
+                    buttonLayout->addWidget(ShowMention);
+
+                    // Create a vertical layout for the label, buttons, and line edit
+                    QVBoxLayout *verticalLayout = new QVBoxLayout();
+                    verticalLayout->addWidget(textLabel);
+                    verticalLayout->addWidget(likeLabel);
+                    verticalLayout->addLayout(buttonLayout);
+                    verticalLayout->addWidget(mentionLineEdit);
+                    widgetItem->setLayout(verticalLayout);
 
                     // Create a new item for the widget
                     QListWidgetItem *item = new QListWidgetItem(ui->FindHashtagOrUsernameListWidget);
@@ -264,28 +277,23 @@ void PersonalAccount::ReadFromFolderAllTweet(QString str)
 
                     ui->FindHashtagOrUsernameListWidget->setStyleSheet("color : darkblue");
 
-                    // button signnal and slot (test)
+                    // button signal and slot (test)
                     {
-//                        connect(likeButton,&QPushButton::clicked,this,&PersonalAccount::onButtonClicked);
-                        connect(likeButton, &QPushButton::clicked, [=]()
-                        {
-                            LikeButtonTweet(tweetID,username);
+                        connect(likeButton, &QPushButton::clicked, [=]() {
+                            LikeButtonTweet(tweetID, username);
                             // Handle the button click here
                         });
-//                        connect(mentionButton,&QPushButton::clicked,this,&PersonalAccount::onButtonClicked);
-                        connect(mentionButton,&QPushButton::clicked,[=]()
-                        {
-                            onButtonClicked();
+                        connect(mentionButton, &QPushButton::clicked, [=]() {
+                            MentionButtonTweet(Name,Username,tweetID,mentionLineEdit->text());
+                            mentionLineEdit->clear();
                         });
-//                        connect(FollowButton,&QPushButton::clicked,this,&PersonalAccount::onButtonClicked);
-                        connect(FollowButton,&QPushButton::clicked,[=]()
-                        {
-                            FollowerButtonAccount(username,Username);
+                        connect(followButton, &QPushButton::clicked, [=]() {
+                            FollowerButtonAccount(username, Username);
+                        });
+                        connect(ShowMention,&QPushButton::clicked, [=]() {
+                            BackgroundTweetClicked(tweetID);
                         });
                     }
-
-
-
                 }
             }
 
@@ -297,11 +305,10 @@ void PersonalAccount::ReadFromFolderAllTweet(QString str)
             throw std::invalid_argument("invalid file path");
         }
     }
-    catch(std::exception &e)
+    catch (std::exception &e)
     {
-        QMessageBox::critical(nullptr,e.what(),"There was a problem, please try again");
+        QMessageBox::critical(nullptr, e.what(), "There was a problem, please try again");
     }
-
 
 }
 
@@ -322,11 +329,11 @@ void PersonalAccount::DisplayProfilePersonalAcoount(QString username)
         {
             QString temp = fileName;
             temp = temp.remove(".json");
-            QListWidgetItem* item = new QListWidgetItem(temp);
-            item->setBackground(Qt::red);
+            QListWidgetItem* itemList = new QListWidgetItem(temp);
+            itemList->setBackground(Qt::red);
             if(temp==username)
             {
-                ui->listWidget->addItem(item);
+                ui->listWidget->addItem(itemList);
                 {
                     QFile jsonFile("Personal/"+username+".json");
                     if (!jsonFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -403,11 +410,11 @@ void PersonalAccount::DisplayProfilePersonalAcoount(QString username)
         {
             QString temp = fileName;
             temp = temp.remove(".json");
-            QListWidgetItem* item = new QListWidgetItem(temp);
-            item->setBackground(Qt::red);
+            QListWidgetItem* itemList = new QListWidgetItem(temp);
+            itemList->setBackground(Qt::red);
             if(temp==username)
             {
-                ui->listWidget->addItem(item);
+                ui->listWidget->addItem(itemList);
                 {
                     QFile jsonFile("Organisation/"+username+".json");
                     if (!jsonFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -462,11 +469,11 @@ void PersonalAccount::DisplayProfilePersonalAcoount(QString username)
                 {
                     QString temp = fileName;
                     temp = temp.remove(".json");
-                    QListWidgetItem* item = new QListWidgetItem(temp);
-                    item->setBackground(Qt::red);
+                    QListWidgetItem* itemList = new QListWidgetItem(temp);
+                    itemList->setBackground(Qt::red);
                     if(temp==username)
                     {
-                        ui->listWidget->addItem(item);
+                        ui->listWidget->addItem(itemList);
                         {
                             QFile jsonFile("Anonymous/"+username+".json");
                             if (!jsonFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -1786,10 +1793,17 @@ void PersonalAccount::ItemClickedSettingListWidget(QListWidgetItem *itemArgument
 
 }
 
-void PersonalAccount::onButtonClicked()
+void PersonalAccount::MentionButtonTweet(QString usernameNAME, QString username, QString tweetid,QString mentionMessage)
 {
-    long test = rand() * rand();
-    qDebug()<<"mentionButton"<<", test = "<<test<<"\n";
+    MentionClasses M;
+    M.SetMentionIDMentionClasses(tweetid);
+    M.SetUsernameNAMEMentionClasses(usernameNAME);
+    M.SetUsernameSendMentionMentionClasses(username);
+    M.SetMentionMessageMentionClasses(mentionMessage);
+    M.SetAttributeMentionClasses();
+
+
+
 }
 
 void PersonalAccount::LikeButtonTweet(QString tweetid,QString tweetUsername)
@@ -1968,6 +1982,7 @@ void PersonalAccount::on_FollowersButton_clicked()
     for(auto followed : F.GetFollowedClassFollowedAccount(Username))
     {
         QListWidgetItem* item = new QListWidgetItem(followed);
+        item->setBackground(QBrush("blue"));
         ui->listWidget->addItem(item);
     }
     connect(ui->listWidget,&QListWidget::itemClicked,this,&PersonalAccount::ShowAllTweetWithFollowerAccountUsername);
@@ -1975,6 +1990,218 @@ void PersonalAccount::on_FollowersButton_clicked()
 
 void PersonalAccount::ShowAllTweetWithFollowerAccountUsername(QListWidgetItem *item)
 {
+    QListWidget* widgetTEMP = new QListWidget(ui->listWidget);
+    QWidget* customWidget = new QWidget();
+    QPushButton* BackButton = new QPushButton("Back");
+    QHBoxLayout* layout = new QHBoxLayout(customWidget);
+    layout->addWidget(BackButton);
+    layout->setAlignment(Qt::AlignCenter);
+    customWidget->setLayout(layout);
+    {
+        ui->FindHashtagOrUsernameListWidget->clear();
+        {
+            QString folderPath = "Personal/";
+            QDir directory(folderPath);
+            QStringList jsonFiles = directory.entryList(QStringList() << "*.json", QDir::Files);
+            foreach(QString fileName,jsonFiles)
+            {
+                QString temp = fileName;
+                temp = temp.remove(".json");
+                QListWidgetItem* itemList = new QListWidgetItem(temp);
+                itemList->setBackground(Qt::red);
+                if(temp==item->text())
+                {
+                    ui->listWidget->addItem(itemList);
+                    {
+                        QFile jsonFile("Personal/"+item->text()+".json");
+                        if (!jsonFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                            // Error handling
+                        }
+
+                        QByteArray jsonData = jsonFile.readAll();
+                        jsonFile.close();
+
+                        QJsonParseError jsonError;
+                        QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData, &jsonError);
+
+                        if (jsonError.error != QJsonParseError::NoError) {
+                            // Error handling
+                        }
+
+                        if (!jsonDoc.isObject()) {
+                            // Error handling
+                        }
+
+                        QJsonObject jsonObj = jsonDoc.object();
+                        QString password = jsonObj["Password"].toString();
+                        QString phoneNumber = jsonObj["PhoneNumber"].toString();
+                        QString username = jsonObj["Username"].toString();
+                        QString name = jsonObj["Name"].toString();
+                        QString country = jsonObj["Country"].toString();
+                        QString followers = jsonObj["Followers"].toString();
+                        QString followings = jsonObj["Followings"].toString();
+                        QString birthday = jsonObj["Birthday"].toString();
+                        QString biography = jsonObj["Biography"].toString();
+
+                        QListWidgetItem* item1 = new QListWidgetItem();
+                        QListWidgetItem* item3 = new QListWidgetItem();
+                        QListWidgetItem* item4 = new QListWidgetItem();
+                        QListWidgetItem* item5 = new QListWidgetItem();
+                        QListWidgetItem* item6 = new QListWidgetItem();
+                        QListWidgetItem* item7 = new QListWidgetItem();
+                        QListWidgetItem* item8 = new QListWidgetItem();
+                        QListWidgetItem* item9 = new QListWidgetItem();
+                        QListWidgetItem* item10 = new QListWidgetItem();
+
+                        item1->setText("Username : " + username);
+                        item3->setText("PhoneNumber : " + phoneNumber);
+                        item4->setText("name : " + name);
+                        item5->setText("Country : " + country);
+                        item6->setText("Followers : " + followers);
+                        item7->setText("Followings : " + followings);
+                        item8->setText("Birthday : " + birthday);
+                        item9->setText("Biography : " + biography);
+                        widgetTEMP->addItem(item1);
+                        widgetTEMP->addItem(item3);
+                        widgetTEMP->addItem(item4);
+                        widgetTEMP->addItem(item5);
+                        widgetTEMP->addItem(item6);
+                        widgetTEMP->addItem(item7);
+                        widgetTEMP->addItem(item8);
+                        widgetTEMP->addItem(item9);
+                        item10->setSizeHint(customWidget->sizeHint());
+                        widgetTEMP->addItem(item10);
+                        widgetTEMP->setItemWidget(item10, customWidget);
+                        widgetTEMP->setFixedSize(ui->listWidget->size());
+                        widgetTEMP->show();
+                        connect(BackButton,&QPushButton::clicked,[=]()
+                        {
+                            widgetTEMP->close();
+                            on_FollowingsButton_clicked();
+                        });
+                    }
+
+//                    return;
+                }
+
+
+            }
+        }
+        //*******************************************
+        {
+            QString folderPath = "Organisation/";
+            QDir directory(folderPath);
+            QStringList jsonFiles = directory.entryList(QStringList() << "*.json", QDir::Files);
+            foreach(QString fileName,jsonFiles)
+            {
+                QString temp = fileName;
+                temp = temp.remove(".json");
+                QListWidgetItem* itemList = new QListWidgetItem(temp);
+                itemList->setBackground(Qt::red);
+                if(temp==item->text())
+                {
+                    ui->listWidget->addItem(itemList);
+                    {
+                        QFile jsonFile("Organisation/"+item->text()+".json");
+                        if (!jsonFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                            // Error handling
+                        }
+
+                        QByteArray jsonData = jsonFile.readAll();
+                        jsonFile.close();
+
+                        QJsonParseError jsonError;
+                        QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData, &jsonError);
+
+                        if (jsonError.error != QJsonParseError::NoError) {
+                            // Error handling
+                        }
+
+                        if (!jsonDoc.isObject()) {
+                            // Error handling
+                        }
+
+                        QJsonObject jsonObj = jsonDoc.object();
+                        QString password = jsonObj["Password"].toString();
+                        QString phoneNumber = jsonObj["PhoneNumber"].toString();
+                        QString username = jsonObj["Username"].toString();
+                        QString biography = jsonObj["Biography"].toString();
+
+                        QListWidgetItem* item1 = new QListWidgetItem();
+                        QListWidgetItem* item2 = new QListWidgetItem();
+                        QListWidgetItem* item3 = new QListWidgetItem();
+                        QListWidgetItem* item9 = new QListWidgetItem();
+                        item1->setText("Username : " + username);
+                        item2->setText("Password : " + password);
+                        item3->setText("PhoneNumber : " + phoneNumber);
+                        item9->setText("Biography : " + biography);
+                        widgetTEMP->addItem(item1);
+                        widgetTEMP->addItem(item2);
+                        widgetTEMP->addItem(item3);
+                        widgetTEMP->addItem(item9);
+                        widgetTEMP->setFixedSize(ui->listWidget->size());
+                        widgetTEMP->show();
+
+                    }
+
+//                    return;
+                }
+            }
+        }
+        //*******************************************
+        {
+                    QString folderPath = "Anonymous/";
+                    QDir directory(folderPath);
+                    QStringList jsonFiles = directory.entryList(QStringList() << "*.json", QDir::Files);
+                    foreach(QString fileName,jsonFiles)
+                    {
+                        QString temp = fileName;
+                        temp = temp.remove(".json");
+                        QListWidgetItem* itemList = new QListWidgetItem(temp);
+                        itemList->setBackground(Qt::red);
+                        if(temp==item->text())
+                        {
+                            ui->listWidget->addItem(itemList);
+                            {
+                                QFile jsonFile("Anonymous/"+item->text()+".json");
+                                if (!jsonFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                                    // Error handling
+                                }
+
+                                QByteArray jsonData = jsonFile.readAll();
+                                jsonFile.close();
+
+                                QJsonParseError jsonError;
+                                QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData, &jsonError);
+
+                                if (jsonError.error != QJsonParseError::NoError) {
+                                    // Error handling
+                                }
+
+                                if (!jsonDoc.isObject()) {
+                                    // Error handling
+                                }
+
+                                QJsonObject jsonObj = jsonDoc.object();
+                                QString username = jsonObj["Username"].toString();
+                                QString name = jsonObj["Name"].toString();
+                                QListWidgetItem* item1 = new QListWidgetItem();
+                                QListWidgetItem* item4 = new QListWidgetItem();
+                                item1->setText("Username : " + username);
+                                item4->setText("Name : " + name);
+                                widgetTEMP->addItem(item1);
+                                widgetTEMP->addItem(item4);
+                                widgetTEMP->setFixedSize(ui->listWidget->size());
+                                widgetTEMP->show();
+                            }
+
+//                            return;
+                    }
+                }
+            }
+    }
+
+
 //    qDebug()<<item->text() + " ShowAllTweetWithFollowerAccountUsername"<<"\n";
     QFile temp("Tweet/Tweet1.json");
     if(temp.exists())
@@ -2069,7 +2296,7 @@ void PersonalAccount::ShowAllTweetWithFollowerAccountUsername(QListWidgetItem *i
                             //                        connect(mentionButton,&QPushButton::clicked,this,&PersonalAccount::onButtonClicked);
                             connect(mentionButton,&QPushButton::clicked,[=]()
                             {
-                                onButtonClicked();
+                                MentionButtonTweet(Name,Username,tweetID,"");
                             });
                             //                        connect(FollowButton,&QPushButton::clicked,this,&PersonalAccount::onButtonClicked);
                             connect(FollowButton,&QPushButton::clicked,[=]()
@@ -2108,6 +2335,36 @@ void PersonalAccount::on_FollowingsButton_clicked()
         ui->listWidget->addItem(item);
     }
     connect(ui->listWidget,&QListWidget::itemClicked,this,&PersonalAccount::ShowAllTweetWithFollowerAccountUsername);
+
+}
+
+void PersonalAccount::BackgroundTweetClicked(QString tweetID)
+{
+    ui->FindHashtagOrUsernameListWidget->clear();
+    MentionClasses m;
+    for (auto mention : m.GetMentionClasses())
+    {
+        if (tweetID == mention.value("MentionID").toString())
+        {
+            QString itemString = mention.value("UsernameSendMention").toString() + "  @" + mention.value("UsernameNAME").toString() + "\n" + mention.value("MentionMessage").toString();
+            itemString += "\n" +  mention.value("Current Date").toString() + " , " + mention.value("Current Time").toString();
+            QListWidgetItem* item = new QListWidgetItem(itemString);
+            ui->FindHashtagOrUsernameListWidget->addItem(item);
+        }
+    }
+
+    QPushButton* backButton = new QPushButton();
+    backButton->setText("Back");
+    backButton->setFont(QFont("Arial", 24));
+    backButton->setStyleSheet("color : blue");
+    QListWidgetItem* backItem = new QListWidgetItem();
+    backItem->setSizeHint(backButton->sizeHint());
+    ui->FindHashtagOrUsernameListWidget->addItem(backItem);
+    ui->FindHashtagOrUsernameListWidget->setItemWidget(backItem, backButton);
+    connect(backButton, &QPushButton::clicked, [=]() {
+        on_SearchLineEdit_textChanged("");
+    });
+
 
 }
 

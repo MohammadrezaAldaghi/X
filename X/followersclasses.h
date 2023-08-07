@@ -18,7 +18,7 @@ public:
     void SetFollowersClassesFollowedAccount(QString followedAccount);
     void SetFollowersClassesFollowerAccount(QString followerAccount);
     void SetAttributeFollowersClasses();
-    QVector<QString> GetFollowersClassesFollowedAccount(QString username);
+    QVector<QString> GetFollowersClassesFollowedAccount(QString followersAc);
     int GetFollowerClassFollowedAccount(QString followedAccount);
     bool Test(QString followedAccount,QString followerAccount);
     bool IsUserCanFollower(QString USER);

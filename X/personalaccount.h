@@ -18,6 +18,7 @@
 #include <QtGlobal>
 #include <QTextEdit>
 #include "followersclasses.h"
+#include "mentionclasses.h"
 
 
 namespace Ui {
@@ -60,7 +61,7 @@ private slots:
 
     void ItemClickedSettingListWidget(QListWidgetItem *item);
 
-    void onButtonClicked();
+    void MentionButtonTweet(QString usernameNAME,QString username,QString tweetid,QString mentionMessage);
 
     void LikeButtonTweet(QString te,QString usernamSendTweet);
 
@@ -71,6 +72,8 @@ private slots:
     void ShowAllTweetWithFollowerAccountUsername(QListWidgetItem *item);
 
     void on_FollowingsButton_clicked();
+
+    void BackgroundTweetClicked(QString tweetID);
 
 
 private:
