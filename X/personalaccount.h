@@ -75,6 +75,9 @@ private slots:
 
     void BackgroundTweetClicked(QString tweetID);
 
+    void ItemClickedExpelor();
+
+    void DeleteTweet();
 
 private:
     Ui::PersonalAccount *ui;

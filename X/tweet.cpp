@@ -25,6 +25,13 @@ Tweet::Tweet()
 
 void Tweet::AddTweet(QString username, QString message, QString hashtag,QString name,int like)
 {
+    QDateTime currentDateTime = QDateTime::currentDateTime();
+
+    QDate currentDate = QDate::currentDate();
+        QTime currentTime = QTime::currentTime();
+
+        QString formattedDate = currentDate.toString("dddd, d MMMM yyyy");
+        QString formattedTime = currentTime.toString("hh:mm AP");
     {
         QFile file("Tweet/Tweet.json");
         try
@@ -48,6 +55,8 @@ void Tweet::AddTweet(QString username, QString message, QString hashtag,QString 
                 jsonObj["Name"] = name;
                 jsonObj["TweetID"] = QString::fromStdString(std::to_string(abs(rand()*rand()*rand())));
                 jsonObj["Like"] = QString::fromStdString(std::to_string(like));
+                jsonObj["Current Date"] = formattedDate;
+                jsonObj["Current Time"] = formattedTime;
                 jsonArray.append(jsonObj);
 
                 QJsonDocument newJsonDoc(jsonArray);
@@ -191,6 +200,55 @@ int Tweet::GetTweetLikeCounter(QString tweetID)
     }
     qDebug()<<"Total = "<<total<<"\n";
     return total;
+}
+
+bool Tweet::DeleteTweet(QString tweetID)
+{
+    // Load the JSON file
+        QFile file("Tweet/Tweet.json");
+        if (!file.open(QIODevice::ReadWrite | QIODevice::Text))
+        {
+            qDebug() << "Failed to open the JSON file.";
+            return false;
+        }
+
+        // Parse the JSON document
+        QByteArray jsonData = file.readAll();
+        QJsonParseError jsonError;
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData, &jsonError);
+        if (jsonError.error != QJsonParseError::NoError)
+        {
+            qDebug() << "Failed to parse the JSON document:" << jsonError.errorString();
+            file.close();
+            return false;
+        }
+
+        // Get the root array of the JSON document
+        QJsonArray rootArray = jsonDoc.array();
+
+        // Find and remove the object with the specified TweetID
+        for (int i = 0; i < rootArray.size(); ++i)
+        {
+            QJsonObject jsonObject = rootArray.at(i).toObject();
+            if (jsonObject.value("TweetID").toString() == tweetID)
+            {
+                rootArray.removeAt(i);
+                break;
+            }
+        }
+
+        // Update the JSON document
+        jsonDoc.setArray(rootArray);
+
+        // Clear the file content
+        file.resize(0);
+
+        // Write the modified JSON document back to the file
+        file.write(jsonDoc.toJson());
+        file.close();
+
+        qDebug() << "Object removed successfully.";
+        return true;
 }
 
 void Tweet::AddُTheNumberOfLikesToTweet(QString usernameLike,QString TweetID,QString TweetUsername)

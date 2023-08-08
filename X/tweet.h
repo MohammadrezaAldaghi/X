@@ -22,6 +22,7 @@ public:
     void AddُTheNumberOfLikesToTweet(QString usernameLike,QString TweetID,QString TweetUsername);
     bool test(QString tweetid,QString username);
     int GetTweetLikeCounter(QString tweetID);
+    bool DeleteTweet(QString tweetID);
 
 
 private:
