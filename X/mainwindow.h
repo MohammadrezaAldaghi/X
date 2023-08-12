@@ -24,7 +24,11 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_checkButton_clicked();
+
+
+    void on_SignupButton_clicked();
+
+    void on_LoginButton_clicked();
 
 private:
     Ui::MainWindow *ui;

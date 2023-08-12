@@ -8,21 +8,18 @@ PersonalAccount::PersonalAccount(QWidget *parent) :
 {
     ui->setupUi(this);
     srand(time(nullptr));
-//    {
-//        QTimer *timer = new QTimer();
-//        timer->setInterval(1000); // fire every second
-//        connect(timer, SIGNAL(), this, SLOT(ReadFromFolderAllTweet()));
-//        timer->start();
-//    }
+//    setStyleSheet("background-color: #B0C4DE;");
     {
         ui->BiogrphyButton->hide();
     }
 
     ReadFromFolderAllAccount();
+    ReadFromFolderAllTweet("s");
     ui->SearchLabel->setStyleSheet("color : red");
     connect(ui->listWidget, &QListWidget::itemClicked, this,&PersonalAccount::ItemClickedSettingListWidget);
     connect(ui->SettingListWidget,&QListWidget::itemClicked,this,&PersonalAccount::ItemClickedSettingListWidget);
     connect(ui->FindHashtagOrUsernameListWidget, &QListWidget::itemClicked, this,&PersonalAccount::ItemClickedExpelor);
+
 
 
 
@@ -1626,7 +1623,7 @@ void PersonalAccount::on_SettingButton_clicked()
 
 void PersonalAccount::on_SearchLineEdit_textChanged(const QString &arg1)
 {
-    ReadFromFolderAllTweet(arg1);
+    SearchHashtag(arg1);
 }
 
 void PersonalAccount::on_TweetButton_clicked()
@@ -1846,6 +1843,8 @@ void PersonalAccount::LikeButtonTweet(QString tweetid,QString tweetUsername)
 {
     Tweet t;
     t.AddُTheNumberOfLikesToTweet(Username,tweetid,tweetUsername);
+    qDebug()<<"Tweet like counter : "<< t.GetTweetLikeCounter(tweetid)<<"\n";
+
 }
 
 void PersonalAccount::FollowerButtonAccount(QString FollowedAccount, QString FollowerAccount)
@@ -2285,11 +2284,11 @@ void PersonalAccount::ShowAllTweetWithFollowerAccountUsername(QListWidgetItem *i
                         // Create the button
                         QPushButton *likeButton = new QPushButton("Like", widgetItem);
                         QPushButton *mentionButton = new QPushButton("Mention",widgetItem);
-                        QPushButton *FollowButton = new QPushButton("Follow",widgetItem);
+                        QPushButton *UnfollowButton = new QPushButton("Unfollow",widgetItem);
 
                         likeButton->setStyleSheet("color : green");
                         mentionButton->setStyleSheet("color : purple");
-                        FollowButton->setStyleSheet("color : blue");
+                        UnfollowButton->setStyleSheet("color : blue");
 
                         // Create a label for the button and text
                         QLabel* likeLabel = new QLabel();
@@ -2308,7 +2307,7 @@ void PersonalAccount::ShowAllTweetWithFollowerAccountUsername(QListWidgetItem *i
                         layout->addStretch(); // Add a stretchable space between the label and button
                         layout->addWidget(likeButton);
                         layout->addWidget(mentionButton);
-                        layout->addWidget(FollowButton);
+                        layout->addWidget(UnfollowButton);
                         layout->addWidget(likeLabel);
                         widgetItem->setLayout(layout);
 
@@ -2335,9 +2334,9 @@ void PersonalAccount::ShowAllTweetWithFollowerAccountUsername(QListWidgetItem *i
                                 MentionButtonTweet(Name,Username,tweetID,"");
                             });
                             //                        connect(FollowButton,&QPushButton::clicked,this,&PersonalAccount::onButtonClicked);
-                            connect(FollowButton,&QPushButton::clicked,[=]()
+                            connect(UnfollowButton,&QPushButton::clicked,[=]()
                             {
-                                FollowerButtonAccount(username,Username);
+                                DeleteFollower(username,Username);
                             });
                         }
                     }
@@ -2637,14 +2636,12 @@ void PersonalAccount::DeleteTweet()
                                 }
                                 else
                                 {
-                                    QMessageBox::critical(nullptr,"Error","!remove not successfully");
+                                    QMessageBox::critical(nullptr,"Error","! remove not successfully");
                                 }
                             });
 
                         }
                     }
-
-
 
                 }
             }
@@ -2663,6 +2660,192 @@ void PersonalAccount::DeleteTweet()
     }
 
 
+
+}
+
+void PersonalAccount::DeleteFollower(QString followerusername,QString username)
+{
+    qDebug()<<"DeleteFollower = "<<followerusername<<"\n";
+    // Load the JSON file
+        QFile file("Follower/Follower.json");
+        if (!file.open(QIODevice::ReadWrite | QIODevice::Text))
+        {
+            qDebug() << "Failed to open the JSON file.";
+
+        }
+
+        // Parse the JSON document
+        QByteArray jsonData = file.readAll();
+        QJsonParseError jsonError;
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData, &jsonError);
+        if (jsonError.error != QJsonParseError::NoError)
+        {
+            qDebug() << "Failed to parse the JSON document:" << jsonError.errorString();
+            file.close();
+
+        }
+
+        // Get the root array of the JSON document
+        QJsonArray rootArray = jsonDoc.array();
+
+        // Find and remove the object with the specified TweetID
+        for (int i = 0; i < rootArray.size(); ++i)
+        {
+            QJsonObject jsonObject = rootArray.at(i).toObject();
+            if (jsonObject.value("FollowedAccount").toString() == followerusername && jsonObject.value("FollowerAccount").toString()==username)
+            {
+                rootArray.removeAt(i);
+                break;
+            }
+        }
+
+        // Update the JSON document
+        jsonDoc.setArray(rootArray);
+
+        // Clear the file content
+        file.resize(0);
+
+        // Write the modified JSON document back to the file
+        file.write(jsonDoc.toJson());
+        file.close();
+
+        qDebug() << "Object removed successfully.";
+}
+
+void PersonalAccount::SearchHashtag(QString arg)
+{
+    QFile temp("Tweet/Tweet1.json");
+    if (temp.exists())
+    {
+        QFile::remove("Tweet/Tweet.json");
+        QFile::rename("Tweet/Tweet1.json", "Tweet/Tweet.json");
+    }
+
+    ui->FindHashtagOrUsernameListWidget->clear();
+    QFile file("Tweet/Tweet.json");
+    try
+    {
+        if (file.open(QIODevice::ReadOnly))
+        {
+            QByteArray fileData = file.readAll();
+
+            QJsonDocument jsonDoc = QJsonDocument::fromJson(fileData);
+
+            if (jsonDoc.isArray())
+            {
+                QJsonArray jsonArray = jsonDoc.array();
+
+                foreach (const QJsonValue &value, jsonArray)
+                {
+                    QJsonObject obj = value.toObject();
+
+                    QString username = obj.value("Username").toString();
+                    QString message = obj.value("Message").toString();
+                    QString hashtag = obj.value("#").toString();
+                    if(hashtag.contains(arg )){
+                        QString name = obj.value("Name").toString();
+                        QString tweetID = obj.value("TweetID").toString();
+                        QString likeTweet = obj.value("Like").toString();
+                        {
+                            likeTweet = QString::fromStdString(std::to_string(GetTweetLikePersonalAccountWithTweetID(tweetID)));
+                        }
+                        QString currentDate = obj.value("Current Date").toString();
+                        QString currentTime = obj.value("Current Time").toString();
+
+                        // Create a new widget item for the text and button
+                        QWidget *widgetItem = new QWidget(ui->FindHashtagOrUsernameListWidget);
+
+                        // Create a label for the text
+                        QLabel *textLabel = new QLabel(name + "  @" + username + "\nMessage : " + message + "\n Hashtag : " + hashtag + "\n" +
+                                                       currentDate + " , " + currentTime + "\n", widgetItem);
+
+                        // Create the buttons
+                        QPushButton *likeButton = new QPushButton("Like", widgetItem);
+                        QPushButton *mentionButton = new QPushButton("Mention sent", widgetItem);
+                        QPushButton *followButton = new QPushButton("Follow", widgetItem);
+                        QPushButton *ShowMention = new QPushButton("Show Mention",widgetItem);
+
+                        likeButton->setStyleSheet("color : green");
+                        mentionButton->setStyleSheet("color : purple");
+                        followButton->setStyleSheet("color : blue");
+                        ShowMention->setStyleSheet("color : red");
+
+                        // Create a label for the button and text
+                        QLabel *likeLabel = new QLabel();
+                        likeLabel->setFixedSize(likeButton->size());
+                        likeLabel->setText(likeTweet + " Likes ❤️");
+
+                        // Create a LineEdit for the button and text
+                        QLineEdit *mentionLineEdit = new QLineEdit();
+                        mentionLineEdit->setStyleSheet("color: rgb(150, 150, 150)");
+                        mentionLineEdit->setFixedWidth(725);
+                        mentionLineEdit->setFixedHeight(40);
+                        mentionLineEdit->setToolTip("mention");
+
+                        // Create an object of the QFont class to set the text font
+                        QFont font("Arial", 11);
+                        likeLabel->setFont(font);
+
+                        likeLabel->setStyleSheet("color : red");
+
+                        // Create a horizontal layout for the buttons
+                        QHBoxLayout *buttonLayout = new QHBoxLayout();
+                        buttonLayout->addWidget(likeButton);
+                        buttonLayout->addWidget(mentionButton);
+                        buttonLayout->addWidget(followButton);
+                        buttonLayout->addWidget(ShowMention);
+
+                        // Create a vertical layout for the label, buttons, and line edit
+                        QVBoxLayout *verticalLayout = new QVBoxLayout();
+                        verticalLayout->addWidget(textLabel);
+                        verticalLayout->addWidget(likeLabel);
+                        verticalLayout->addLayout(buttonLayout);
+                        verticalLayout->addWidget(mentionLineEdit);
+                        widgetItem->setLayout(verticalLayout);
+
+                        // Create a new item for the widget
+                        QListWidgetItem *item = new QListWidgetItem(ui->FindHashtagOrUsernameListWidget);
+                        item->setSizeHint(widgetItem->sizeHint()); // Set the size hint for the item to match the size of the widget
+
+                        // Set the widget as the item widget
+                        ui->FindHashtagOrUsernameListWidget->setItemWidget(item, widgetItem);
+
+                        ui->FindHashtagOrUsernameListWidget->setStyleSheet("color : darkblue");
+
+                        // button signal and slot (test)
+                        {
+                            connect(likeButton, &QPushButton::clicked, [=]() {
+                                LikeButtonTweet(tweetID, username);
+                                // Handle the button click here
+                            });
+                            connect(mentionButton, &QPushButton::clicked, [=]() {
+                                MentionButtonTweet(Name,Username,tweetID,mentionLineEdit->text());
+                                mentionLineEdit->clear();
+                            });
+                            connect(followButton, &QPushButton::clicked, [=]() {
+                                FollowerButtonAccount(username, Username);
+                            });
+                            connect(ShowMention,&QPushButton::clicked, [=]() {
+                                BackgroundTweetClicked(tweetID);
+                            });
+                        }
+                    }
+
+                }
+            }
+
+            file.close();
+        }
+        else
+        {
+            file.close();
+            throw std::invalid_argument("invalid file path");
+        }
+    }
+    catch (std::exception &e)
+    {
+        QMessageBox::critical(nullptr, e.what(), "There was a problem, please try again");
+    }
 
 }
 

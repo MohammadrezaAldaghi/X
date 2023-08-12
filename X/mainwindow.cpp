@@ -1,12 +1,30 @@
 #include "mainwindow.h"
 #include "qjsonarray.h"
 #include "ui_mainwindow.h"
+#include "startwindow.h"
+#include "loginform.h"
+#include <QIcon>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->LoginButton->setStyleSheet("QPushButton { border-radius: 50%; }");
+    ui->SignupButton->setStyleSheet("QPushButton {border-radius: 50%}");
+
+    QIcon loginIcon = QIcon("C:/Users/ARTA/Desktop/Login.png");
+    QIcon signupIcon = QIcon("C:/Users/ARTA/Desktop/Sign up.png");
+
+    QSize loginiconSize(ui->LoginButton->size());
+    QSize signupiconSize(ui->SignupButton->size());
+
+    ui->LoginButton->setIconSize(loginiconSize);
+    ui->LoginButton->setIcon(loginIcon);
+    ui->SignupButton->setIconSize(signupiconSize);
+    ui->SignupButton->setIcon(signupIcon);
+
+
 }
 
 MainWindow::~MainWindow()
@@ -15,51 +33,19 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_checkButton_clicked()
+
+void MainWindow::on_SignupButton_clicked()
 {
-    {
-        QFile file("Tweet/Like.json");
-        try
-        {
-            if (file.open(QIODevice::ReadWrite))
-            {
-                QByteArray fileData = file.readAll();
-
-                QJsonDocument jsonDoc = QJsonDocument::fromJson(fileData);
-
-                QJsonArray jsonArray;
-                if (jsonDoc.isArray())
-                {
-                    jsonArray = jsonDoc.array();
-                }
-
-                QJsonObject jsonObj;
-                jsonObj["Username"] = "username";
-                jsonObj["UsernameLike"] = "1234";
-                jsonObj["TweetID"] = "123456789";
-                jsonArray.append(jsonObj);
-
-                QJsonDocument newJsonDoc(jsonArray);
-
-                file.resize(0);
-                file.write(newJsonDoc.toJson());
-
-                file.close();
-            }
-            else
-            {
-                file.close();
-                throw std::invalid_argument("invalid file path");
-            }
-        }
-        catch(std::exception &e)
-        {
-            QMessageBox::critical(nullptr,e.what(),"There was a problem, please try again");
-        }
-        file.close();
-    }
+    this->close();
+    Startwindow* S = new Startwindow();
+    S->show();
+}
 
 
-
+void MainWindow::on_LoginButton_clicked()
+{
+    this->close();
+    LoginForm* L = new LoginForm();
+    L->show();
 }
 

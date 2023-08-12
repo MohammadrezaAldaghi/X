@@ -79,6 +79,10 @@ private slots:
 
     void DeleteTweet();
 
+    void DeleteFollower(QString followerusername, QString username);
+
+    void SearchHashtag(QString arg);
+
 private:
     Ui::PersonalAccount *ui;
     QString Username;

@@ -11,7 +11,9 @@
 #include <QDate>
 #include <QTime>
 #include <QDebug>
-
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QDebug>
 
 int main(int argc, char *argv[])
 {
@@ -29,9 +31,8 @@ int main(int argc, char *argv[])
 //        qDebug() << "Current Time: " << formattedTime;
 
 
-
-//    MainWindow w;
-//    w.show();
+    MainWindow w;
+    w.show();
 
 //    SignUp S;
 //    S.show();
@@ -45,8 +46,8 @@ int main(int argc, char *argv[])
 //    SignUpAnonymousUser S;
 //    S.show();
 
-    LoginForm L;
-    L.show();
+//    LoginForm L;
+//    L.show();
 
 //    PersonalAccount P;
 //    P.show();
