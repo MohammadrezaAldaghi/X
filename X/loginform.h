@@ -25,6 +25,8 @@ public:
 private slots:
     void on_LoginButton_clicked();
 
+    void on_CancelButton_clicked();
+
 private:
     Ui::LoginForm *ui;
 };

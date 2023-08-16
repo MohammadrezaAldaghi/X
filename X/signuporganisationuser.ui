@@ -40,7 +40,7 @@
    <property name="geometry">
     <rect>
      <x>470</x>
-     <y>400</y>
+     <y>420</y>
      <width>281</width>
      <height>91</height>
     </rect>
@@ -49,84 +49,7 @@
     <string>Chose image</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
-    <rect>
-     <x>350</x>
-     <y>290</y>
-     <width>351</width>
-     <height>91</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>35</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Sign Up</string>
-   </property>
-  </widget>
-  <widget class="QWidget" name="">
-   <property name="geometry">
-    <rect>
-     <x>300</x>
-     <y>170</y>
-     <width>662</width>
-     <height>208</height>
-    </rect>
-   </property>
-   <layout class="QGridLayout" name="gridLayout_4">
-    <item row="0" column="0">
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="UsernameLabel">
-        <property name="font">
-         <font>
-          <pointsize>25</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Username :</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="UsernameLineEdit"/>
-      </item>
-     </layout>
-    </item>
-    <item row="1" column="0">
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <widget class="QLabel" name="PasswordLabel">
-        <property name="text">
-         <string>Password :</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="PasswordLineEdit"/>
-      </item>
-     </layout>
-    </item>
-    <item row="2" column="0">
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="0">
-       <widget class="QLabel" name="PhoneNumberLabel">
-        <property name="text">
-         <string>PhoneNumber :</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="PhoneNumberLineEdit"/>
-      </item>
-     </layout>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>440</x>
@@ -159,6 +82,84 @@
        <string>Register</string>
       </property>
      </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>120</y>
+     <width>664</width>
+     <height>279</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_5">
+    <item row="0" column="0" colspan="2">
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="UsernameLabel">
+          <property name="font">
+           <font>
+            <pointsize>25</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Username :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="UsernameLineEdit"/>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="0">
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QLabel" name="PasswordLabel">
+          <property name="text">
+           <string>Password :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="PasswordLineEdit"/>
+        </item>
+       </layout>
+      </item>
+      <item row="2" column="0">
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="PhoneNumberLineEdit"/>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="PhoneNumberLabel">
+          <property name="text">
+           <string>PhoneNumber :</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="HeadOfTheOrganizationLabel">
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Head of the organization :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="HeadOfTheOrganizationLineEdit"/>
     </item>
    </layout>
   </widget>

@@ -19,6 +19,7 @@ public:
     void SetFollowingsOrganisationUser();
     void SetFollowersOrganisationUser();
     void SetProfileImageOrganisationUser(QImage img);
+    void SetHeadOfTheOrganizationOrganisationUser(QString headOfTheOrganization);
     bool SetAttributeOrganisationUser();
 
 
@@ -26,6 +27,7 @@ private:
     int Followings;
     int Followers;
     QString PhoneNaumber;
+    QString HeadOfTheOrganization;
     QImage ProfileImage;
 
 };

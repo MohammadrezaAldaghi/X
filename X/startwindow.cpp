@@ -1,6 +1,8 @@
 #include "startwindow.h"
 #include "personalaccount.h"
 #include "ui_startwindow.h"
+#include "mainwindow.h"
+
 
 Startwindow::Startwindow(QWidget *parent) :
     QWidget(parent),
@@ -17,6 +19,7 @@ Startwindow::Startwindow(QWidget *parent) :
     ui->PersonalButton->setStyleSheet("color : green");
     ui->PersonalButton->setStyleSheet("background-color: red");
     ui->PersonalButton->setToolTip("<span style='font-size: 14px;'> you can track personal accounts.</span>");
+    ui->BackButton->setStyleSheet("background-color: purple");
 }
 
 Startwindow::~Startwindow()
@@ -44,5 +47,13 @@ void Startwindow::on_AnonymousButton_clicked()
 {
     SignUpAnonymousUser* currentUser = new SignUpAnonymousUser();
     currentUser->show();
+}
+
+
+void Startwindow::on_BackButton_clicked()
+{
+    MainWindow* M = new MainWindow();
+    this->close();
+    M->show();
 }
 

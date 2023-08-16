@@ -273,7 +273,7 @@ void PersonalAccount::ReadFromFolderAllTweet(QString str)
 
                     // Set the widget as the item widget
                     ui->FindHashtagOrUsernameListWidget->setItemWidget(item, widgetItem);
-
+                    item->setBackground(QBrush("lightgreen"));
                     ui->FindHashtagOrUsernameListWidget->setStyleSheet("color : darkblue");
 
                     // button signal and slot (test)
@@ -458,18 +458,23 @@ void PersonalAccount::DisplayProfilePersonalAcoount(QString username)
                     QString phoneNumber = jsonObj["PhoneNumber"].toString();
                     QString username = jsonObj["Username"].toString();
                     QString biography = jsonObj["Biography"].toString();
+                    QString headOfTheOrganization = jsonObj["HeadOfTheOrganization"].toString();
 
                     QListWidgetItem* item1 = new QListWidgetItem();
                     QListWidgetItem* item2 = new QListWidgetItem();
                     QListWidgetItem* item3 = new QListWidgetItem();
+                    QListWidgetItem* item4 = new QListWidgetItem();
                     QListWidgetItem* item9 = new QListWidgetItem();
+
                     item1->setText("Username : " + username);
                     item2->setText("Password : " + password);
                     item3->setText("PhoneNumber : " + phoneNumber);
+                    item4->setText("Head Of The Organization : " + headOfTheOrganization);
                     item9->setText("Biography : " + biography);
                     ui->FindHashtagOrUsernameListWidget->addItem(item1);
                     ui->FindHashtagOrUsernameListWidget->addItem(item2);
                     ui->FindHashtagOrUsernameListWidget->addItem(item3);
+                    ui->FindHashtagOrUsernameListWidget->addItem(item4);
                     ui->FindHashtagOrUsernameListWidget->addItem(item9);
 
                 }
@@ -1562,13 +1567,13 @@ void PersonalAccount::on_SettingButton_clicked()
     }
 
      QFile Organisationfile("Organisation/" + Username + ".json");
-     if(Personalfile.exists())
+     if(Organisationfile.exists())
      {
          ui->SettingListWidget->clear();
          QListWidgetItem* item1 = new QListWidgetItem("Logout");
          QListWidgetItem* item3 = new QListWidgetItem("Adjust Biography");
-         QListWidgetItem* item4 = new QListWidgetItem("Change username or password");
-         QListWidgetItem* item5 = new QListWidgetItem("Change Phone number");
+         QListWidgetItem* item4 = new QListWidgetItem("Change username");
+         QListWidgetItem* item5 = new QListWidgetItem("Change Password");
          QListWidgetItem* item6 = new QListWidgetItem("Show my profile");
          QListWidgetItem* item7 = new QListWidgetItem("Delete Tweet");
 
@@ -1590,14 +1595,14 @@ void PersonalAccount::on_SettingButton_clicked()
          return;
      }
 
-     QFile Anonymousfile("Organisation/" + Username + ".json");
+     QFile Anonymousfile("Anonymous/" + Username + ".json");
      if(Anonymousfile.exists())
      {
          ui->SettingListWidget->clear();
          QListWidgetItem* item1 = new QListWidgetItem("Logout");
          QListWidgetItem* item3 = new QListWidgetItem("Adjust Biography");
-         QListWidgetItem* item4 = new QListWidgetItem("Change username or password");
-         QListWidgetItem* item5 = new QListWidgetItem("Change Phone number");
+         QListWidgetItem* item4 = new QListWidgetItem("Change username");
+         QListWidgetItem* item5 = new QListWidgetItem("Change Password");
          QListWidgetItem* item6 = new QListWidgetItem("Show my profile");
          QListWidgetItem* item7 = new QListWidgetItem("Delete Tweet");
 
@@ -2806,7 +2811,7 @@ void PersonalAccount::SearchHashtag(QString arg)
                         // Create a new item for the widget
                         QListWidgetItem *item = new QListWidgetItem(ui->FindHashtagOrUsernameListWidget);
                         item->setSizeHint(widgetItem->sizeHint()); // Set the size hint for the item to match the size of the widget
-
+                        item->setBackground(QBrush("lightgreen"));
                         // Set the widget as the item widget
                         ui->FindHashtagOrUsernameListWidget->setItemWidget(item, widgetItem);
 

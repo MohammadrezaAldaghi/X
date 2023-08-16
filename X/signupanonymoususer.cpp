@@ -1,4 +1,5 @@
 #include "signupanonymoususer.h"
+#include "personalaccount.h"
 #include "ui_signupanonymoususer.h"
 
 SignUpAnonymousUser::SignUpAnonymousUser(QWidget *parent) :
@@ -35,5 +36,9 @@ void SignUpAnonymousUser::on_RegisterButton_clicked()
         QMessageBox::critical(this,"Register message","Registration failed. Please try again");
         this->hide();
     }
+    close();
+    PersonalAccount *PA = new PersonalAccount();
+    PA->SetUsernameAndNamePersonalAcoount(ui->UsernameLineEdit->text(),"Anonymou User");
+    PA->show();
 }
 

@@ -27,6 +27,8 @@ private slots:
 
     void on_AnonymousButton_clicked();
 
+    void on_BackButton_clicked();
+
 private:
     Ui::Startwindow *ui;
 };

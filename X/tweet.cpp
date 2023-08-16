@@ -74,7 +74,7 @@ void Tweet::AddTweet(QString username, QString message, QString hashtag,QString 
         }
         catch(std::exception &e)
         {
-            QMessageBox::critical(nullptr,e.what(),"There was a problem, please try again");
+            QMessageBox::critical(nullptr,e.what(),"!There was a problem, please try again");
         }
     }
 }

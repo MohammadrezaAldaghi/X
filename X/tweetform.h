@@ -23,7 +23,7 @@ public:
     explicit TweetForm(QWidget *parent = nullptr);
     ~TweetForm();
     void SetUsernameAndNameTweetForm(QString username,QString name);
-
+    QString GetTwwetCounterTweetForm(QString username);
 
 private slots:
 

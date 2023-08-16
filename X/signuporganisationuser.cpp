@@ -1,4 +1,5 @@
 #include "signuporganisationuser.h"
+#include "personalaccount.h"
 #include "ui_signuporganisationuser.h"
 
 SignUpOrganisationUser::SignUpOrganisationUser(QWidget *parent) :
@@ -56,6 +57,7 @@ void SignUpOrganisationUser::on_RegisterButton_clicked()
     currentUser.SetFollowingsOrganisationUser();
     currentUser.SetPhoneNumberOrganisationUser(ui->PhoneNumberLineEdit->text());
     currentUser.SetProfileImageOrganisationUser(image);
+    currentUser.SetHeadOfTheOrganizationOrganisationUser(ui->HeadOfTheOrganizationLineEdit->text());
     if(currentUser.SetAttributeOrganisationUser())
     {
         QMessageBox::information(this,"Register message","Registration was successful");
@@ -66,6 +68,10 @@ void SignUpOrganisationUser::on_RegisterButton_clicked()
         QMessageBox::critical(this,"Register message","Registration failed. Please try again");
         this->hide();
     }
+    close();
+    PersonalAccount *PA = new PersonalAccount();
+    PA->SetUsernameAndNamePersonalAcoount(ui->UsernameLineEdit->text(),ui->HeadOfTheOrganizationLineEdit->text());
+    PA->show();
 
 
 }

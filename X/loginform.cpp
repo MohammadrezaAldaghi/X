@@ -1,6 +1,9 @@
 #include "loginform.h"
 #include "personalaccount.h"
+#include "startwindow.h"
 #include "ui_loginform.h"
+#include "mainwindow.h"
+
 
 LoginForm::LoginForm(QWidget *parent) :
     QWidget(parent),
@@ -138,5 +141,13 @@ void LoginForm::on_LoginButton_clicked()
 
     }
 
+}
+
+
+void LoginForm::on_CancelButton_clicked()
+{
+    MainWindow* M = new MainWindow();
+    this->close();
+    M->show();
 }
 

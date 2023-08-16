@@ -25,13 +25,19 @@ void OrganisationUser::SetProfileImageOrganisationUser(QImage img)
     ProfileImage = img;
 }
 
+void OrganisationUser::SetHeadOfTheOrganizationOrganisationUser(QString headOfTheOrganization)
+{
+    HeadOfTheOrganization = headOfTheOrganization;
+}
+
 bool OrganisationUser::SetAttributeOrganisationUser()
 {
     QJsonObject jsonObj;
     jsonObj["Username"] = Username;
     jsonObj["Password"] = Password;
     jsonObj["PhoneNumber"] = PhoneNaumber;
-
+    jsonObj["TweetCounter"] = "0";
+    jsonObj["HeadOfTheOrganization"] = HeadOfTheOrganization;
     QJsonDocument jsonDoc(jsonObj);
 
     QByteArray jsonData = jsonDoc.toJson();

@@ -41,6 +41,7 @@ bool PersonalUser::SetAttributePersonalUser()
     jsonObj["Followings"] = QString::fromStdString(std::to_string(Followings));
     jsonObj["Name"] = Name;
     jsonObj["Biography"] = Biography;
+    jsonObj["TweetCounter"] = "0";
     ProfileImage.save("Personal/" + Username + ".jpg");
     QJsonDocument jsonDoc(jsonObj);
 
