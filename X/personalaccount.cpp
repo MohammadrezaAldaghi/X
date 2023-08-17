@@ -1863,7 +1863,6 @@ void PersonalAccount::FollowerButtonAccount(QString FollowedAccount, QString Fol
 
         qDebug()<<"FollowersClasses counter = " << F.GetFollowerClassFollowedAccount(Username)<<"\n";
 
-        {
             {
                 QFile file("Personal/" + Username + ".json");
                 if(file.exists())
@@ -1887,7 +1886,10 @@ void PersonalAccount::FollowerButtonAccount(QString FollowedAccount, QString Fol
                                     QFile::remove("Personal/" + Username);
                                     if(file.open(QIODevice::WriteOnly))
                                     {
-                                        jsonObj["Followers"] = QString::fromStdString(std::to_string(F.GetFollowerClassFollowedAccount(Username)));
+                                        int temp1 = std::stoi(jsonObj["Followings"].toString().toStdString());
+                                        temp1 = temp1 + 1;
+//                                        qDebug()<<"Temp1"<<temp1<<"\n";
+                                        jsonObj["Followings"] = QString::fromStdString(std::to_string(temp1));
                                         QJsonDocument jDoc(jsonObj);
                                         QByteArray jData = jDoc.toJson();
                                         file.write(jData);
@@ -1935,7 +1937,9 @@ void PersonalAccount::FollowerButtonAccount(QString FollowedAccount, QString Fol
                                     QFile::remove("Organisation/" + Username);
                                     if(file.open(QIODevice::WriteOnly))
                                     {
-                                        jsonObj["Followers"] = QString::fromStdString(std::to_string(F.GetFollowerClassFollowedAccount(Username)));
+                                        int temp1 = std::stoi(jsonObj["Followings"].toString().toStdString());
+                                        temp1 = temp1 + 1;
+                                        jsonObj["Followings"] = QString::fromStdString(std::to_string(temp1));
                                         QJsonDocument jDoc(jsonObj);
                                         QByteArray jData = jDoc.toJson();
                                         file.write(jData);
@@ -1960,57 +1964,8 @@ void PersonalAccount::FollowerButtonAccount(QString FollowedAccount, QString Fol
                 }
                 file.close();
             }
-            //**************************************************************
-            {
-                QFile file("Anonymous/" + Username + ".json");
-                if(file.exists())
-                {
-                    try{
-                        if(file.open(QIODevice::ReadOnly))
-                        {
-                            QByteArray jsonData = file.readAll();
-                            QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
-                            if(jsonDoc.isNull())
-                            {
-                                throw std::invalid_argument("not exist");
-                            }
-                            else
-                            {
-                                QJsonObject jsonObj = jsonDoc.object();
-                                if(jsonObj.value("Username").toString()==Username)
-                                {
-                                    file.close();
-                                    QFile::remove("Anonymous/" + Username);
-                                    if(file.open(QIODevice::WriteOnly))
-                                    {
-                                        jsonObj["Followers"] = QString::fromStdString(std::to_string(F.GetFollowerClassFollowedAccount(Username)));
-                                        QJsonDocument jDoc(jsonObj);
-                                        QByteArray jData = jDoc.toJson();
-                                        file.write(jData);
-                                        file.close();
-
-                                    }
-                                }
-
-                            }
-
-                        }
-                        else
-                        {
-                            throw std::invalid_argument("file not found");
-                        }
-
-                    }
-                    catch(std::exception& e)
-                    {
-                        QMessageBox::critical(this,"Error",e.what());
-                    }
-                }
-                file.close();
-            }
-
         }
-    }
+
 
 
 }

@@ -1,7 +1,5 @@
 <RCC>
     <qresource prefix="/new/prefix1">
-        <file>C:/Users/ARTA/Desktop/Login.png</file>
         <file>C:/Users/ARTA/Desktop/Sign up.png</file>
-        <file>C:/Users/ARTA/Desktop/tweet.png</file>
     </qresource>
 </RCC>
