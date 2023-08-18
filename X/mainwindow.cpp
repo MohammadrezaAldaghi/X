@@ -13,16 +13,17 @@ MainWindow::MainWindow(QWidget *parent)
     ui->LoginButton->setStyleSheet("QPushButton { border-radius: 50%; }");
     ui->SignupButton->setStyleSheet("QPushButton {border-radius: 50%}");
 
-    QIcon loginIcon = QIcon("C:/Users/ARTA/Desktop/Login.png");
-    QIcon signupIcon = QIcon("C:/Users/ARTA/Desktop/Sign up.png");
+//    QIcon loginIcon = QIcon("C:/Users/ARTA/Desktop/Login.png");
+//    QIcon signupIcon = QIcon("image.qrc/Sign up.png");
 
     QSize loginiconSize(ui->LoginButton->size());
     QSize signupiconSize(ui->SignupButton->size());
-
+    ui->LoginButton->setStyleSheet("background-color : lightgreen");
+    ui->SignupButton->setStyleSheet("background-color : lightblue");
     ui->LoginButton->setIconSize(loginiconSize);
-    ui->LoginButton->setIcon(loginIcon);
+//    ui->LoginButton->setIcon(loginIcon);
     ui->SignupButton->setIconSize(signupiconSize);
-    ui->SignupButton->setIcon(signupIcon);
+//    ui->SignupButton->setIcon(signupIcon);
 
 
 }

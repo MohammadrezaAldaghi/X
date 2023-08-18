@@ -1,7 +1,7 @@
 <RCC>
-    <qresource prefix="/images">
-        <file>C:/Users/ARTA/Desktop/Sign up.png</file>
+    <qresource prefix="/Sign up">
         <file>C:/Users/ARTA/Desktop/tweet.png</file>
+        <file>C:/Users/ARTA/Desktop/Sign up.png</file>
         <file>C:/Users/ARTA/Desktop/Login.png</file>
     </qresource>
 </RCC>

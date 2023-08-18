@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">color: rgb(176, 188, 199);</string>
+  </property>
   <widget class="QLabel" name="TweetLabel">
    <property name="geometry">
     <rect>
@@ -48,11 +51,11 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>35</pointsize>
+     <pointsize>20</pointsize>
     </font>
    </property>
    <property name="text">
-    <string/>
+    <string>Tweet Send</string>
    </property>
   </widget>
   <widget class="QTextEdit" name="TweetTextEdit">

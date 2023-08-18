@@ -10,12 +10,12 @@ LoginForm::LoginForm(QWidget *parent) :
     ui(new Ui::LoginForm)
 {
     ui->setupUi(this);
-    ui->CancelButton->setStyleSheet("background-color : blue");
-    ui->LoginButton->setStyleSheet("background-color : blue");
-    ui->PasswordLabel->setStyleSheet("background-color : red");
-    ui->UsernameLabel->setStyleSheet("background-color : red");
-    ui->PasswordLineEdit->setStyleSheet("background-color : green");
-    ui->UsernameLineEdit->setStyleSheet("background-color : green");
+    ui->CancelButton->setStyleSheet("background-color : #a9acb1");
+    ui->LoginButton->setStyleSheet("background-color : #a9acb1");
+    ui->PasswordLabel->setStyleSheet("color : #f89b6c");
+    ui->UsernameLabel->setStyleSheet("color : #f89b6c");
+    ui->PasswordLineEdit->setStyleSheet("background-color : #8fdfc7");
+    ui->UsernameLineEdit->setStyleSheet("background-color : #8fdfc7");
     setStyleSheet("background-color : yellow");
 }
 
