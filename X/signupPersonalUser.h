@@ -26,6 +26,8 @@ private slots:
 
     void on_ChoseProfile_clicked();
 
+    void on_CancelButton_clicked();
+
 private:
     Ui::SignUp *ui;
     QImage image;

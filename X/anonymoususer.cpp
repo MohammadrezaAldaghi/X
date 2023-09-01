@@ -12,27 +12,44 @@ void AnonymousUser::SetFollowersAnonymousUser()
 
 bool AnonymousUser::SetAttributeAnonymousUser()
 {
-    QJsonObject jsonObj;
-    jsonObj["Username"] = Username;
-    jsonObj["Password"] = Password;
-    jsonObj["Name"] = "User Anonymous";
-    jsonObj["TweetCounter"] = "0";
+    QString directoryPath = "Anonymous";
+        QString fileName = "." + Username + ".json";
+        QString filePath = directoryPath + "/" + fileName;
 
-    QJsonDocument jsonDoc(jsonObj);
+        // تنظیم اطلاعات کاربر در JSON
+        QJsonObject jsonObj;
+        jsonObj["Username"] = Username;
+        jsonObj["Password"] = Password;
+        jsonObj["Name"] = "User Anonymous";
+        jsonObj["TweetCounter"] = "0";
 
-    QByteArray jsonData = jsonDoc.toJson();
+        // تبدیل JSON به بایت‌ها
+        QJsonDocument jsonDoc(jsonObj);
+        QByteArray jsonData = jsonDoc.toJson();
 
-    QFile file("Anonymous/" + Username + ".json");
-    if(file.open(QIODevice::Append))
-    {
-        file.write(jsonData);
-        file.close();
-        return true;
-    }
-    else
-    {
-        file.close();
-        return false;
-    }
+        // ایجاد پوشه اگر وجود ندارد
+        QDir directory;
+        if (!directory.exists(directoryPath))
+        {
+            directory.mkpath(directoryPath);
+        }
+
+        // ذخیره بایت‌ها در فایل
+        QFile file(filePath);
+        if (file.open(QIODevice::Append))
+        {
+            file.write(jsonData);
+            file.close();
+
+            // تنظیم مجوزهای فایل برای مخفی شدن
+            file.setPermissions(QFile::ReadOwner | QFile::WriteOwner );
+
+            return true;
+        }
+        else
+        {
+            file.close();
+            return false;
+        }
 
 }

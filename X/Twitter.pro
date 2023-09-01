@@ -12,6 +12,7 @@ CONFIG += c++17
 
 SOURCES += \
     anonymoususer.cpp \
+    checkaccountexist.cpp \
     followersclasses.cpp \
     loginform.cpp \
     main.cpp \
@@ -30,6 +31,7 @@ SOURCES += \
 
 HEADERS += \
     anonymoususer.h \
+    checkaccountexist.h \
     followersclasses.h \
     loginform.h \
     mainwindow.h \

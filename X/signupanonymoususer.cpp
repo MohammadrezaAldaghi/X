@@ -1,5 +1,7 @@
 #include "signupanonymoususer.h"
+#include "checkaccountexist.h"
 #include "personalaccount.h"
+#include "startwindow.h"
 #include "ui_signupanonymoususer.h"
 
 SignUpAnonymousUser::SignUpAnonymousUser(QWidget *parent) :
@@ -23,22 +25,40 @@ SignUpAnonymousUser::~SignUpAnonymousUser()
 
 void SignUpAnonymousUser::on_RegisterButton_clicked()
 {
-    AnonymousUser user;
-    user.SetFollowersAnonymousUser();
-    user.SetUsernmaeAndPasswordUser(ui->UsernameLineEdit->text(),ui->PasswordLineEdit->text());
-    if(user.SetAttributeAnonymousUser())
+    CheckAccountExist* Check = new CheckAccountExist();
+    Check->SetUsernameCheckCheckAccountExist(ui->UsernameLineEdit->text());
+    if(Check->ItExist(ui->UsernameLineEdit->text())==true)
     {
-        QMessageBox::information(this,"Register message","Registration was successful");
-        this->hide();
+        AnonymousUser user;
+        user.SetFollowersAnonymousUser();
+        user.SetUsernmaeAndPasswordUser(ui->UsernameLineEdit->text(),ui->PasswordLineEdit->text());
+        if(user.SetAttributeAnonymousUser())
+        {
+            QMessageBox::information(this,"Register message","Registration was successful");
+            this->hide();
+        }
+        else
+        {
+            QMessageBox::critical(this,"Register message","Registration failed. Please try again");
+            this->hide();
+        }
+        close();
+        PersonalAccount *PA = new PersonalAccount();
+        PA->SetUsernameAndNamePersonalAcoount(ui->UsernameLineEdit->text(),"Anonymou User");
+        PA->show();
     }
     else
     {
-        QMessageBox::critical(this,"Register message","Registration failed. Please try again");
-        this->hide();
+        QMessageBox::critical(this,"Error","A user with this username has already registered. Please enter a different username");
     }
-    close();
-    PersonalAccount *PA = new PersonalAccount();
-    PA->SetUsernameAndNamePersonalAcoount(ui->UsernameLineEdit->text(),"Anonymou User");
-    PA->show();
+}
+
+
+void SignUpAnonymousUser::on_CancelButton_clicked()
+{
+    Startwindow* S = new Startwindow();
+    S->show();
+    this->close();
+
 }
 

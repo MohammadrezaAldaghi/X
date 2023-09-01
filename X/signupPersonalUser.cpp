@@ -1,7 +1,10 @@
 #include "signupPersonalUser.h"
+#include "checkaccountexist.h"
 #include "personalaccount.h"
 #include "personaluser.h"
+#include "startwindow.h"
 #include "ui_signupPersonalUser.h"
+
 
 SignUp::SignUp(QWidget *parent) :
     QWidget(parent),
@@ -47,31 +50,41 @@ void SignUp::SetImage(QImage img)
 
 void SignUp::on_RegisterButton_clicked()
 {
-    PersonalUser* currnetUser = new PersonalUser();
-    currnetUser->SetUsername(ui->UsernameLineEdit->text());
-    currnetUser->SetBirthdayPersonalUser(ui->BirthdayLineEdit->text());
-    currnetUser->SetPassword(ui->PasswordLineEdit->text());
-    currnetUser->SetPhonNemberPersonalUser(ui->PhoneNumberLineEdit->text());
-    currnetUser->SetContryPersonalUser(ui->CountryLineEdit->text());
-    currnetUser->SetNamePersonalUser(ui->NameLineEdit->text());
-    currnetUser->SetFollowersPersonalUser();
-    currnetUser->SetFollowingsPersonalUser();
-    currnetUser->SetProfileImagePersonalUser(image);
-
-    if(currnetUser->SetAttributePersonalUser())
+    CheckAccountExist* Check = new CheckAccountExist();
+    Check->SetUsernameCheckCheckAccountExist(ui->UsernameLineEdit->text());
+    if(Check->ItExist(ui->UsernameLineEdit->text())==true)
     {
-        QMessageBox::information(this,"Register message","Registration was successful");
-        this->hide();
+        PersonalUser* currnetUser = new PersonalUser();
+        currnetUser->SetUsername(ui->UsernameLineEdit->text());
+        currnetUser->SetBirthdayPersonalUser(ui->BirthdayLineEdit->text());
+        currnetUser->SetPassword(ui->PasswordLineEdit->text());
+        currnetUser->SetPhonNemberPersonalUser(ui->PhoneNumberLineEdit->text());
+        currnetUser->SetContryPersonalUser(ui->CountryLineEdit->text());
+        currnetUser->SetNamePersonalUser(ui->NameLineEdit->text());
+        currnetUser->SetFollowersPersonalUser();
+        currnetUser->SetFollowingsPersonalUser();
+        currnetUser->SetProfileImagePersonalUser(image);
+
+        if(currnetUser->SetAttributePersonalUser())
+        {
+            QMessageBox::information(this,"Register message","Registration was successful");
+            this->hide();
+        }
+        else
+        {
+            QMessageBox::critical(this,"Register message","Registration failed. Please try again");
+            this->hide();
+        }
+        close();
+        PersonalAccount *PA = new PersonalAccount();
+        PA->SetUsernameAndNamePersonalAcoount(ui->UsernameLineEdit->text(),(ui->NameLineEdit->text()));
+        PA->show();
     }
     else
     {
-        QMessageBox::critical(this,"Register message","Registration failed. Please try again");
-        this->hide();
+        QMessageBox::critical(this,"Error","A user with this username has already registered. Please enter a different username");
     }
-    close();
-    PersonalAccount *PA = new PersonalAccount();
-    PA->SetUsernameAndNamePersonalAcoount(ui->UsernameLineEdit->text(),(ui->NameLineEdit->text()));
-    PA->show();
+
 
 }
 
@@ -89,5 +102,13 @@ void SignUp::on_ChoseProfile_clicked()
             qDebug()<<"wrong\n";
         }
     }
+}
+
+
+void SignUp::on_CancelButton_clicked()
+{
+    Startwindow* S = new Startwindow();
+    S->show();
+    this->close();
 }
 

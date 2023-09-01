@@ -21,8 +21,6 @@ PersonalAccount::PersonalAccount(QWidget *parent) :
     connect(ui->FindHashtagOrUsernameListWidget, &QListWidget::itemClicked, this,&PersonalAccount::ItemClickedExpelor);
 
 
-
-
 }
 PersonalAccount::~PersonalAccount()
 {

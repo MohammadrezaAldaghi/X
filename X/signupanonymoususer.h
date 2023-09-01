@@ -25,6 +25,8 @@ public:
 private slots:
     void on_RegisterButton_clicked();
 
+    void on_CancelButton_clicked();
+
 private:
     Ui::SignUpAnonymousUser *ui;
 };

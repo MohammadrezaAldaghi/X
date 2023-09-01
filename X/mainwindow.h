@@ -30,6 +30,9 @@ private slots:
 
     void on_LoginButton_clicked();
 
+
+    void on_actionHelp_3_triggered();
+
 private:
     Ui::MainWindow *ui;
 };
